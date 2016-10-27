@@ -22,7 +22,7 @@ public class Main extends AppCompatActivity {
     private TextView tv_status;
     private TextView viewData;
     private Button btn_connect;
-    private Bundle state;
+    //private Bundle state;
     private Handler timerHandler = new Handler();
 
     private Runnable timerRunnable = new Runnable() {
@@ -34,16 +34,21 @@ public class Main extends AppCompatActivity {
                     InputStream inputStream = btSetup.getBtSocket().getInputStream();
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
                     if (inputStream.available() > 0) {
-                        if (( line = bufferedReader.readLine()) != null) {
-                            
-                            viewData.append("\n" + line);
+                        if (( line = bufferedReader.readLine()) != null && !line.isEmpty()) {
+                            Integer dataValue = Integer.parseInt(line);
+                            long millis = System.currentTimeMillis();
+                            if(dataValue > 700) {
+                                viewData.append("\n" + dataValue + " " + millis);
+                            }
                         }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            timerHandler.postDelayed(this, 200);
+
+            //Polling rate
+            timerHandler.postDelayed(this, 10);
         }
     };
 
@@ -91,6 +96,7 @@ public class Main extends AppCompatActivity {
                     tv_status.setText(R.string.connected_true);
                     tv_status.setBackgroundColor(Color.GREEN);
                     btn_connect.setText(R.string.btn_disconnect);
+                    viewData.setText("");
                 }
             }
         }

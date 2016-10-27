@@ -38,8 +38,14 @@
                 android:textColor="@android:color/black" />
 
         </LinearLayout>
-        <TextView
-            android:text=""
+
+    <TextView
+        android:text="Receiving values:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView" />
+
+    <TextView
             android:background="@drawable/shape"
             android:id="@+id/viewData"
             android:textSize="24sp"
