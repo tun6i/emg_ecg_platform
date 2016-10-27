@@ -4,4 +4,6 @@
     <string name="connected_true">Connected</string>
     <string name="connected_false">Not Connected</string>
     <string name="btn_disconnect">Disconnect</string>
+    <string name="receiving_values">Receiving values:</string>
+    <string name="plot">Plot</string>
 </resources>

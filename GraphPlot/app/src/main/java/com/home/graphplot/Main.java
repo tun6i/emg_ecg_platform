@@ -37,9 +37,7 @@ public class Main extends AppCompatActivity {
                         if (( line = bufferedReader.readLine()) != null && !line.isEmpty()) {
                             Integer dataValue = Integer.parseInt(line);
                             long millis = System.currentTimeMillis();
-                            if(dataValue > 700) {
                                 viewData.append("\n" + dataValue + " " + millis);
-                            }
                         }
                     }
                 } catch (IOException e) {
@@ -48,7 +46,7 @@ public class Main extends AppCompatActivity {
             }
 
             //Polling rate
-            timerHandler.postDelayed(this, 10);
+            timerHandler.postDelayed(this, 50);
         }
     };
 
@@ -116,6 +114,10 @@ public class Main extends AppCompatActivity {
         }
     }
 
+    public void showPlot(View view) {
+        Intent viewPlot = new Intent(this, Plotting.class);
+        startActivity(viewPlot);
+    }
 
 
 
