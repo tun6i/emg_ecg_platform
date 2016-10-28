@@ -3,6 +3,7 @@ package com.home.graphplot;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+
 public class Main extends AppCompatActivity {
 
     private static final int CONNECTION_ESTABLISHED = 1;
@@ -23,6 +25,7 @@ public class Main extends AppCompatActivity {
     private TextView viewData;
     private Button btn_connect;
     private Handler timerHandler = new Handler();
+    private Bundle state;
 
     private Runnable timerRunnable = new Runnable() {
         @Override
@@ -58,7 +61,7 @@ public class Main extends AppCompatActivity {
         btn_connect = (Button) findViewById(R.id.connect);
         btSetup = new BluetoothSetup();
         viewData.setMovementMethod(new ScrollingMovementMethod());
-        //state = new Bundle();
+        state = new Bundle();
         timerRunnable.run();
         }
 
@@ -70,6 +73,25 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (btSetup.isConnected()) {
+            try {
+                btSetup.getBtSocket().close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
