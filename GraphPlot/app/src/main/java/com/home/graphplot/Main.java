@@ -7,6 +7,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 
 
 public class Main extends AppCompatActivity {
@@ -31,16 +33,22 @@ public class Main extends AppCompatActivity {
         @Override
         public void run() {
             if (btSetup.isConnected()) {
-                String line;
                 try {
                     InputStream inputStream = btSetup.getBtSocket().getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
+                    //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
+                    String line;
                     if (inputStream.available() > 0) {
-                        if (( line = bufferedReader.readLine()) != null && !line.isEmpty()) {
+                        /*if (( line = bufferedReader.readLine()) != null && !line.isEmpty()) {
                             Integer dataValue = Integer.parseInt(line);
                             long millis = System.currentTimeMillis();
                                 viewData.append("\n" + dataValue + " " + millis);
-                        }
+                        }*/
+                        byte[] buffer = new byte[2];
+                        inputStream.read(buffer);
+                        ByteBuffer wrapper = ByteBuffer.wrap(buffer);
+                        short number = wrapper.getShort();
+                        //viewData.append("\n" + inputStream.read() + "");
+                        viewData.append("\n" + number + " ");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -48,7 +56,7 @@ public class Main extends AppCompatActivity {
             }
 
             //Polling rate
-            timerHandler.postDelayed(this, 50);
+            timerHandler.postDelayed(this, 10);
         }
     };
 
