@@ -22,7 +22,6 @@ public class Main extends AppCompatActivity {
     private TextView tv_status;
     private TextView viewData;
     private Button btn_connect;
-    //private Bundle state;
     private Handler timerHandler = new Handler();
 
     private Runnable timerRunnable = new Runnable() {
@@ -62,18 +61,6 @@ public class Main extends AppCompatActivity {
         //state = new Bundle();
         timerRunnable.run();
         }
-
-    /*@Override
-    protected void onPause() {
-        super.onPause();
-        onSaveInstanceState(state);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        onRestoreInstanceState(state);
-    }*/
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -118,11 +105,5 @@ public class Main extends AppCompatActivity {
         Intent viewPlot = new Intent(this, Plotting.class);
         startActivity(viewPlot);
     }
-
-
-
-
-
-
 
 }
