@@ -39,7 +39,7 @@ public class Main extends AppCompatActivity {
         byte[] buffer = new byte[2];
         @Override
         public void run() {
-            final int channels = 6;
+            final int channels = 1;
             if (btSetup.isConnected()) {
                 try {
                     InputStream inputStream = btSetup.getBtData();
@@ -76,7 +76,7 @@ public class Main extends AppCompatActivity {
             }
 
             //Polling rate
-            timerHandler.postDelayed(this, 10 );
+            timerHandler.postDelayed(this, 10);
         }
     };
 
@@ -102,7 +102,15 @@ public class Main extends AppCompatActivity {
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
 
         //state = new Bundle();
-        timerRunnable.run();
+        //timerRunnable.run();
+        /*final Runnable resetView = new Runnable() {
+            @Override
+            public void run() {
+                timerHandler.postDelayed(this, 15000);
+                viewDataCH1.setText("");
+            }
+        };
+        resetView.run();*/
         }
 
     @Override
@@ -160,6 +168,7 @@ public class Main extends AppCompatActivity {
             Intent showDevices = new Intent(this, ListViewDevices.class);
             startActivityForResult(showDevices, CONNECTION_ESTABLISHED);
         } else {
+            btSetup.getBtData().close();
             btSetup.getBtSocket().close();
             btSetup.setConnected(false);
             tv_status.setText(R.string.connected_false);
