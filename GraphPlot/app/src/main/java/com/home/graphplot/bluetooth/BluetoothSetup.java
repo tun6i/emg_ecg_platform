@@ -12,7 +12,7 @@ public class BluetoothSetup {
     private BluetoothAdapter btAdapter;
     private BluetoothDevice btDevice;
     private BluetoothSocket btSocket;
-    boolean connected;
+    private boolean connected;
 
     public BluetoothSetup() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();

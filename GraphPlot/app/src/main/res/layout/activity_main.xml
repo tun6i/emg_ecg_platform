@@ -59,14 +59,66 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+                android:background="@drawable/shape"
+                android:id="@+id/viewDataCH1"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:scrollbars="vertical"
+                android:gravity="bottom"
+                android:textColor="@android:color/black" />
+
+        <TextView
             android:background="@drawable/shape"
-            android:id="@+id/viewData"
-            android:textSize="14sp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="14sp"
+            android:id="@+id/viewDataCH2" />
+
+        <TextView
+            android:background="@drawable/shape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:scrollbars="vertical"
-            android:gravity="bottom"
-            android:textColor="@android:color/black" />
+            android:textSize="14sp"
+            android:id="@+id/viewDataCH3" />
+
+        <TextView
+            android:background="@drawable/shape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            android:textSize="14sp"
+            android:id="@+id/viewDataCH4" />
+
+        <TextView
+            android:background="@drawable/shape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            android:textSize="14sp"
+            android:id="@+id/viewDataCH5" />
+
+        <TextView
+            android:background="@drawable/shape"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            android:textSize="14sp"
+            android:id="@+id/viewDataCH6" />
+
+    </LinearLayout>
 
 </LinearLayout>

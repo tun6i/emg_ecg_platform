@@ -4,28 +4,52 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.home.graphplot.bluetooth.BluetoothSetup;
 import com.jjoe64.graphview.GraphView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 
 public class Plotting extends AppCompatActivity {
     private Handler timerHandler = new Handler();
 
     private Runnable timerRunnable = new Runnable() {
+        byte[] buffer = new byte[2];
         @Override
         public void run() {
-            if (Main.btSetup.isConnected()) {
-                String line;
+            BluetoothSetup btSetup = Main.btSetup;
+            int channels = 1;
+            if (btSetup.isConnected()) {
                 try {
-                    InputStream inputStream = Main.btSetup.getBtSocket().getInputStream();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
+                    InputStream inputStream = btSetup.getBtData();
                     if (inputStream.available() > 0) {
-                        if (( line = bufferedReader.readLine()) != null && !line.isEmpty()) {
-                            Integer dataValue = Integer.parseInt(line);
-                            long millis = System.currentTimeMillis();
+                        for (int actualCH = 1; actualCH <= channels; actualCH++) {
+                            inputStream.read(buffer);
+                            ByteBuffer wrapper = ByteBuffer.wrap(buffer);
+                            short number = wrapper.getShort();
+                            switch (actualCH) {
+                                case 1:
+
+                                    break;
+                                case 2:
+
+                                    break;
+                                case 3:
+
+                                    break;
+                                case 4:
+
+                                    break;
+                                case 5:
+
+                                    break;
+                                case 6:
+
+                                    break;
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -34,7 +58,7 @@ public class Plotting extends AppCompatActivity {
             }
 
             //Polling rate
-            timerHandler.postDelayed(this, 50);
+            timerHandler.postDelayed(this, 10 );
         }
     };
     @Override

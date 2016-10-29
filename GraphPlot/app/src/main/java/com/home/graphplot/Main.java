@@ -3,19 +3,15 @@ package com.home.graphplot;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.home.graphplot.bluetooth.BluetoothSetup;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 
 
@@ -24,31 +20,55 @@ public class Main extends AppCompatActivity {
     private static final int CONNECTION_ESTABLISHED = 1;
     static BluetoothSetup btSetup;
     private TextView tv_status;
-    private TextView viewData;
+    private TextView viewDataCH1;
+    private TextView viewDataCH2;
+    private TextView viewDataCH3;
+    private TextView viewDataCH4;
+    private TextView viewDataCH5;
+    private TextView viewDataCH6;
     private Button btn_connect;
     private Handler timerHandler = new Handler();
-    private Bundle state;
+    //private Bundle state;
+
+
+
+    // Buffer for building EMG value
+    // contains highByte & lowByte of an Integer
 
     private Runnable timerRunnable = new Runnable() {
+        byte[] buffer = new byte[2];
         @Override
         public void run() {
+            final int channels = 6;
             if (btSetup.isConnected()) {
                 try {
-                    InputStream inputStream = btSetup.getBtSocket().getInputStream();
-                    //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "ASCII"));
-                    String line;
+                    InputStream inputStream = btSetup.getBtData();
                     if (inputStream.available() > 0) {
-                        /*if (( line = bufferedReader.readLine()) != null && !line.isEmpty()) {
-                            Integer dataValue = Integer.parseInt(line);
-                            long millis = System.currentTimeMillis();
-                                viewData.append("\n" + dataValue + " " + millis);
-                        }*/
-                        byte[] buffer = new byte[2];
-                        inputStream.read(buffer);
-                        ByteBuffer wrapper = ByteBuffer.wrap(buffer);
-                        short number = wrapper.getShort();
-                        //viewData.append("\n" + inputStream.read() + "");
-                        viewData.append("\n" + number + " ");
+                        for (int actualCH = 1; actualCH <= channels; actualCH++) {
+                            inputStream.read(buffer);
+                            ByteBuffer wrapper = ByteBuffer.wrap(buffer);
+                            short number = wrapper.getShort();
+                            switch (actualCH) {
+                                case 1:
+                                    viewDataCH1.append("\n" + number + " ");
+                                    break;
+                                case 2:
+                                    viewDataCH2.append("\n" + number + " ");
+                                    break;
+                                case 3:
+                                    viewDataCH3.append("\n" + number + " ");
+                                    break;
+                                case 4:
+                                    viewDataCH4.append("\n" + number + " ");
+                                    break;
+                                case 5:
+                                    viewDataCH5.append("\n" + number + " ");
+                                    break;
+                                case 6:
+                                    viewDataCH6.append("\n" + number + " ");
+                                    break;
+                            }
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -56,7 +76,7 @@ public class Main extends AppCompatActivity {
             }
 
             //Polling rate
-            timerHandler.postDelayed(this, 10);
+            timerHandler.postDelayed(this, 10 );
         }
     };
 
@@ -64,12 +84,24 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        viewData = (TextView) findViewById(R.id.viewData);
+        viewDataCH1 = (TextView) findViewById(R.id.viewDataCH1);
+        viewDataCH2 = (TextView) findViewById(R.id.viewDataCH2);
+        viewDataCH3 = (TextView) findViewById(R.id.viewDataCH3);
+        viewDataCH4 = (TextView) findViewById(R.id.viewDataCH4);
+        viewDataCH5 = (TextView) findViewById(R.id.viewDataCH5);
+        viewDataCH6 = (TextView) findViewById(R.id.viewDataCH6);
+
         tv_status = (TextView) findViewById(R.id.status);
         btn_connect = (Button) findViewById(R.id.connect);
         btSetup = new BluetoothSetup();
-        viewData.setMovementMethod(new ScrollingMovementMethod());
-        state = new Bundle();
+        viewDataCH1.setMovementMethod(new ScrollingMovementMethod());
+        viewDataCH2.setMovementMethod(new ScrollingMovementMethod());
+        viewDataCH3.setMovementMethod(new ScrollingMovementMethod());
+        viewDataCH4.setMovementMethod(new ScrollingMovementMethod());
+        viewDataCH5.setMovementMethod(new ScrollingMovementMethod());
+        viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
+
+        //state = new Bundle();
         timerRunnable.run();
         }
 
@@ -111,7 +143,13 @@ public class Main extends AppCompatActivity {
                     tv_status.setText(R.string.connected_true);
                     tv_status.setBackgroundColor(Color.GREEN);
                     btn_connect.setText(R.string.btn_disconnect);
-                    viewData.setText("");
+                    viewDataCH1.setText("");
+                    viewDataCH2.setText("");
+                    viewDataCH3.setText("");
+                    viewDataCH4.setText("");
+                    viewDataCH5.setText("");
+                    viewDataCH6.setText("");
+
                 }
             }
         }
