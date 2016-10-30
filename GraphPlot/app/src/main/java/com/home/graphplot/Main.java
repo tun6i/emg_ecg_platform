@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,52 +29,43 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH6;
     private Button btn_connect;
     private Handler timerHandler = new Handler();
+    GetDataThread getDataThread;
+    Thread readingThread;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
 
     private Runnable timerRunnable = new Runnable() {
-        byte[] buffer = new byte[2];
         @Override
         public void run() {
-            final int channels = 1;
+            final int channels = 6;
             if (btSetup.isConnected()) {
-                try {
-                    InputStream inputStream = btSetup.getBtData();
-                    if (inputStream.available() > 0) {
                         for (int actualCH = 1; actualCH <= channels; actualCH++) {
-                            inputStream.read(buffer);
-                            ByteBuffer wrapper = ByteBuffer.wrap(buffer);
-                            short number = wrapper.getShort();
+
                             switch (actualCH) {
                                 case 1:
-                                    viewDataCH1.append("\n" + number + " ");
+                                    viewDataCH1.append("\n" + getDataThread.getValue().get(0) + " ");
                                     break;
                                 case 2:
-                                    viewDataCH2.append("\n" + number + " ");
+                                    viewDataCH2.append("\n" + getDataThread.getValue().get(1) + " ");
                                     break;
                                 case 3:
-                                    viewDataCH3.append("\n" + number + " ");
+                                    viewDataCH3.append("\n" + getDataThread.getValue().get(2) + " ");
                                     break;
                                 case 4:
-                                    viewDataCH4.append("\n" + number + " ");
+                                    viewDataCH4.append("\n" + getDataThread.getValue().get(3) + " ");
                                     break;
                                 case 5:
-                                    viewDataCH5.append("\n" + number + " ");
+                                    viewDataCH5.append("\n" + getDataThread.getValue().get(4) + " ");
                                     break;
                                 case 6:
-                                    viewDataCH6.append("\n" + number + " ");
+                                    viewDataCH6.append("\n" + getDataThread.getValue().get(5) + " ");
                                     break;
                             }
                         }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
-
             //Polling rate
-            timerHandler.postDelayed(this, 10);
+            timerHandler.postDelayed(this, 20);
         }
     };
 
@@ -97,10 +89,10 @@ public class Main extends AppCompatActivity {
         viewDataCH4.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH5.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
-
+        getDataThread = new GetDataThread();
+        readingThread = new Thread(getDataThread);
+        readingThread.start();
         setupTextViews4Click();
-
-        timerRunnable.run();
         }
 
     @Override
@@ -133,7 +125,6 @@ public class Main extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -155,9 +146,10 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    public void showDeviceList(View view) throws IOException {
+    public void showDeviceList(View view) throws IOException, InterruptedException {
         if (!btSetup.isConnected()) {
             Intent showDevices = new Intent(this, ListViewDevices.class);
+            timerRunnable.run();
             startActivityForResult(showDevices, CONNECTION_ESTABLISHED);
         } else {
             btSetup.getBtData().close();
@@ -219,5 +211,4 @@ public class Main extends AppCompatActivity {
             }
         });
     }
-
 }
