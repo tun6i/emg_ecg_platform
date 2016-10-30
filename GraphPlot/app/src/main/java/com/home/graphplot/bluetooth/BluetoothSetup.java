@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.util.Set;
 import java.util.UUID;
 
+/* Comment
+ */
 public class BluetoothSetup {
     private BluetoothAdapter btAdapter;
     private BluetoothDevice btDevice;
