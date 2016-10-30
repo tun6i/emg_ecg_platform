@@ -29,43 +29,27 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH6;
     private Button btn_connect;
     private Handler timerHandler = new Handler();
-    GetDataThread getDataThread;
+    static GetDataThread getDataThread;
     Thread readingThread;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
 
     private Runnable timerRunnable = new Runnable() {
+        int i = 0;
         @Override
         public void run() {
-            final int channels = 6;
+            timerHandler.postDelayed(this, 10);
             if (btSetup.isConnected()) {
-                        for (int actualCH = 1; actualCH <= channels; actualCH++) {
-
-                            switch (actualCH) {
-                                case 1:
-                                    viewDataCH1.append("\n" + getDataThread.getValue().get(0) + " ");
-                                    break;
-                                case 2:
-                                    viewDataCH2.append("\n" + getDataThread.getValue().get(1) + " ");
-                                    break;
-                                case 3:
-                                    viewDataCH3.append("\n" + getDataThread.getValue().get(2) + " ");
-                                    break;
-                                case 4:
-                                    viewDataCH4.append("\n" + getDataThread.getValue().get(3) + " ");
-                                    break;
-                                case 5:
-                                    viewDataCH5.append("\n" + getDataThread.getValue().get(4) + " ");
-                                    break;
-                                case 6:
-                                    viewDataCH6.append("\n" + getDataThread.getValue().get(5) + " ");
-                                    break;
-                            }
-                        }
+                viewDataCH1.append("\n" + getDataThread.getValue().get(0) + " ");
+                viewDataCH2.append("\n" + getDataThread.getValue().get(1) + " ");
+                viewDataCH3.append("\n" + getDataThread.getValue().get(2) + " ");
+                viewDataCH4.append("\n" + getDataThread.getValue().get(3) + " ");
+                viewDataCH5.append("\n" + getDataThread.getValue().get(4) + " ");
+                viewDataCH6.append("\n" + getDataThread.getValue().get(5) + " ");
             }
-            //Polling rate
-            timerHandler.postDelayed(this, 20);
+            Log.d("Tag", "Tview" + i);
+            i++;
         }
     };
 
@@ -96,17 +80,6 @@ public class Main extends AppCompatActivity {
         }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
@@ -118,11 +91,21 @@ public class Main extends AppCompatActivity {
         if (btSetup.isConnected()) {
             try {
                 btSetup.getBtSocket().close();
-                timerHandler.removeCallbacks(timerRunnable);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewDataCH1.setText("");
+        viewDataCH2.setText("");
+        viewDataCH3.setText("");
+        viewDataCH4.setText("");
+        viewDataCH5.setText("");
+        viewDataCH6.setText("");
     }
 
     @Override

@@ -1,31 +1,35 @@
 package com.home.graphplot;
 
 import android.os.Handler;
-import android.util.Log;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class GetDataThread implements Runnable {
-    private Handler timerHandler = new Handler();
+    private Handler timerHandler;
     private byte[] buffer = new byte[2];
     private int[] cache = new int[6];
     private AtomicIntegerArray valuePacket  = new AtomicIntegerArray(cache);
 
-
-
+    public GetDataThread() {
+        timerHandler = new Handler();
+    }
 
     @Override
     public void run() {
         final int channels = 6;
+        ByteBuffer wrapper;
         if (Main.btSetup.isConnected()) {
             try {
                 if (Main.btSetup.getBtData().available() > 0) {
+                    do {
+                        Main.btSetup.getBtData().read(buffer);
+                        wrapper = ByteBuffer.wrap(buffer);
+                    } while(wrapper.getShort() != 1337);
+
                     for (int actualCH = 1; actualCH <= channels; actualCH++) {
                         Main.btSetup.getBtData().read(buffer);
-                        ByteBuffer wrapper = ByteBuffer.wrap(buffer);
+                        wrapper = ByteBuffer.wrap(buffer);
                         short number = wrapper.getShort();
                         switch (actualCH) {
                             case 1:
@@ -55,7 +59,6 @@ public class GetDataThread implements Runnable {
         }
         //Polling rate
         timerHandler.postDelayed(this, 10);
-        Log.d("Tag", "Data retrieved");
     }
 
     public AtomicIntegerArray getValue() {

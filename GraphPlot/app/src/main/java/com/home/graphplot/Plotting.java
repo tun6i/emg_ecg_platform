@@ -1,5 +1,7 @@
 package com.home.graphplot;
 
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,75 +11,37 @@ import com.home.graphplot.bluetooth.BluetoothSetup;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 public class Plotting extends AppCompatActivity {
-    private Handler timerHandler = new Handler();
-    LineGraphSeries<DataPoint> series;
+    private volatile Handler timerHandler = new Handler();
+    LineGraphSeries<DataPoint> seriesCH1;
+    LineGraphSeries<DataPoint> seriesCH2;
+    LineGraphSeries<DataPoint> seriesCH3;
+    LineGraphSeries<DataPoint> seriesCH4;
+    LineGraphSeries<DataPoint> seriesCH5;
+    LineGraphSeries<DataPoint> seriesCH6;
+
     GraphView graphView;
     private float i = 0.5f;
-    int counter = 1;
 
     private Runnable timerRunnable = new Runnable() {
-        byte[] buffer = new byte[2];
-
         @Override
         public void run() {
            BluetoothSetup btSetup = Main.btSetup;
-            int channels = 1;
             if (btSetup.isConnected()) {
-                try {
-                    InputStream inputStream = btSetup.getBtData();
-                    if (inputStream.available() > 0) {
-                        for (int actualCH = 1; actualCH <= channels; actualCH++) {
-                            inputStream.read(buffer);
-                            counter++;
-                            ByteBuffer wrapper = ByteBuffer.wrap(buffer);
-                            short number = wrapper.getShort();
-                            switch (actualCH) {
-                                case 1:
-                                    series.appendData(new DataPoint(i, number), true, 100);
-                                    //graphView.addSeries(series);
-                                    i = i + 0.01f;
-                                    //Polling rate
-                                    graphView.getViewport().scrollToEnd();
-                                    Log.d("Tag", counter + " ");
-                                    break;
-                                case 2:
+                seriesCH1.appendData(new DataPoint(i, Main.getDataThread.getValue().get(0)), true, 100);
+                seriesCH2.appendData(new DataPoint(i, Main.getDataThread.getValue().get(1)), true, 100);
+                seriesCH3.appendData(new DataPoint(i, Main.getDataThread.getValue().get(2)), true, 100);
+                seriesCH4.appendData(new DataPoint(i, Main.getDataThread.getValue().get(3)), true, 100);
+                seriesCH5.appendData(new DataPoint(i, Main.getDataThread.getValue().get(4)), true, 100);
+                seriesCH6.appendData(new DataPoint(i, Main.getDataThread.getValue().get(5)), true, 100);
 
-                                    break;
-                                case 3:
-
-                                    break;
-                                case 4:
-
-                                    break;
-                                case 5:
-
-                                    break;
-                                case 6:
-
-                                    break;
-                            }
-                        }
-
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                /*series.appendData(new DataPoint(i, 512), true, 100);
-                //graphView.addSeries(series);
                 i = i + 0.01f;
-                //Polling rate
-                graphView.getViewport().scrollToEnd();*/
-
+                graphView.getViewport().scrollToEnd();
             }
             timerHandler.postDelayed(this, 10);
+            Log.d("Tag", "Plotting " + i);
         }
-
     };
 
     @Override
@@ -90,7 +54,16 @@ public class Plotting extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        timerHandler.removeCallbacks(timerRunnable);
+        if (isFinishing()) {
+            timerHandler.removeCallbacks(timerRunnable);
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -107,9 +80,37 @@ public class Plotting extends AppCompatActivity {
         //graphView.getGridLabelRenderer().set
         graphView.getViewport().setScalable(true);
 
-        series = new LineGraphSeries<>();
-        series.setThickness(3);
-        graphView.addSeries(series);
+        seriesCH1 = new LineGraphSeries<>();
+        seriesCH2 = new LineGraphSeries<>();
+        seriesCH3 = new LineGraphSeries<>();
+        seriesCH4 = new LineGraphSeries<>();
+        seriesCH5 = new LineGraphSeries<>();
+        seriesCH6 = new LineGraphSeries<>();
+
+
+        seriesCH1.setThickness(2);
+        seriesCH2.setThickness(2);
+        seriesCH3.setThickness(2);
+        seriesCH4.setThickness(2);
+        seriesCH5.setThickness(2);
+        seriesCH6.setThickness(2);
+
+        seriesCH1.setColor(Color.CYAN);
+        seriesCH2.setColor(Color.GREEN);
+        seriesCH3.setColor(Color.BLUE);
+        seriesCH4.setColor(Color.RED);
+        seriesCH5.setColor(Color.BLACK);
+        seriesCH6.setColor(Color.MAGENTA);
+
+        graphView.addSeries(seriesCH1);
+        graphView.addSeries(seriesCH2);
+        graphView.addSeries(seriesCH3);
+        graphView.addSeries(seriesCH4);
+        graphView.addSeries(seriesCH5);
+        graphView.addSeries(seriesCH6);
+
         timerRunnable.run();
+
+
     }
 }
