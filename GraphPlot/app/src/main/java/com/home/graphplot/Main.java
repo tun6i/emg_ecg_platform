@@ -28,9 +28,6 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH6;
     private Button btn_connect;
     private Handler timerHandler = new Handler();
-    //private Bundle state;
-
-
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
@@ -101,16 +98,9 @@ public class Main extends AppCompatActivity {
         viewDataCH5.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
 
-        //state = new Bundle();
-        //timerRunnable.run();
-        /*final Runnable resetView = new Runnable() {
-            @Override
-            public void run() {
-                timerHandler.postDelayed(this, 15000);
-                viewDataCH1.setText("");
-            }
-        };
-        resetView.run();*/
+        setupTextViews4Click();
+
+        timerRunnable.run();
         }
 
     @Override
@@ -136,11 +126,13 @@ public class Main extends AppCompatActivity {
         if (btSetup.isConnected()) {
             try {
                 btSetup.getBtSocket().close();
+                timerHandler.removeCallbacks(timerRunnable);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -181,6 +173,51 @@ public class Main extends AppCompatActivity {
     public void showPlot(View view) {
         Intent viewPlot = new Intent(this, Plotting.class);
         startActivity(viewPlot);
+    }
+
+    private void setupTextViews4Click() {
+        viewDataCH1.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPlot(v);
+                return true;
+            }
+        });
+        viewDataCH2.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPlot(v);
+                return true;
+            }
+        });
+        viewDataCH3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPlot(v);
+                return true;
+            }
+        });
+        viewDataCH4.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPlot(v);
+                return true;
+            }
+        });
+        viewDataCH5.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPlot(v);
+                return true;
+            }
+        });
+        viewDataCH6.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showPlot(v);
+                return true;
+            }
+        });
     }
 
 }

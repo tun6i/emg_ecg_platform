@@ -3,26 +3,22 @@ package com.home.graphplot;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.home.graphplot.bluetooth.BluetoothSetup;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-import com.jjoe64.graphview.series.PointsGraphSeries;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Plotting extends AppCompatActivity {
     private Handler timerHandler = new Handler();
-    Random random = new Random();
     LineGraphSeries<DataPoint> series;
     GraphView graphView;
     private float i = 0.5f;
-
+    int counter = 1;
 
     private Runnable timerRunnable = new Runnable() {
         byte[] buffer = new byte[2];
@@ -37,6 +33,7 @@ public class Plotting extends AppCompatActivity {
                     if (inputStream.available() > 0) {
                         for (int actualCH = 1; actualCH <= channels; actualCH++) {
                             inputStream.read(buffer);
+                            counter++;
                             ByteBuffer wrapper = ByteBuffer.wrap(buffer);
                             short number = wrapper.getShort();
                             switch (actualCH) {
@@ -46,6 +43,7 @@ public class Plotting extends AppCompatActivity {
                                     i = i + 0.01f;
                                     //Polling rate
                                     graphView.getViewport().scrollToEnd();
+                                    Log.d("Tag", counter + " ");
                                     break;
                                 case 2:
 
@@ -70,6 +68,12 @@ public class Plotting extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                /*series.appendData(new DataPoint(i, 512), true, 100);
+                //graphView.addSeries(series);
+                i = i + 0.01f;
+                //Polling rate
+                graphView.getViewport().scrollToEnd();*/
+
             }
             timerHandler.postDelayed(this, 10);
         }
@@ -77,10 +81,23 @@ public class Plotting extends AppCompatActivity {
     };
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        timerHandler.removeCallbacks(timerRunnable);
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timerHandler.removeCallbacks(timerRunnable);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plotting);
-        graphView = (GraphView) findViewById(R.id.graph);
+        graphView = (GraphView) findViewById(R.id.graph1);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
         graphView.getViewport().setMaxY(1023);
@@ -90,14 +107,9 @@ public class Plotting extends AppCompatActivity {
         //graphView.getGridLabelRenderer().set
         graphView.getViewport().setScalable(true);
 
-        series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 999),
-                new DataPoint(0.01, 500),
-                new DataPoint(0.02, 356),
-                new DataPoint(0.03, 624),
-                new DataPoint(0.04, 1023)
-        });
-        series.setThickness(5);
+        series = new LineGraphSeries<>();
+        series.setThickness(3);
         graphView.addSeries(series);
-        timerRunnable.run();}
+        timerRunnable.run();
+    }
 }
