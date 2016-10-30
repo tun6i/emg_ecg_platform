@@ -43,7 +43,8 @@ void readEMG () {
   buffer[11] = lowByte(valueCH6);*/
   
   btSerial.write(buffer, 2);
-  Serial.write(buffer, 2);
+  //Serial.write(buffer, 2);
+  Serial.println(valueCH1);
   
   //btSerial.flush();
 }
