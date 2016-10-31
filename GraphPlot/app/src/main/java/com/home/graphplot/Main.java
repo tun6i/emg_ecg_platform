@@ -3,6 +3,7 @@ package com.home.graphplot;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.home.graphplot.bluetooth.BluetoothSetup;
+import com.jjoe64.graphview.series.DataPoint;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -33,19 +36,34 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH6;
     private Button btn_connect;
     static GetDataThread getDataThread;
-    Thread readingThread;
+    HandlerThread readingThread;
 
     private Handler textHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1337) {
-                //AtomicIntegerArray obj = (AtomicIntegerArray) msg.obj;
-                //viewDataCH1.append("\n" + obj.get(0) + " ");
-                /*viewDataCH2.append("\n" + obj.get(1) + " ");
-                viewDataCH3.append("\n" + obj.get(2) + " ");
-                viewDataCH4.append("\n" + obj.get(3) + " ");
-                viewDataCH5.append("\n" + obj.get(4) + " ");
-                viewDataCH6.append("\n" + obj.get(5) + " ");*/
+                int channel = msg.arg1;
+                int value = msg.arg2;
+                switch (channel) {
+                    case 1:
+                        viewDataCH1.append("\n" + value + " ");
+                        break;
+                    case 2:
+                        viewDataCH2.append("\n" + value + " ");
+                        break;
+                    case 3:
+                        viewDataCH3.append("\n" + value + " ");
+                        break;
+                    case 4:
+                        viewDataCH4.append("\n" + value + " ");
+                        break;
+                    case 5:
+                        viewDataCH5.append("\n" + value + " ");
+                        break;
+                    case 6:
+                        viewDataCH6.append("\n" + value + " ");
+                        break;
+                }
             }
             super.handleMessage(msg);
         }
@@ -73,8 +91,9 @@ public class Main extends AppCompatActivity {
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
         getDataThread = new GetDataThread();
         getDataThread.setViewHandler(textHandler);
-        readingThread = new Thread(getDataThread);
+        readingThread = new HandlerThread("My Reading Thread");
         readingThread.start();
+
 
         setupTextViews4Click();
         }
@@ -106,7 +125,7 @@ public class Main extends AppCompatActivity {
         viewDataCH4.setText("");
         viewDataCH5.setText("");
         viewDataCH6.setText("");
-        //getDataThread.setViewHandler(textHandler);
+        getDataThread.setViewHandler(textHandler);
     }
 
     @Override

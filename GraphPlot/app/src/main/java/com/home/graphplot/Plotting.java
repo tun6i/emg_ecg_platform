@@ -26,26 +26,32 @@ public class Plotting extends AppCompatActivity {
     private LineGraphSeries<DataPoint> seriesCH6;
     private GraphView graphView;
     private float i = 0.0f;
-    byte[] buffer = new byte[2];
-    ByteBuffer wrapper;
-
     private Handler graphHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1337) {
-                try {
-                    Main.btSetup.getBtData().read(buffer);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                int channel = msg.arg1;
+                int value = msg.arg2;
+                switch (channel) {
+                    case 1:
+                        seriesCH1.appendData(new DataPoint(i, value), true, 100);
+                        break;
+                    case 2:
+                        seriesCH2.appendData(new DataPoint(i, value), true, 100);
+                        break;
+                    case 3:
+                        seriesCH3.appendData(new DataPoint(i, value), true, 100);
+                        break;
+                    case 4:
+                        seriesCH4.appendData(new DataPoint(i, value), true, 100);
+                        break;
+                    case 5:
+                        seriesCH5.appendData(new DataPoint(i, value), true, 100);
+                        break;
+                    case 6:
+                        seriesCH6.appendData(new DataPoint(i, value), true, 100);
+                        break;
                 }
-                wrapper = ByteBuffer.wrap(buffer);
-                short number = wrapper.getShort();
-                seriesCH1.appendData(new DataPoint(i, number), true, 100);
-                /*seriesCH2.appendData(new DataPoint(i, Main.getDataThread.getValue().get(1)), true, 100);
-                seriesCH3.appendData(new DataPoint(i, Main.getDataThread.getValue().get(2)), true, 100);
-                seriesCH4.appendData(new DataPoint(i, Main.getDataThread.getValue().get(3)), true, 100);
-                seriesCH5.appendData(new DataPoint(i, Main.getDataThread.getValue().get(4)), true, 100);
-                seriesCH6.appendData(new DataPoint(i, Main.getDataThread.getValue().get(5)), true, 100);*/
                 i = i + 0.01f;
                 graphView.getViewport().scrollToEnd();
             }
