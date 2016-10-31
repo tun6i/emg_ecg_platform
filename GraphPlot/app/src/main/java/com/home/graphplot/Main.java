@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -35,7 +36,7 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH5;
     private TextView viewDataCH6;
     private Button btn_connect;
-    static GetDataThread getDataThread;
+    private GetDataThread getDataThread;
     Thread readingThread;
 
     private Handler textHandler = new Handler(Looper.getMainLooper()) {
@@ -89,10 +90,10 @@ public class Main extends AppCompatActivity {
         viewDataCH4.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH5.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
-        getDataThread = new GetDataThread();
+        getDataThread = new GetDataThread(textHandler);
         getDataThread.setViewHandler(textHandler);
         readingThread = new Thread(getDataThread);
-        readingThread.start();
+        //readingThread.start();
 
 
         setupTextViews4Click();
@@ -101,6 +102,11 @@ public class Main extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        try {
+            readingThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         finish();
     }
 

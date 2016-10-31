@@ -1,6 +1,7 @@
 package com.home.graphplot;
 
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Message;
 
 import java.io.IOException;
@@ -13,8 +14,8 @@ public class GetDataThread implements Runnable {
     private int[] cache = new int[6];
     private Handler uiHandler;
 
-    public GetDataThread() {
-        timerHandler = new Handler();
+    public GetDataThread(Handler handler) {
+        uiHandler = handler;
     }
 
     @Override
@@ -45,11 +46,7 @@ public class GetDataThread implements Runnable {
             }
         }
         //Polling rate
-        timerHandler.postDelayed(this, 30);
-    }
-
-    public int[] getValue() {
-        return cache;
+        uiHandler.postDelayed(this, 4);
     }
 
     public void setViewHandler(Handler handler) {

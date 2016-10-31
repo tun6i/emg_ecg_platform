@@ -57,10 +57,17 @@ public class Plotting extends AppCompatActivity {
             }
         }
     };
+    private GetDataThread getDataThread;
+    private Thread thread;
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         finish();
     }
 
@@ -73,7 +80,9 @@ public class Plotting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plotting);
-        Main.getDataThread.setViewHandler(graphHandler);
+        GetDataThread getDataThread= new GetDataThread(graphHandler);
+        thread = new Thread(getDataThread);
+        thread.start();
         graphView = (GraphView) findViewById(R.id.graph1);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
@@ -110,6 +119,7 @@ public class Plotting extends AppCompatActivity {
         graphView.addSeries(seriesCH4);
         graphView.addSeries(seriesCH5);
         graphView.addSeries(seriesCH6);
+
     }
 
 }
