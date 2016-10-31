@@ -34,16 +34,23 @@ public class Main extends AppCompatActivity {
 
     private Runnable timerRunnable = new Runnable() {
         byte[] buffer = new byte[2];
+        ByteBuffer wrapper;
+        InputStream inputStream;
         @Override
         public void run() {
-            final int channels = 1;
+            final int channels = 6;
             if (btSetup.isConnected()) {
                 try {
-                    InputStream inputStream = btSetup.getBtData();
+                    inputStream = btSetup.getBtData();
                     if (inputStream.available() > 0) {
+                        do {
+                            inputStream.read(buffer);
+                            wrapper = ByteBuffer.wrap(buffer);
+                        } while (wrapper.getShort() != 1337);
+
                         for (int actualCH = 1; actualCH <= channels; actualCH++) {
                             inputStream.read(buffer);
-                            ByteBuffer wrapper = ByteBuffer.wrap(buffer);
+                            wrapper = ByteBuffer.wrap(buffer);
                             short number = wrapper.getShort();
                             switch (actualCH) {
                                 case 1:

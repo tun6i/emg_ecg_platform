@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListViewDevices" />
-        <activity android:name=".Plotting"></activity>
+        <activity android:name=".Plotting"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

@@ -17,20 +17,27 @@ public class Plotting extends AppCompatActivity {
     private Handler timerHandler = new Handler();
     LineGraphSeries<DataPoint> series;
     GraphView graphView;
-    private float i = 0.5f;
+    private float i = 0;
     int counter = 1;
 
     private Runnable timerRunnable = new Runnable() {
         byte[] buffer = new byte[2];
+        ByteBuffer wrapper;
+        InputStream inputStream;
 
         @Override
         public void run() {
            BluetoothSetup btSetup = Main.btSetup;
-            int channels = 1;
+            int channels = 6;
+
             if (btSetup.isConnected()) {
                 try {
-                    InputStream inputStream = btSetup.getBtData();
+                    inputStream = btSetup.getBtData();
                     if (inputStream.available() > 0) {
+                        do {
+                            inputStream.read(buffer);
+                            wrapper = ByteBuffer.wrap(buffer);
+                        } while (wrapper.getShort() != 1337);
                         for (int actualCH = 1; actualCH <= channels; actualCH++) {
                             inputStream.read(buffer);
                             counter++;
@@ -38,11 +45,12 @@ public class Plotting extends AppCompatActivity {
                             short number = wrapper.getShort();
                             switch (actualCH) {
                                 case 1:
-                                    series.appendData(new DataPoint(i, number), true, 100);
+                                    series.appendData(new DataPoint(i, number), true, 500);
                                     //graphView.addSeries(series);
                                     i = i + 0.01f;
                                     //Polling rate
                                     graphView.getViewport().scrollToEnd();
+                                    graphView.invalidate();
                                     Log.d("Tag", counter + " ");
                                     break;
                                 case 2:
@@ -108,7 +116,7 @@ public class Plotting extends AppCompatActivity {
         graphView.getViewport().setScalable(true);
 
         series = new LineGraphSeries<>();
-        series.setThickness(3);
+        series.setThickness(1);
         graphView.addSeries(series);
         timerRunnable.run();
     }
