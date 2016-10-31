@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 public class GetDataThread implements Runnable {
-    private Handler timerHandler;
+    private Handler timerHandler = new Handler();
     private byte[] buffer = new byte[2];
     private int[] cache = new int[6];
     private Handler uiHandler;
@@ -46,7 +46,7 @@ public class GetDataThread implements Runnable {
             }
         }
         //Polling rate
-        uiHandler.postDelayed(this, 4);
+        timerHandler.postDelayed(this, 10);
     }
 
     public void setViewHandler(Handler handler) {

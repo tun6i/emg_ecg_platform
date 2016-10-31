@@ -25,7 +25,7 @@ public class Plotting extends AppCompatActivity {
     private LineGraphSeries<DataPoint> seriesCH5;
     private LineGraphSeries<DataPoint> seriesCH6;
     private GraphView graphView;
-    private float i = 0.0f;
+    private float i = 0;
     private Handler graphHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -34,26 +34,27 @@ public class Plotting extends AppCompatActivity {
                 int value = msg.arg2;
                 switch (channel) {
                     case 1:
-                        seriesCH1.appendData(new DataPoint(i, value), true, 100);
+                        seriesCH1.appendData(new DataPoint(i, value), true, 500);
                         break;
                     case 2:
-                        seriesCH2.appendData(new DataPoint(i, value), true, 100);
+                        seriesCH2.appendData(new DataPoint(i, value), true, 500);
                         break;
                     case 3:
-                        seriesCH3.appendData(new DataPoint(i, value), true, 100);
+                        seriesCH3.appendData(new DataPoint(i, value), true, 500);
                         break;
                     case 4:
-                        seriesCH4.appendData(new DataPoint(i, value), true, 100);
+                        seriesCH4.appendData(new DataPoint(i, value), true, 500);
                         break;
                     case 5:
-                        seriesCH5.appendData(new DataPoint(i, value), true, 100);
+                        seriesCH5.appendData(new DataPoint(i, value), true, 500);
                         break;
                     case 6:
-                        seriesCH6.appendData(new DataPoint(i, value), true, 100);
+                        seriesCH6.appendData(new DataPoint(i, value), true, 500);
                         break;
                 }
                 i = i + 0.01f;
                 graphView.getViewport().scrollToEnd();
+                graphView.invalidate();
             }
         }
     };
@@ -99,12 +100,12 @@ public class Plotting extends AppCompatActivity {
         seriesCH5 = new LineGraphSeries<>();
         seriesCH6 = new LineGraphSeries<>();
 
-        seriesCH1.setThickness(2);
-        seriesCH2.setThickness(2);
-        seriesCH3.setThickness(2);
-        seriesCH4.setThickness(2);
-        seriesCH5.setThickness(2);
-        seriesCH6.setThickness(2);
+        seriesCH1.setThickness(1);
+        seriesCH2.setThickness(1);
+        seriesCH3.setThickness(1);
+        seriesCH4.setThickness(1);
+        seriesCH5.setThickness(1);
+        seriesCH6.setThickness(1);
 
         seriesCH1.setColor(Color.CYAN);
         seriesCH2.setColor(Color.GREEN);
