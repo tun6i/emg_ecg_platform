@@ -36,7 +36,7 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH6;
     private Button btn_connect;
     static GetDataThread getDataThread;
-    HandlerThread readingThread;
+    Thread readingThread;
 
     private Handler textHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -91,7 +91,7 @@ public class Main extends AppCompatActivity {
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
         getDataThread = new GetDataThread();
         getDataThread.setViewHandler(textHandler);
-        readingThread = new HandlerThread("My Reading Thread");
+        readingThread = new Thread(getDataThread);
         readingThread.start();
 
 
