@@ -15,10 +15,10 @@ import java.nio.ByteBuffer;
 
 public class Plotting extends AppCompatActivity {
     private Handler timerHandler = new Handler();
+    Handler timerHandler1 = new Handler();
     LineGraphSeries<DataPoint> series;
     GraphView graphView;
     private float i = 0;
-    int counter = 1;
 
     private Runnable timerRunnable = new Runnable() {
         byte[] buffer = new byte[2];
@@ -40,18 +40,15 @@ public class Plotting extends AppCompatActivity {
                         } while (wrapper.getShort() != 1337);
                         for (int actualCH = 1; actualCH <= channels; actualCH++) {
                             inputStream.read(buffer);
-                            counter++;
                             ByteBuffer wrapper = ByteBuffer.wrap(buffer);
                             short number = wrapper.getShort();
                             switch (actualCH) {
                                 case 1:
                                     series.appendData(new DataPoint(i, number), true, 500);
-                                    //graphView.addSeries(series);
                                     i = i + 0.01f;
                                     //Polling rate
                                     graphView.getViewport().scrollToEnd();
                                     graphView.invalidate();
-                                    Log.d("Tag", counter + " ");
                                     break;
                                 case 2:
 
@@ -83,11 +80,18 @@ public class Plotting extends AppCompatActivity {
                 graphView.getViewport().scrollToEnd();*/
 
             }
-            timerHandler.postDelayed(this, 10);
+            timerHandler.postDelayed(this, 9);
         }
 
     };
 
+    private Runnable reset = new Runnable() {
+        @Override
+        public void run() {
+            timerHandler1.postDelayed(this, 10000);
+            series.resetData(new DataPoint[]{});
+        }
+    };
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -112,12 +116,13 @@ public class Plotting extends AppCompatActivity {
         graphView.getViewport().setScrollable(true);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
-        //graphView.getGridLabelRenderer().set
         graphView.getViewport().setScalable(true);
+        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
 
         series = new LineGraphSeries<>();
         series.setThickness(1);
         graphView.addSeries(series);
         timerRunnable.run();
+        reset.run();
     }
 }

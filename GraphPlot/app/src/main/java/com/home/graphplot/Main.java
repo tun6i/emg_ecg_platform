@@ -80,7 +80,7 @@ public class Main extends AppCompatActivity {
             }
 
             //Polling rate
-            timerHandler.postDelayed(this, 10);
+            timerHandler.postDelayed(this, 20);
         }
     };
 

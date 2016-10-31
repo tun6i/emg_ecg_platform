@@ -72,7 +72,7 @@ void setup() {
   buffer[12] = 0x02;
   buffer[13] = 0x00;
 
-  FlexiTimer2::set(10, readEMG);
+  FlexiTimer2::set(15, readEMG);
   FlexiTimer2::start();
 
   Serial.begin(57600);
