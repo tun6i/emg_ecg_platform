@@ -3,6 +3,8 @@ package com.home.graphplot;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -14,6 +16,8 @@ import com.home.graphplot.bluetooth.BluetoothSetup;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 
 public class Main extends AppCompatActivity {
@@ -28,28 +32,22 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH5;
     private TextView viewDataCH6;
     private Button btn_connect;
-    private Handler timerHandler = new Handler();
     static GetDataThread getDataThread;
     Thread readingThread;
 
-    // Buffer for building EMG value
-    // contains highByte & lowByte of an Integer
-
-    private Runnable timerRunnable = new Runnable() {
-        int i = 0;
+    private Handler textHandler = new Handler(Looper.getMainLooper()) {
         @Override
-        public void run() {
-            timerHandler.postDelayed(this, 10);
-            if (btSetup.isConnected()) {
-                viewDataCH1.append("\n" + getDataThread.getValue().get(0) + " ");
-                viewDataCH2.append("\n" + getDataThread.getValue().get(1) + " ");
-                viewDataCH3.append("\n" + getDataThread.getValue().get(2) + " ");
-                viewDataCH4.append("\n" + getDataThread.getValue().get(3) + " ");
-                viewDataCH5.append("\n" + getDataThread.getValue().get(4) + " ");
-                viewDataCH6.append("\n" + getDataThread.getValue().get(5) + " ");
+        public void handleMessage(Message msg) {
+            if (msg.what == 1337) {
+                //AtomicIntegerArray obj = (AtomicIntegerArray) msg.obj;
+                //viewDataCH1.append("\n" + obj.get(0) + " ");
+                /*viewDataCH2.append("\n" + obj.get(1) + " ");
+                viewDataCH3.append("\n" + obj.get(2) + " ");
+                viewDataCH4.append("\n" + obj.get(3) + " ");
+                viewDataCH5.append("\n" + obj.get(4) + " ");
+                viewDataCH6.append("\n" + obj.get(5) + " ");*/
             }
-            Log.d("Tag", "Tview" + i);
-            i++;
+            super.handleMessage(msg);
         }
     };
 
@@ -74,8 +72,10 @@ public class Main extends AppCompatActivity {
         viewDataCH5.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
         getDataThread = new GetDataThread();
+        getDataThread.setViewHandler(textHandler);
         readingThread = new Thread(getDataThread);
         readingThread.start();
+
         setupTextViews4Click();
         }
 
@@ -106,6 +106,7 @@ public class Main extends AppCompatActivity {
         viewDataCH4.setText("");
         viewDataCH5.setText("");
         viewDataCH6.setText("");
+        //getDataThread.setViewHandler(textHandler);
     }
 
     @Override
@@ -123,7 +124,6 @@ public class Main extends AppCompatActivity {
                     viewDataCH4.setText("");
                     viewDataCH5.setText("");
                     viewDataCH6.setText("");
-
                 }
             }
         }
@@ -132,7 +132,6 @@ public class Main extends AppCompatActivity {
     public void showDeviceList(View view) throws IOException, InterruptedException {
         if (!btSetup.isConnected()) {
             Intent showDevices = new Intent(this, ListViewDevices.class);
-            timerRunnable.run();
             startActivityForResult(showDevices, CONNECTION_ESTABLISHED);
         } else {
             btSetup.getBtData().close();

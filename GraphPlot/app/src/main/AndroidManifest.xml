@@ -24,8 +24,7 @@
         <activity android:name=".ListViewDevices" />
 
         <activity
-            android:name=".Plotting"
-            android:screenOrientation="landscape"> </activity>
+            android:name=".Plotting"> </activity>
     </application>
 
 </manifest>

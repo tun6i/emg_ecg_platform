@@ -45,18 +45,15 @@ void readEMG () {
   buffer[13] = lowByte(valueCH6);
   
   btSerial.write(buffer, 14);
-  Serial.write(buffer, 14);
+  //Serial.write(buffer, 14);
+  Serial.println(valueCH1);
   
   //btSerial.flush();
 }
 
 void setup() {
-  Serial.begin(57600);
-  while (!Serial) {
-    ;
-  }
-  btSerial.begin(57600);
 
+  noInterrupts();
   /*
    * Default EMG value = 1024/2 = 512
    */
@@ -77,6 +74,14 @@ void setup() {
 
   FlexiTimer2::set(10, readEMG);
   FlexiTimer2::start();
+
+  Serial.begin(57600);
+  while (!Serial) {
+    ;
+  }
+  btSerial.begin(57600);
+
+  interrupts();
 }
 
 void loop() {
