@@ -1,6 +1,8 @@
 package com.home.graphplot;
 
+import android.graphics.Color;
 import android.os.Handler;
+import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +18,13 @@ import java.nio.ByteBuffer;
 public class Plotting extends AppCompatActivity {
     private Handler timerHandler = new Handler();
     Handler timerHandler1 = new Handler();
-    LineGraphSeries<DataPoint> series;
+    LineGraphSeries<DataPoint> seriesCH1;
+    LineGraphSeries<DataPoint> seriesCH2;
+    LineGraphSeries<DataPoint> seriesCH3;
+    LineGraphSeries<DataPoint> seriesCH4;
+    LineGraphSeries<DataPoint> seriesCH5;
+    LineGraphSeries<DataPoint> seriesCH6;
+
     GraphView graphView;
     private float i = 0;
 
@@ -44,26 +52,22 @@ public class Plotting extends AppCompatActivity {
                             short number = wrapper.getShort();
                             switch (actualCH) {
                                 case 1:
-                                    series.appendData(new DataPoint(i, number), true, 500);
-                                    i = i + 0.01f;
-                                    //Polling rate
-                                    graphView.getViewport().scrollToEnd();
-                                    graphView.invalidate();
+                                    seriesCH1.appendData(new DataPoint(i, number), true, 500);
                                     break;
                                 case 2:
-
+                                    seriesCH2.appendData(new DataPoint(i, number), true, 500);
                                     break;
                                 case 3:
-
+                                    seriesCH3.appendData(new DataPoint(i, number), true, 500);
                                     break;
                                 case 4:
-
+                                    seriesCH4.appendData(new DataPoint(i, number), true, 500);
                                     break;
                                 case 5:
-
+                                    seriesCH5.appendData(new DataPoint(i, number), true, 500);
                                     break;
                                 case 6:
-
+                                    seriesCH6.appendData(new DataPoint(i, number), true, 500);
                                     break;
                             }
                         }
@@ -72,15 +76,11 @@ public class Plotting extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                /*series.appendData(new DataPoint(i, 512), true, 100);
-                //graphView.addSeries(series);
                 i = i + 0.01f;
-                //Polling rate
-                graphView.getViewport().scrollToEnd();*/
-
+                graphView.getViewport().scrollToEnd();
             }
-            timerHandler.postDelayed(this, 9);
+
+            timerHandler.postDelayed(this, 1);
         }
 
     };
@@ -88,10 +88,18 @@ public class Plotting extends AppCompatActivity {
     private Runnable reset = new Runnable() {
         @Override
         public void run() {
-            timerHandler1.postDelayed(this, 10000);
-            series.resetData(new DataPoint[]{});
+            timerHandler1.postDelayed(this, 20000);
+            seriesCH1.resetData(new DataPoint[]{});
+            seriesCH2.resetData(new DataPoint[]{});
+            seriesCH3.resetData(new DataPoint[]{});
+            seriesCH4.resetData(new DataPoint[]{});
+            seriesCH5.resetData(new DataPoint[]{});
+            seriesCH6.resetData(new DataPoint[]{});
+            graphView.invalidate();
+
         }
     };
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -119,10 +127,36 @@ public class Plotting extends AppCompatActivity {
         graphView.getViewport().setScalable(true);
         graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
 
-        series = new LineGraphSeries<>();
-        series.setThickness(1);
-        graphView.addSeries(series);
+        seriesCH1 = new LineGraphSeries<>();
+        seriesCH2 = new LineGraphSeries<>();
+        seriesCH3 = new LineGraphSeries<>();
+        seriesCH4 = new LineGraphSeries<>();
+        seriesCH5 = new LineGraphSeries<>();
+        seriesCH6 = new LineGraphSeries<>();
+
+        seriesCH1.setThickness(3);
+        seriesCH2.setThickness(3);
+        seriesCH3.setThickness(3);
+        seriesCH4.setThickness(3);
+        seriesCH5.setThickness(3);
+        seriesCH6.setThickness(3);
+
+        seriesCH1.setColor(Color.BLUE);
+        seriesCH2.setColor(Color.RED);
+        seriesCH3.setColor(Color.GREEN);
+        seriesCH4.setColor(Color.GRAY);
+        seriesCH5.setColor(Color.BLACK);
+        seriesCH6.setColor(Color.MAGENTA);
+
+        graphView.addSeries(seriesCH1);
+        /*graphView.addSeries(seriesCH2);
+        graphView.addSeries(seriesCH3);
+        graphView.addSeries(seriesCH4);
+        graphView.addSeries(seriesCH5);
+        graphView.addSeries(seriesCH6);*/
+
         timerRunnable.run();
-        reset.run();
+        //android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
+        //reset.run();
     }
 }
