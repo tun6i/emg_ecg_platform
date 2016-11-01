@@ -36,8 +36,7 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH5;
     private TextView viewDataCH6;
     private Button btn_connect;
-    private GetDataThread getDataThread;
-    Thread readingThread;
+    static GetDataThread getDataThread;
 
     private Handler textHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -45,7 +44,7 @@ public class Main extends AppCompatActivity {
             if (msg.what == 1337) {
                 int channel = msg.arg1;
                 int value = msg.arg2;
-                switch (channel) {
+                /*switch (channel) {
                     case 1:
                         viewDataCH1.append("\n" + value + " ");
                         break;
@@ -64,7 +63,7 @@ public class Main extends AppCompatActivity {
                     case 6:
                         viewDataCH6.append("\n" + value + " ");
                         break;
-                }
+                }*/
             }
             super.handleMessage(msg);
         }
@@ -91,9 +90,7 @@ public class Main extends AppCompatActivity {
         viewDataCH5.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
         getDataThread = new GetDataThread(textHandler);
-        getDataThread.setViewHandler(textHandler);
-        readingThread = new Thread(getDataThread);
-        //readingThread.start();
+        getDataThread.start();
 
 
         setupTextViews4Click();
@@ -102,11 +99,6 @@ public class Main extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        try {
-            readingThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         finish();
     }
 

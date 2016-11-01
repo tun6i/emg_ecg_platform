@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
-public class GetDataThread implements Runnable {
+public class GetDataThread extends Thread {
     private Handler timerHandler = new Handler();
     private byte[] buffer = new byte[2];
     private int[] cache = new int[6];
-    private Handler uiHandler;
+    Handler uiHandler;
 
     public GetDataThread(Handler handler) {
         uiHandler = handler;
@@ -31,7 +31,7 @@ public class GetDataThread implements Runnable {
                     } while(wrapper.getShort() != 1337);
 
                     for (int actualCH = 1; actualCH <= channels; actualCH++) {
-                        Main.btSetup.getBtData().read(buffer);
+                       Main.btSetup.getBtData().read(buffer);
                         wrapper = ByteBuffer.wrap(buffer);
                         short number = wrapper.getShort();
                         Message msg = uiHandler.obtainMessage();
@@ -46,7 +46,7 @@ public class GetDataThread implements Runnable {
             }
         }
         //Polling rate
-        timerHandler.postDelayed(this, 10);
+        uiHandler.post(this);
     }
 
     public void setViewHandler(Handler handler) {
