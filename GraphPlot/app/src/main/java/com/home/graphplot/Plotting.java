@@ -52,22 +52,22 @@ public class Plotting extends AppCompatActivity {
                             short number = wrapper.getShort();
                             switch (actualCH) {
                                 case 1:
-                                    seriesCH1.appendData(new DataPoint(i, number), true, 500);
+                                    seriesCH1.appendData(new DataPoint(i, number), true, 100);
                                     break;
                                 case 2:
-                                    seriesCH2.appendData(new DataPoint(i, number), true, 500);
+                                    seriesCH2.appendData(new DataPoint(i, number), true, 100);
                                     break;
                                 case 3:
-                                    seriesCH3.appendData(new DataPoint(i, number), true, 500);
+                                    seriesCH3.appendData(new DataPoint(i, number), true, 100);
                                     break;
                                 case 4:
-                                    seriesCH4.appendData(new DataPoint(i, number), true, 500);
+                                    seriesCH4.appendData(new DataPoint(i, number), true, 100);
                                     break;
                                 case 5:
-                                    seriesCH5.appendData(new DataPoint(i, number), true, 500);
+                                    seriesCH5.appendData(new DataPoint(i, number), true, 100);
                                     break;
                                 case 6:
-                                    seriesCH6.appendData(new DataPoint(i, number), true, 500);
+                                    seriesCH6.appendData(new DataPoint(i, number), true, 100);
                                     break;
                             }
                         }
@@ -77,10 +77,9 @@ public class Plotting extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 i = i + 0.01f;
-                graphView.getViewport().scrollToEnd();
-            }
+                timerHandler.post(this);
 
-            timerHandler.postDelayed(this, 1);
+            }
         }
 
     };
