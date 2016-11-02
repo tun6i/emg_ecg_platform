@@ -8,7 +8,7 @@
 #define INPUT_CH6 A5
 
 /*
- * Bluetooth connection
+ * Bluetooth connection text
  * RX = receive
  * tx = transmit
  */
