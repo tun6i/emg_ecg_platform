@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListViewDevices extends AppCompatActivity {
-    private List<BluetoothDevice> list;
+    private List<BluetoothDevice> deviceList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,21 +22,21 @@ public class ListViewDevices extends AppCompatActivity {
 
     private void setupListView() {
         ListView listView = (ListView) findViewById(R.id.listView);
-        list = new ArrayList<>();
-        List<String> stringList = new ArrayList<>();
+        deviceList = new ArrayList<>();
+        List<String> adress_nameList = new ArrayList<>();
 
         for (BluetoothDevice bt: Main.btSetup.getPairedDevices()) {
-            list.add(bt);
-            stringList.add(bt.getAddress() + "   " + bt.getName());
+            deviceList.add(bt);
+            adress_nameList.add(bt.getAddress() + "   " + bt.getName());
         }
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1, stringList);
+        ArrayAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, adress_nameList);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Main.btSetup.setBtDevice(list.get(position));
+                Main.btSetup.setBtDevice(deviceList.get(position));
                 try {
                     Main.btSetup.establishConnection();
                     setResult(RESULT_OK);

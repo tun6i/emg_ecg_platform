@@ -2,7 +2,6 @@ package com.home.graphplot;
 
 import android.graphics.Color;
 import android.os.Handler;
-import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,112 +10,139 @@ import com.home.graphplot.bluetooth.BluetoothSetup;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 public class Plotting extends AppCompatActivity {
-    private Handler timerHandler = new Handler();
-    Handler timerHandler1 = new Handler();
-    LineGraphSeries<DataPoint> seriesCH1;
-    LineGraphSeries<DataPoint> seriesCH2;
-    LineGraphSeries<DataPoint> seriesCH3;
-    LineGraphSeries<DataPoint> seriesCH4;
-    LineGraphSeries<DataPoint> seriesCH5;
-    LineGraphSeries<DataPoint> seriesCH6;
+    static Handler graphHandler = new Handler();
+    private LineGraphSeries<DataPoint> seriesCH1;
+    private LineGraphSeries<DataPoint> seriesCH2;
+    private LineGraphSeries<DataPoint> seriesCH3;
+    private LineGraphSeries<DataPoint> seriesCH4;
+    private LineGraphSeries<DataPoint> seriesCH5;
+    private LineGraphSeries<DataPoint> seriesCH6;
+    final int channels = 6;
 
-    GraphView graphView;
-    private float i = 0;
+    private boolean isActivityRunning = false;
+
+    // Buffer for building EMG value
+    // contains highByte & lowByte of an Integer
+    private byte[] buffer = new byte[2];
 
     private Runnable timerRunnable = new Runnable() {
-        byte[] buffer = new byte[2];
         ByteBuffer wrapper;
         InputStream inputStream;
-
+        float x_Axis = 0;
+        int amountBytes = 0;
+        BluetoothSetup btSetup = Main.btSetup;
         @Override
         public void run() {
-           BluetoothSetup btSetup = Main.btSetup;
-            int channels = 6;
-
-            if (btSetup.isConnected()) {
+            if (btSetup.isConnected() && isActivityRunning) {
                 try {
                     inputStream = btSetup.getBtData();
                     if (inputStream.available() > 0) {
                         do {
-                            inputStream.read(buffer);
+                            amountBytes = inputStream.read(buffer);
                             wrapper = ByteBuffer.wrap(buffer);
                         } while (wrapper.getShort() != 1337);
+
                         for (int actualCH = 1; actualCH <= channels; actualCH++) {
-                            inputStream.read(buffer);
-                            ByteBuffer wrapper = ByteBuffer.wrap(buffer);
+                            amountBytes = inputStream.read(buffer);
+                            final ByteBuffer wrapper = ByteBuffer.wrap(buffer);
                             short number = wrapper.getShort();
                             switch (actualCH) {
                                 case 1:
-                                    seriesCH1.appendData(new DataPoint(i, number), true, 100);
+                                    seriesCH1.appendData(new DataPoint(x_Axis, number), true, 100);
                                     break;
                                 case 2:
-                                    seriesCH2.appendData(new DataPoint(i, number), true, 100);
+                                    seriesCH2.appendData(new DataPoint(x_Axis, number), true, 100);
                                     break;
                                 case 3:
-                                    seriesCH3.appendData(new DataPoint(i, number), true, 100);
+                                    seriesCH3.appendData(new DataPoint(x_Axis, number), true, 100);
                                     break;
                                 case 4:
-                                    seriesCH4.appendData(new DataPoint(i, number), true, 100);
+                                    seriesCH4.appendData(new DataPoint(x_Axis, number), true, 100);
                                     break;
                                 case 5:
-                                    seriesCH5.appendData(new DataPoint(i, number), true, 100);
+                                    seriesCH5.appendData(new DataPoint(x_Axis, number), true, 100);
                                     break;
                                 case 6:
-                                    seriesCH6.appendData(new DataPoint(i, number), true, 100);
+                                    seriesCH6.appendData(new DataPoint(x_Axis, number), true, 100);
                                     break;
                             }
+
+                            /* Own thread
+                            switch (actualCH) {
+                                case 1:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            seriesCH1.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+                                        }
+                                    });
+                                    break;
+                                case 2:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            seriesCH2.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            seriesCH3.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+                                        }
+                                    });
+                                    break;
+                                case 4:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            seriesCH4.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+                                        }
+                                    });
+                                    break;
+                                case 5:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            seriesCH5.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+                                        }
+                                    });
+                                    break;
+                                case 6:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            seriesCH6.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+                                        }
+                                    });
+                                    break;
+                            }*/
                         }
 
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                i = i + 0.01f;
-                timerHandler.post(this);
+                Log.w("Tag", "Graph view running");
+                x_Axis = x_Axis + 0.01f;
 
+                graphHandler.postDelayed(this,18);
             }
         }
-
     };
-
-    private Runnable reset = new Runnable() {
-        @Override
-        public void run() {
-            timerHandler1.postDelayed(this, 20000);
-            seriesCH1.resetData(new DataPoint[]{});
-            seriesCH2.resetData(new DataPoint[]{});
-            seriesCH3.resetData(new DataPoint[]{});
-            seriesCH4.resetData(new DataPoint[]{});
-            seriesCH5.resetData(new DataPoint[]{});
-            seriesCH6.resetData(new DataPoint[]{});
-            graphView.invalidate();
-
-        }
-    };
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        timerHandler.removeCallbacks(timerRunnable);
-        finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        timerHandler.removeCallbacks(timerRunnable);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plotting);
-        graphView = (GraphView) findViewById(R.id.graph1);
+        GraphView graphView = (GraphView) findViewById(R.id.graph1);
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
         graphView.getViewport().setMaxY(1023);
@@ -125,6 +151,8 @@ public class Plotting extends AppCompatActivity {
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setScalable(true);
         graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+
+        isActivityRunning = true;
 
         seriesCH1 = new LineGraphSeries<>();
         seriesCH2 = new LineGraphSeries<>();
@@ -148,14 +176,41 @@ public class Plotting extends AppCompatActivity {
         seriesCH6.setColor(Color.MAGENTA);
 
         graphView.addSeries(seriesCH1);
-        /*graphView.addSeries(seriesCH2);
+        graphView.addSeries(seriesCH2);
         graphView.addSeries(seriesCH3);
         graphView.addSeries(seriesCH4);
         graphView.addSeries(seriesCH5);
-        graphView.addSeries(seriesCH6);*/
+        graphView.addSeries(seriesCH6);
+
+
+        //Fetch Data in own thread
+        //Thread thread = new Thread(timerRunnable);
+        //thread.start();
 
         timerRunnable.run();
-        //android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_MORE_FAVORABLE);
-        //reset.run();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isActivityRunning = false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActivityRunning = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isActivityRunning = true;
     }
 }

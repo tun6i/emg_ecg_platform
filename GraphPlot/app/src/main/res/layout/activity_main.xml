@@ -38,10 +38,10 @@
 
         </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
 
         <TextView
             android:background="@drawable/shape"
@@ -55,6 +55,7 @@
             android:gravity="bottom"
             android:textColor="@android:color/black"
             android:longClickable="true"
+            android:lines="6"
             android:clickable="false" />
 
         <TextView
@@ -67,8 +68,8 @@
             android:text="@string/ch2"
             android:gravity="bottom"
             android:longClickable="true"
-            android:clickable="false"
-            />
+            android:lines="6"
+            android:clickable="false" />
 
         <TextView
             android:background="@drawable/shape"
@@ -81,9 +82,8 @@
             android:text="@string/ch3"
             android:gravity="bottom"
             android:longClickable="true"
-            android:clickable="false"
-
-            />
+            android:lines="6"
+            android:clickable="false" />
 
         <TextView
             android:background="@drawable/shape"
@@ -96,9 +96,8 @@
             android:text="@string/ch4"
             android:gravity="bottom"
             android:longClickable="true"
-            android:clickable="false"
-
-            />
+            android:lines="6"
+            android:clickable="false" />
 
         <TextView
             android:background="@drawable/shape"
@@ -111,8 +110,8 @@
             android:text="@string/ch5"
             android:gravity="bottom"
             android:longClickable="true"
-            android:clickable="false"
-            />
+            android:lines="6"
+            android:clickable="false" />
 
         <TextView
             android:background="@drawable/shape"
@@ -125,9 +124,7 @@
             android:text="@string/ch6"
             android:gravity="bottom"
             android:longClickable="true"
-            android:clickable="false"
-            />
-
+            android:lines="6"
+            android:clickable="false" />
     </LinearLayout>
-
 </LinearLayout>

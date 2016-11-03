@@ -2,10 +2,11 @@ package com.home.graphplot;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,9 +18,11 @@ import java.nio.ByteBuffer;
 
 public class Main extends AppCompatActivity {
 
-    private static final int CONNECTION_ESTABLISHED = 1;
     static BluetoothSetup btSetup;
-    private TextView tv_status;
+    static Handler textHandler = new Handler();
+    private static final int CONNECTION_ESTABLISHED = 1;
+
+    private TextView tv_status_connection;
     private TextView viewDataCH1;
     private TextView viewDataCH2;
     private TextView viewDataCH3;
@@ -27,31 +30,36 @@ public class Main extends AppCompatActivity {
     private TextView viewDataCH5;
     private TextView viewDataCH6;
     private Button btn_connect;
-    private Handler timerHandler = new Handler();
+
+    private boolean isActivityRunning = false;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
+    private byte[] buffer = new byte[2];
 
+    final int channels = 6;
     private Runnable timerRunnable = new Runnable() {
-        byte[] buffer = new byte[2];
         ByteBuffer wrapper;
         InputStream inputStream;
+        int amountBytes = 0;
         @Override
         public void run() {
-            final int channels = 6;
-            if (btSetup.isConnected()) {
+            if (btSetup.isConnected() && isActivityRunning) {
                 try {
                     inputStream = btSetup.getBtData();
+
                     if (inputStream.available() > 0) {
+
                         do {
-                            inputStream.read(buffer);
+                            amountBytes = inputStream.read(buffer);
                             wrapper = ByteBuffer.wrap(buffer);
                         } while (wrapper.getShort() != 1337);
 
                         for (int actualCH = 1; actualCH <= channels; actualCH++) {
-                            inputStream.read(buffer);
+                            amountBytes =inputStream.read(buffer);
                             wrapper = ByteBuffer.wrap(buffer);
                             short number = wrapper.getShort();
+
                             switch (actualCH) {
                                 case 1:
                                     viewDataCH1.append("\n" + number + " ");
@@ -72,15 +80,67 @@ public class Main extends AppCompatActivity {
                                     viewDataCH6.append("\n" + number + " ");
                                     break;
                             }
+
+                            /* Launching own thread
+                            switch (actualCH) {
+                                case 1:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            viewDataCH1.append("\n" + wrapper.getShort() + " ");
+                                        }
+                                    });
+                                    break;
+                                case 2:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            viewDataCH2.append("\n" + wrapper.getShort() + " ");
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            viewDataCH3.append("\n" + wrapper.getShort() + " ");
+                                        }
+                                    });
+                                    break;
+                                case 4:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            viewDataCH4.append("\n" + wrapper.getShort() + " ");
+                                        }
+                                    });
+                                    break;
+                                case 5:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            viewDataCH5.append("\n" + wrapper.getShort() + " ");
+                                        }
+                                    });
+                                    break;
+                                case 6:
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            viewDataCH6.append("\n" + wrapper.getShort() + " ");
+                                        }
+                                    });
+                                    break;
+                            }*/
                         }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Log.w("Tag", "Text view running");
             }
-
             //Polling rate
-            timerHandler.postDelayed(this, 20);
+            textHandler.postDelayed(this, 20);
         }
     };
 
@@ -88,6 +148,10 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        btn_connect = (Button) findViewById(R.id.connect);
+        btSetup = new BluetoothSetup();
+
+        tv_status_connection = (TextView) findViewById(R.id.status);
         viewDataCH1 = (TextView) findViewById(R.id.viewDataCH1);
         viewDataCH2 = (TextView) findViewById(R.id.viewDataCH2);
         viewDataCH3 = (TextView) findViewById(R.id.viewDataCH3);
@@ -95,9 +159,6 @@ public class Main extends AppCompatActivity {
         viewDataCH5 = (TextView) findViewById(R.id.viewDataCH5);
         viewDataCH6 = (TextView) findViewById(R.id.viewDataCH6);
 
-        tv_status = (TextView) findViewById(R.id.status);
-        btn_connect = (Button) findViewById(R.id.connect);
-        btSetup = new BluetoothSetup();
         viewDataCH1.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH2.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH3.setMovementMethod(new ScrollingMovementMethod());
@@ -105,50 +166,50 @@ public class Main extends AppCompatActivity {
         viewDataCH5.setMovementMethod(new ScrollingMovementMethod());
         viewDataCH6.setMovementMethod(new ScrollingMovementMethod());
 
+        isActivityRunning = true;
+
         setupTextViews4Click();
+
+        //Fetch Data in own thread
+        //Thread thread = new Thread(timerRunnable);
+        //thread.start();
 
         timerRunnable.run();
         }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (btSetup.isConnected()) {
             try {
                 btSetup.getBtSocket().close();
-                timerHandler.removeCallbacks(timerRunnable);
+                isActivityRunning = false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
 
-
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CONNECTION_ESTABLISHED) {
             if (resultCode == RESULT_OK) {
                 if(btSetup.isConnected()) {
-                    tv_status.setText(R.string.connected_true);
-                    tv_status.setBackgroundColor(Color.GREEN);
+                    tv_status_connection.setText(R.string.connected_true);
+                    tv_status_connection.setBackgroundColor(Color.GREEN);
                     btn_connect.setText(R.string.btn_disconnect);
                     viewDataCH1.setText("");
                     viewDataCH2.setText("");
@@ -156,12 +217,23 @@ public class Main extends AppCompatActivity {
                     viewDataCH4.setText("");
                     viewDataCH5.setText("");
                     viewDataCH6.setText("");
-
                 }
             }
         }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActivityRunning = false;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isActivityRunning = true;
+    }
 
+
+    //OnClick
     public void showDeviceList(View view) throws IOException {
         if (!btSetup.isConnected()) {
             Intent showDevices = new Intent(this, ListViewDevices.class);
@@ -170,14 +242,14 @@ public class Main extends AppCompatActivity {
             btSetup.getBtData().close();
             btSetup.getBtSocket().close();
             btSetup.setConnected(false);
-            tv_status.setText(R.string.connected_false);
-            tv_status.setBackgroundColor(Color.RED);
+            tv_status_connection.setText(R.string.connected_false);
+            tv_status_connection.setBackgroundColor(Color.RED);
             btn_connect.setText(R.string.btn_connect);
-
         }
     }
 
     public void showPlot(View view) {
+        isActivityRunning = false;
         Intent viewPlot = new Intent(this, Plotting.class);
         startActivity(viewPlot);
     }
