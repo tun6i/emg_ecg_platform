@@ -38,14 +38,19 @@ byte buffer[14];
 void readEMG () {
   int valueCH1 = analogRead(INPUT_CH1);
   int valueCH6 = analogRead(INPUT_CH6);
+  int valueCH3 = analogRead(INPUT_CH3);
   
   buffer[2] = highByte(valueCH1);
   buffer[3] = lowByte(valueCH1);
+  buffer[6] = highByte(valueCH3);
+  buffer[7] = lowByte(valueCH3);
   buffer[12] = highByte(valueCH6);
   buffer[13] = lowByte(valueCH6);
   
+  //btSerial.write(highByte(valueCH1));
+  //btSerial.write(lowByte(valueCH1));
+
   btSerial.write(buffer, 14);
-  //Serial.write(buffer, 14);
   Serial.println(valueCH1);
   btSerial.flush();
 }
@@ -70,7 +75,7 @@ void setup() {
   buffer[11] = 0x00;
   buffer[12] = 0x02;
   buffer[13] = 0x00;
-  FlexiTimer2::set(10, readEMG);
+  FlexiTimer2::set(20, readEMG);
   FlexiTimer2::start();
 
   Serial.begin(57600);
