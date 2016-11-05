@@ -35,9 +35,12 @@ public class Main extends AppCompatActivity {
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
-    private byte[] buffer = new byte[2];
+    private byte[] buffer = new byte[12];
 
-    final int channels = 6;
+    //Debug
+    long starttime = System.currentTimeMillis();
+    long stoptime = System.currentTimeMillis();
+
     private Runnable timerRunnable = new Runnable() {
         ByteBuffer wrapper;
         InputStream inputStream;
@@ -45,94 +48,27 @@ public class Main extends AppCompatActivity {
         @Override
         public void run() {
             if (btSetup.isConnected() && isActivityRunning) {
+                stoptime = System.currentTimeMillis();
+                Log.d("tag", stoptime - starttime + "");
+                starttime = System.currentTimeMillis();
                 try {
                     inputStream = btSetup.getBtData();
 
                     if (inputStream.available() > 0) {
 
                         do {
-                            amountBytes = inputStream.read(buffer);
+                            amountBytes = inputStream.read(buffer, 0, 2);
                             wrapper = ByteBuffer.wrap(buffer);
                         } while (wrapper.getShort() != 1337);
+                        amountBytes =inputStream.read(buffer);
+                        wrapper = ByteBuffer.wrap(buffer);
 
-                        for (int actualCH = 1; actualCH <= channels; actualCH++) {
-                            amountBytes =inputStream.read(buffer);
-                            wrapper = ByteBuffer.wrap(buffer);
-                            short number = wrapper.getShort();
-
-                            switch (actualCH) {
-                                case 1:
-                                    viewDataCH1.append("\n" + number + " ");
-                                    break;
-                                case 2:
-                                    viewDataCH2.append("\n" + number + " ");
-                                    break;
-                                case 3:
-                                    viewDataCH3.append("\n" + number + " ");
-                                    break;
-                                case 4:
-                                    viewDataCH4.append("\n" + number + " ");
-                                    break;
-                                case 5:
-                                    viewDataCH5.append("\n" + number + " ");
-                                    break;
-                                case 6:
-                                    viewDataCH6.append("\n" + number + " ");
-                                    break;
-                            }
-
-                            /* Launching own thread
-                            switch (actualCH) {
-                                case 1:
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            viewDataCH1.append("\n" + wrapper.getShort() + " ");
-                                        }
-                                    });
-                                    break;
-                                case 2:
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            viewDataCH2.append("\n" + wrapper.getShort() + " ");
-                                        }
-                                    });
-                                    break;
-                                case 3:
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            viewDataCH3.append("\n" + wrapper.getShort() + " ");
-                                        }
-                                    });
-                                    break;
-                                case 4:
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            viewDataCH4.append("\n" + wrapper.getShort() + " ");
-                                        }
-                                    });
-                                    break;
-                                case 5:
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            viewDataCH5.append("\n" + wrapper.getShort() + " ");
-                                        }
-                                    });
-                                    break;
-                                case 6:
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            viewDataCH6.append("\n" + wrapper.getShort() + " ");
-                                        }
-                                    });
-                                    break;
-                            }*/
-                        }
+                        viewDataCH1.setText("\n" + wrapper.getShort() + " ");
+                        viewDataCH2.setText("\n" + wrapper.getShort() + " ");
+                        viewDataCH3.setText("\n" + wrapper.getShort() + " ");
+                        viewDataCH4.setText("\n" + wrapper.getShort() + " ");
+                        viewDataCH5.setText("\n" + wrapper.getShort() + " ");
+                        viewDataCH6.setText("\n" + wrapper.getShort() + " ");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -140,7 +76,7 @@ public class Main extends AppCompatActivity {
                 Log.w("Tag", "Text view running");
             }
             //Polling rate
-            textHandler.postDelayed(this, 20);
+            textHandler.post(this);
         }
     };
 
