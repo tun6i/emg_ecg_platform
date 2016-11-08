@@ -1,11 +1,16 @@
 package activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import de.fachstudie.fachstudie_template.R;
 
@@ -24,10 +29,17 @@ public class StartFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_start, container, false);
-
+        final View rootView = inflater.inflate(R.layout.fragment_start, container, false);
 
         // Inflate the layout for this fragment
+        ImageButton button = (ImageButton) rootView.findViewById(R.id.imgbutton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ShowPairedDevices.class);
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
@@ -40,4 +52,4 @@ public class StartFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-}
+ }
