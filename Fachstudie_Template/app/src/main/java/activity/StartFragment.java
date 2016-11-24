@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,6 +66,18 @@ public class StartFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (!MainActivity.btSetup.isConnected()) {
+            textView.setText(R.string.not_connected);
+            imgButton.setImageResource(R.drawable.ic_stat_no_connection);
+        } else {
+            textView.setText(R.string.connected);
+            imgButton.setImageResource(R.drawable.ic_stat_connected);
+        }
     }
 
     @Override

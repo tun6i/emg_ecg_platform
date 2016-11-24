@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -79,10 +78,17 @@ public class PlotFragment extends Fragment {
                 }
             }
             x_Axis = x_Axis + 0.01f;
+            /*if (isFragmentRunning) {
+            } else {
+                graphHandler.postDelayed(this, 20);
+            }*/
             graphHandler.post(this);
+
 
         }
     };
+    Thread thread = new Thread(timerRunnable);
+
 
     public PlotFragment() {
         // Required empty public constructor
@@ -131,7 +137,8 @@ public class PlotFragment extends Fragment {
         graphView.addSeries(seriesCH5);
         graphView.addSeries(seriesCH6);
 
-        timerRunnable.run();
+        thread.start();
+
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -149,6 +156,24 @@ public class PlotFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isFragmentRunning = false;
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        isFragmentRunning = true;
+        seriesCH1.resetData(new DataPoint[]{});
+        seriesCH2.resetData(new DataPoint[]{});
+        seriesCH3.resetData(new DataPoint[]{});
+        seriesCH4.resetData(new DataPoint[]{});
+        seriesCH5.resetData(new DataPoint[]{});
+        seriesCH6.resetData(new DataPoint[]{});
 
     }
 }
