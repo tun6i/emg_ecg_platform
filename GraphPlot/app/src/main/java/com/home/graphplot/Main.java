@@ -124,6 +124,7 @@ public class Main extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -131,8 +132,8 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

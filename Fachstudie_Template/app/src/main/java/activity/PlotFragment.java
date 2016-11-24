@@ -31,10 +31,8 @@ public class PlotFragment extends Fragment {
     private LineGraphSeries<DataPoint> seriesCH4 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH5 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH6 = new LineGraphSeries<>();
-
     private GraphView graphView;
-
-    private boolean isActivityRunning = false;
+    private boolean isFragmentRunning = false;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
@@ -53,7 +51,7 @@ public class PlotFragment extends Fragment {
 
         @Override
         public void run() {
-            if (btSetup.isConnected() && isActivityRunning) {
+            if (btSetup.isConnected()) {
                 Log.w("Tag", "Graph view running");
                 try {
                     inputStream = btSetup.getBtData();
@@ -93,13 +91,13 @@ public class PlotFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isActivityRunning = true;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_plot, container, false);
+        isFragmentRunning = true;
 
         seriesCH1.setThickness(3);
         seriesCH2.setThickness(3);
@@ -146,5 +144,11 @@ public class PlotFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
     }
 }

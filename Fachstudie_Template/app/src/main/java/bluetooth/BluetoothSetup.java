@@ -46,6 +46,10 @@ public class BluetoothSetup {
         return connected;
     }
 
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
+
     public InputStream getBtData() throws IOException {
         return btSocket.getInputStream();
     }

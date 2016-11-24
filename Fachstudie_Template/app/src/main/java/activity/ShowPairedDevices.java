@@ -43,6 +43,7 @@ public class ShowPairedDevices extends AppCompatActivity {
                 MainActivity.btSetup.setBtDevice(deviceList.get(position));
                 try {
                     MainActivity.btSetup.establishConnection();
+                    setResult(RESULT_OK);
                     finish();
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -21,11 +21,12 @@
         android:onClick="showDevice (StartFragment)" />
 
     <TextView
+        android:id="@+id/connectionStatus"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textSize="15dp"
         android:gravity="center_horizontal"
-        android:text="No connection to device"
+        android:text="@string/not_connected"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
