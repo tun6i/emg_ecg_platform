@@ -43,4 +43,5 @@ dependencies {
     compile (name: 'core-release', ext:'aar')
 
     testCompile 'junit:junit:4.12'
+    compile 'com.google.android.gms:play-services-ads:9.8.00'
 }

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         btSetup = new BluetoothSetup();
 
+
         // display the first navigation drawer view on app launch
         displayView(0);
 

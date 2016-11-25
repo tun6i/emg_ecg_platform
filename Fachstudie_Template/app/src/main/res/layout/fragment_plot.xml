@@ -6,9 +6,11 @@
     android:orientation="vertical"
     tools:context="activity.PlotFragment">
 
-    <com.jjoe64.graphview.GraphView
+    <com.scichart.charting.visuals.SciChartSurface
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/graph1"/>
+        android:id="@+id/chartView">
+
+    </com.scichart.charting.visuals.SciChartSurface>
 
 </LinearLayout>

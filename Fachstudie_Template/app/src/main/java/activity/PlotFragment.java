@@ -13,10 +13,30 @@ import android.view.ViewGroup;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.scichart.charting.model.AxisCollection;
+import com.scichart.charting.model.RenderableSeriesCollection;
+import com.scichart.charting.model.dataSeries.IXyDataSeries;
+import com.scichart.charting.model.dataSeries.XyDataSeries;
+import com.scichart.charting.visuals.SciChartSurface;
+import com.scichart.charting.visuals.axes.AutoRange;
+import com.scichart.charting.visuals.axes.AxisAlignment;
+import com.scichart.charting.visuals.axes.DateAxis;
+import com.scichart.charting.visuals.axes.NumericAxis;
+import com.scichart.charting.visuals.renderableSeries.FastLineRenderableSeries;
+import com.scichart.core.annotations.Visibility;
+import com.scichart.core.model.DateValues;
+import com.scichart.core.model.DoubleValues;
+import com.scichart.core.model.IntegerValues;
+import com.scichart.core.utility.DateIntervalUtil;
+import com.scichart.drawing.common.PenStyle;
+import com.scichart.drawing.utility.ColorUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Random;
 
 import bluetooth.BluetoothSetup;
 import de.fachstudie.fachstudie_template.R;
@@ -24,13 +44,9 @@ import de.fachstudie.fachstudie_template.R;
 public class PlotFragment extends Fragment {
 
     private Handler graphHandler = new Handler();
-    private LineGraphSeries<DataPoint> seriesCH1 = new LineGraphSeries<>();
-    private LineGraphSeries<DataPoint> seriesCH2 = new LineGraphSeries<>();
-    private LineGraphSeries<DataPoint> seriesCH3 = new LineGraphSeries<>();
-    private LineGraphSeries<DataPoint> seriesCH4 = new LineGraphSeries<>();
-    private LineGraphSeries<DataPoint> seriesCH5 = new LineGraphSeries<>();
-    private LineGraphSeries<DataPoint> seriesCH6 = new LineGraphSeries<>();
-    private GraphView graphView;
+    private SciChartSurface chartSurface;
+    private FastLineRenderableSeries lineSeries;
+    private IXyDataSeries<Date, Integer> dataSeries;
     private boolean isFragmentRunning = false;
 
     // Buffer for building EMG value
@@ -65,12 +81,6 @@ public class PlotFragment extends Fragment {
 
                         amountBytes = inputStream.read(buffer);
                         wrapper = ByteBuffer.wrap(buffer);
-                        seriesCH1.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH2.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH3.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH4.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH5.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH6.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
 
                     }
                 } catch (IOException e) {
@@ -105,39 +115,52 @@ public class PlotFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_plot, container, false);
         isFragmentRunning = true;
 
-        seriesCH1.setThickness(3);
-        seriesCH2.setThickness(3);
-        seriesCH3.setThickness(3);
-        seriesCH4.setThickness(3);
-        seriesCH5.setThickness(3);
-        seriesCH6.setThickness(3);
+        chartSurface = (SciChartSurface) rootView.findViewById(R.id.chartView);
 
-        seriesCH1.setColor(Color.BLUE);
-        seriesCH2.setColor(Color.RED);
-        seriesCH3.setColor(Color.GREEN);
-        seriesCH4.setColor(Color.GRAY);
-        seriesCH5.setColor(Color.BLACK);
-        seriesCH6.setColor(Color.MAGENTA);
+        try {
+            chartSurface.setRuntimeLicenseKeyFromResource(this.getActivity(), "app\\src\\main\\res\\raw\\license.xml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        DateAxis xAxis = new DateAxis(this.getActivity());
+        NumericAxis yAxis = new NumericAxis(this.getActivity());
 
-        graphView = (GraphView) rootView.findViewById(R.id.graph1);
+        AxisCollection xAxes = chartSurface.getXAxes();
+        xAxes.add(xAxis);
+        AxisCollection yAxes = chartSurface.getXAxes();
+        yAxes.add(yAxis);
+        yAxis.setAxisAlignment(AxisAlignment.Left);
+        xAxis.setAxisAlignment(AxisAlignment.Bottom);
+        xAxis.setAxisTitle("Hallo");
+        yAxis.setAxisTitle("Welt");
 
-        graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(0);
-        graphView.getViewport().setMaxY(1023);
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
-        graphView.getViewport().setScalable(true);
-        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        RenderableSeriesCollection renderableSeries = chartSurface.getRenderableSeries();
+        lineSeries = new FastLineRenderableSeries();
+        PenStyle strokePen = new PenStyle(ColorUtil.argb(0xFF, 0x27, 0x9b, 0x27), true, 2f);
+        lineSeries.setStrokeStyle(strokePen);
 
-        graphView.addSeries(seriesCH1);
-        graphView.addSeries(seriesCH2);
-        graphView.addSeries(seriesCH3);
-        graphView.addSeries(seriesCH4);
-        graphView.addSeries(seriesCH5);
-        graphView.addSeries(seriesCH6);
+        renderableSeries.add(lineSeries);
 
-        thread.start();
+        dataSeries = new XyDataSeries<>(Date.class, Integer.class);
+        DateValues xValues = new DateValues(100);
+        IntegerValues yValues = new IntegerValues(100);
+
+        Random random = new Random();
+        for (double i = 0; i < 100; i++) {
+            long xValue = new Date().getTime() + DateIntervalUtil.fromDays(i);
+            xValues.add(new Date(xValue));
+            yValues.add(random.nextInt());
+        }
+
+        dataSeries.append(xValues, yValues);
+
+        lineSeries.setDataSeries(dataSeries);
+
+        chartSurface.zoomExtents();
+
+        //Collections.addAll(chartSurface.getRenderableSeries(), lineSeries);
+
+        //thread.start();
 
         // Inflate the layout for this fragment
         return rootView;
@@ -168,12 +191,5 @@ public class PlotFragment extends Fragment {
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         isFragmentRunning = true;
-        seriesCH1.resetData(new DataPoint[]{});
-        seriesCH2.resetData(new DataPoint[]{});
-        seriesCH3.resetData(new DataPoint[]{});
-        seriesCH4.resetData(new DataPoint[]{});
-        seriesCH5.resetData(new DataPoint[]{});
-        seriesCH6.resetData(new DataPoint[]{});
-
     }
 }
