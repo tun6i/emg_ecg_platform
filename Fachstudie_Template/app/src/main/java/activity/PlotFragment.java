@@ -47,18 +47,21 @@ public class PlotFragment extends Fragment {
         InputStream inputStream;
         float x_Axis = 0;
         int amountBytes = 0;
-        BluetoothSetup btSetup = MainActivity.btSetup;
+        BluetoothSetup btSetup = BluetoothSetup.getInstance();
 
         @Override
         public void run() {
             if (btSetup.isConnected()) {
-                Log.w("Tag", "Graph view running");
+                Log.w("Run", "Graph view running");
                 try {
                     inputStream = btSetup.getBtData();
                     stoptime = System.currentTimeMillis();
-                    Log.d("tag", stoptime - starttime + "");
+                    Log.w("Time", stoptime - starttime + "");
                     starttime = System.currentTimeMillis();
                     if (inputStream.available() > 0) {
+
+                        Log.d("Avail", inputStream.available() + "");
+
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
                             wrapper = ByteBuffer.wrap(buffer);
@@ -72,6 +75,8 @@ public class PlotFragment extends Fragment {
                         seriesCH4.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
                         seriesCH5.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
                         seriesCH6.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+
+                        Log.d("Avail", inputStream.available() + "");
 
                     }
                 } catch (IOException e) {
@@ -155,6 +160,12 @@ public class PlotFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        graphHandler.removeCallbacks(timerRunnable);
+    }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        graphHandler.removeCallbacks(timerRunnable);
     }
 }

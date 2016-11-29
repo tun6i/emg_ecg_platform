@@ -1,5 +1,6 @@
 package activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PersistableBundle;
@@ -20,27 +21,17 @@ import java.io.IOException;
 import bluetooth.BluetoothSetup;
 import de.fachstudie.fachstudie_template.R;
 
-public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener {
+public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener  {
 
     private static String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
     static BluetoothSetup btSetup;
-    Handler handler = new Handler();
-    Runnable streamReader = new Runnable() {
-        @Override
-        public void run() {
-            if (btSetup.isConnected()) {
-                try {
-                    Log.d("Tag", "Bytes available:" + btSetup.getBtData().available());
-                    handler.postDelayed(this, 2000);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    };
+    private int actualFragment = 0;
+    private Bundle savedState = new Bundle();
+
+    private final String ACTUAL_FRAGMENT = "actualFragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         drawerFragment.setDrawerListener(this);
 
         btSetup = BluetoothSetup.getInstance();
-
-        streamReader.run();
 
         // display the first navigation drawer view on app launch
         displayView(0);
@@ -108,22 +97,28 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             case 0:
                 fragment = new StartFragment();
                 title = getString(R.string.title_start);
+                actualFragment = 0;
                 break;
             case 1:
                 fragment = new PlotFragment();
                 title = getString(R.string.title_plot);
+                actualFragment = 1;
                 break;
             case 2:
                 fragment = new SettingsFragment();
                 title = getString(R.string.title_settings);
+                actualFragment = 2;
                 break;
             case 3:
                 fragment = new InformationFragment();
                 title = getString(R.string.title_information);
+                actualFragment = 3;
                 break;
             default:
                 break;
         }
+        savedState.putInt(ACTUAL_FRAGMENT, actualFragment);
+
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -144,5 +139,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        displayView(1);
     }
 }
