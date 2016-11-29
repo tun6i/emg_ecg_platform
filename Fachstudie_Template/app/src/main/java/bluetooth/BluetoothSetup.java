@@ -16,6 +16,8 @@ public class BluetoothSetup {
     private BluetoothSocket btSocket;
     private boolean connected;
 
+    private static BluetoothSetup bluetoothSetup = new BluetoothSetup();
+
     public BluetoothSetup() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         connected = false;
@@ -52,5 +54,9 @@ public class BluetoothSetup {
 
     public InputStream getBtData() throws IOException {
         return btSocket.getInputStream();
+    }
+
+    public static BluetoothSetup getInstance() {
+        return bluetoothSetup;
     }
 }

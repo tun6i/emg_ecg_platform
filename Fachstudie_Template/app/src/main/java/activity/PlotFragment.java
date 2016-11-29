@@ -151,4 +151,10 @@ public class PlotFragment extends Fragment {
         super.onSaveInstanceState(outState);
 
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
 }
