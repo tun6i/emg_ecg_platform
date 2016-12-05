@@ -105,11 +105,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 actualFragment = 1;
                 break;
             case 2:
-                fragment = new PlotFragment();
-                title = getString(R.string.title_plot);
-                actualFragment = 2;
-                break;
-            case 3:
                 fragment = new InformationFragment();
                 title = getString(R.string.title_information);
                 actualFragment = 3;

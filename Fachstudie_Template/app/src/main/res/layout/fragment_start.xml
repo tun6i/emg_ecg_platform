@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,26 +8,22 @@
     tools:context="activity.StartFragment">
 
 
-
     <ImageButton
         android:id="@+id/imgbutton"
-        android:layout_width="fill_parent"
-        android:layout_height="90dp"
+        android:layout_width="101dp"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        app:srcCompat="@drawable/ic_stat_no_connection"
+        app:srcCompat="@drawable/ic_bluetooth_no_connection"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="showDevice (StartFragment)" />
+        android:onClick="showDevice (StartFragment)"
+        android:adjustViewBounds="false"
+        android:layout_gravity="center"/>
 
-    <TextView
-        android:id="@+id/connectionStatus"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15dp"
-        android:gravity="center_horizontal"
-        android:text="@string/not_connected"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-</RelativeLayout>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/graph1"/>
+</LinearLayout>
