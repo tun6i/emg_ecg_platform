@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +23,15 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import bluetooth.BluetoothSetup;
 import de.fachstudie.fachstudie_template.R;
@@ -29,18 +39,18 @@ import de.fachstudie.fachstudie_template.R;
 public class StartFragment extends Fragment {
 
     private ImageButton imgButton;
-    private TextView textView;
-    private int CONNECTION_ESTABLISHED = 1;
 
-    private Handler graphHandler = new Handler();
+    private final int CONNECTION_ESTABLISHED = 1;
+    private BluetoothSetup btSetup = BluetoothSetup.getInstance();
+
+
+    private GraphView graphView;
     private LineGraphSeries<DataPoint> seriesCH1 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH2 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH3 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH4 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH5 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH6 = new LineGraphSeries<>();
-    private GraphView graphView;
-    private boolean isFragmentRunning = false;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
@@ -50,26 +60,22 @@ public class StartFragment extends Fragment {
     long starttime = System.currentTimeMillis();
     long stoptime = System.currentTimeMillis();
 
-    private Runnable timerRunnable = new Runnable() {
+    private Handler plotRunnableHandler = new Handler();
+    private Runnable plotRunnable = new Runnable() {
         ByteBuffer wrapper;
         InputStream inputStream;
         float x_Axis = 0;
         int amountBytes = 0;
-        BluetoothSetup btSetup = BluetoothSetup.getInstance();
-
         @Override
         public void run() {
             if (btSetup.isConnected()) {
-                Log.w("Run", "Graph view running");
+                //Log.w("Run", "Graph view running");
                 try {
                     inputStream = btSetup.getBtData();
                     stoptime = System.currentTimeMillis();
                     Log.w("Time", stoptime - starttime + "");
                     starttime = System.currentTimeMillis();
                     if (inputStream.available() > 0) {
-
-                        Log.d("Avail", inputStream.available() + "");
-
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
                             wrapper = ByteBuffer.wrap(buffer);
@@ -83,16 +89,13 @@ public class StartFragment extends Fragment {
                         seriesCH4.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
                         seriesCH5.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
                         seriesCH6.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-
-                        Log.d("Avail", inputStream.available() + "");
-
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             x_Axis = x_Axis + 0.01f;
-            graphHandler.post(this);
+            plotRunnableHandler.post(this);
 
         }
     };
@@ -115,22 +118,28 @@ public class StartFragment extends Fragment {
 
         // Inflate the layout for this fragment
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton);
-
-        //textView = (TextView) rootView.findViewById(R.id.connectionStatus);
+        graphView = (GraphView) rootView.findViewById(R.id.graph1);
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setMinY(0);
+        graphView.getViewport().setMaxY(1023);
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setMinX(0);
+        graphView.getViewport().setScalable(true);
+        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
 
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!MainActivity.btSetup.isConnected()) {
+                if (!btSetup.isConnected()) {
                     Intent intent = new Intent(getActivity(), ShowPairedDevices.class);
                     startActivityForResult(intent, CONNECTION_ESTABLISHED);
                 } else {
                     try {
-                        MainActivity.btSetup.getBtData().close();
-                        MainActivity.btSetup.getBtSocket().close();
-                        MainActivity.btSetup.setConnected(false);
-                        //textView.setText(R.string.not_connected);
-                        //imgButton.setImageResource(R.drawable.ic_stat_no_connection);
+                        btSetup.getBtData().close();
+                        btSetup.getBtSocket().close();
+                        btSetup.setConnected(false);
+                        imgButton.setImageResource(R.drawable.ic_bluetooth_no_connection);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -138,8 +147,6 @@ public class StartFragment extends Fragment {
 
             }
         });
-
-        isFragmentRunning = true;
 
         seriesCH1.setThickness(3);
         seriesCH2.setThickness(3);
@@ -155,17 +162,6 @@ public class StartFragment extends Fragment {
         seriesCH5.setColor(Color.BLACK);
         seriesCH6.setColor(Color.MAGENTA);
 
-        graphView = (GraphView) rootView.findViewById(R.id.graph1);
-
-        graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(0);
-        graphView.getViewport().setMaxY(1023);
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
-        graphView.getViewport().setScalable(true);
-        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-
         graphView.addSeries(seriesCH1);
         graphView.addSeries(seriesCH2);
         graphView.addSeries(seriesCH3);
@@ -173,7 +169,6 @@ public class StartFragment extends Fragment {
         graphView.addSeries(seriesCH5);
         graphView.addSeries(seriesCH6);
 
-        timerRunnable.run();
         return rootView;
     }
 
@@ -181,8 +176,7 @@ public class StartFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CONNECTION_ESTABLISHED && resultCode == Activity.RESULT_OK) {
-            //textView.setText(R.string.connected);
-            //imgButton.setImageResource(R.drawable.ic_stat_connected);
+            imgButton.setImageResource(R.drawable.ic_bluetooth_connection);
         }
     }
 
@@ -197,14 +191,34 @@ public class StartFragment extends Fragment {
     }
 
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+    public void onPause() {
+        super.onPause();
+        plotRunnableHandler.removeCallbacks(plotRunnable);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        plotRunnableHandler.removeCallbacks(plotRunnable);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        plotRunnable.run();
+        plotRunnable.run();
+        plotRunnable.run();
+        plotRunnable.run();
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (!MainActivity.btSetup.isConnected()) {
-            //textView.setText(R.string.not_connected);
-            //imgButton.setImageResource(R.drawable.ic_stat_no_connection);
+        if (!btSetup.isConnected()) {
+            imgButton.setImageResource(R.drawable.ic_bluetooth_no_connection);
         } else {
-            //textView.setText(R.string.connected);
-            //imgButton.setImageResource(R.drawable.ic_stat_connected);
+            imgButton.setImageResource(R.drawable.ic_bluetooth_connection);
         }
 
     }
