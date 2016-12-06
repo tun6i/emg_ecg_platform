@@ -64,12 +64,12 @@ public class StartFragment extends Fragment {
     private Runnable plotRunnable = new Runnable() {
         ByteBuffer wrapper;
         InputStream inputStream;
-        float x_Axis = 0;
+        double x_Axis = 0;
         int amountBytes = 0;
         @Override
         public void run() {
             if (btSetup.isConnected()) {
-                //Log.w("Run", "Graph view running");
+                Log.w("Run", "Graph view running" + x_Axis);
                 try {
                     inputStream = btSetup.getBtData();
                     stoptime = System.currentTimeMillis();
@@ -94,7 +94,7 @@ public class StartFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            x_Axis = x_Axis + 0.01f;
+            x_Axis = x_Axis + 0.01;
             plotRunnableHandler.post(this);
 
         }
@@ -139,6 +139,7 @@ public class StartFragment extends Fragment {
                         btSetup.getBtData().close();
                         btSetup.getBtSocket().close();
                         btSetup.setConnected(false);
+                        plotRunnableHandler.removeCallbacks(plotRunnable);
                         imgButton.setImageResource(R.drawable.ic_bluetooth_no_connection);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -206,10 +207,12 @@ public class StartFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        plotRunnable.run();
-        plotRunnable.run();
-        plotRunnable.run();
-        plotRunnable.run();
+        if (btSetup.isConnected()) {
+            plotRunnable.run();
+            plotRunnable.run();
+            plotRunnable.run();
+            plotRunnable.run();
+        }
     }
 
     @Override
