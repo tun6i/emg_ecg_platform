@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
         boolean canWrite = this.askPermission(REQUEST_ID_WRITE_PERMISSION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
         // Datei wird mit dem Header erstellt.
-        if (canWrite) {
+        if (canWrite && !csvFile.getCSVBoolean()) {
             this.writeFile();
         }
 
@@ -105,6 +105,8 @@ public class HomeFragment extends Fragment {
             myOutWriter.append("\n\r");
             myOutWriter.close();
             fOut.close();
+
+            csvFile.setCSVBoolean(true);
 
             Toast.makeText(getActivity(), "CSV-Datei " + csvFile.getFileName() + " wurde erstellt", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
