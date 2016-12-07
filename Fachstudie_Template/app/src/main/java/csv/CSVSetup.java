@@ -18,6 +18,7 @@ public class CSVSetup{
     private static CSVSetup csvSetup = new CSVSetup();
     private String csvHeader = "Timestamp;ch1;ch2;ch3;ch4;ch5;ch6";
     private String fileName;
+    private boolean csvExists = false;
 
     public CSVSetup() {
 
@@ -46,6 +47,14 @@ public class CSVSetup{
       return this.csvHeader;
     };
 
+    public void setCSVBoolean(boolean bool) {
+        this.csvExists = bool;
+    }
+
+    public boolean getCSVBoolean() {
+        return this.csvExists;
+    }
+
     public void appendRowToCSV(String row) {
         File extStore = Environment.getExternalStorageDirectory();
         // ==> /storage/emulated/0/note.txt
@@ -54,7 +63,7 @@ public class CSVSetup{
 
         try {
             File myFile = new File(path);
-            myFile.createNewFile();
+            //myFile.createNewFile();
             FileOutputStream fOut = new FileOutputStream(myFile, true);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
             myOutWriter.append(row);
