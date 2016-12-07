@@ -18,6 +18,7 @@ public class CSVSetup{
     private static CSVSetup csvSetup = new CSVSetup();
     private String csvHeader = "Timestamp;ch1;ch2;ch3;ch4;ch5;ch6";
     private String fileName;
+    // Damit die CSV Datei nicht überschrieben wird.
     private boolean csvExists = false;
 
     public CSVSetup() {
