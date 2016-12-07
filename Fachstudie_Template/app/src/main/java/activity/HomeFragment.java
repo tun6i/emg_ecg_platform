@@ -23,6 +23,7 @@ import de.fachstudie.fachstudie_template.R;
 
 public class HomeFragment extends Fragment {
 
+    //CSV
     private CSVSetup csvFile = CSVSetup.getInstance();
     private static final int REQUEST_ID_WRITE_PERMISSION = 200;
 

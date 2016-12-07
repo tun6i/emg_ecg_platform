@@ -95,6 +95,7 @@ public class StartFragment extends Fragment {
                         amountBytes = inputStream.read(buffer);
                         wrapper = ByteBuffer.wrap(buffer);
 
+
                         double tmpX_Axis = x_Axis;
 
                         short tmpCh1 = wrapper.getShort();
@@ -111,7 +112,7 @@ public class StartFragment extends Fragment {
                         seriesCH5.appendData(new DataPoint(tmpX_Axis, tmpCh5), true, 100);
                         seriesCH6.appendData(new DataPoint(tmpX_Axis, tmpCh6), true, 100);
 
-                        //Schreibe alle Daten in die CSV:
+                        //Schreibe alle Daten in die CSV
                         csvFile.appendRowToCSV(tmpX_Axis + ";" + tmpCh1 + ";" + tmpCh2 + ";"
                                 + tmpCh3 + ";" + tmpCh4 + ";" + tmpCh5 + ";" + tmpCh6 + ";");
                     }

@@ -21,7 +21,7 @@ public class CSVSetup{
 
     public CSVSetup() {
 
-        // Dateiname wird generiert
+        // Dateiname wird generiert.
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
