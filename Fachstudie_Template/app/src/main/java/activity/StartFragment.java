@@ -1,13 +1,18 @@
 package activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,13 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import bluetooth.BluetoothSetup;
+import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
 
 public class StartFragment extends Fragment {
@@ -43,6 +53,7 @@ public class StartFragment extends Fragment {
     private final int CONNECTION_ESTABLISHED = 1;
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
 
+    private CSVSetup csvFile = CSVSetup.getInstance();
 
     private GraphView graphView;
     private LineGraphSeries<DataPoint> seriesCH1 = new LineGraphSeries<>();
@@ -83,12 +94,26 @@ public class StartFragment extends Fragment {
 
                         amountBytes = inputStream.read(buffer);
                         wrapper = ByteBuffer.wrap(buffer);
-                        seriesCH1.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH2.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH3.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH4.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH5.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
-                        seriesCH6.appendData(new DataPoint(x_Axis, wrapper.getShort()), true, 100);
+
+                        float tmpX_Axis = x_Axis;
+
+                        short tmpCh1 = wrapper.getShort();
+                        short tmpCh2 = wrapper.getShort();
+                        short tmpCh3 = wrapper.getShort();
+                        short tmpCh4 = wrapper.getShort();
+                        short tmpCh5 = wrapper.getShort();
+                        short tmpCh6 = wrapper.getShort();
+
+                        seriesCH1.appendData(new DataPoint(tmpX_Axis, tmpCh1), true, 100);
+                        seriesCH2.appendData(new DataPoint(tmpX_Axis, tmpCh2), true, 100);
+                        seriesCH3.appendData(new DataPoint(tmpX_Axis, tmpCh3), true, 100);
+                        seriesCH4.appendData(new DataPoint(tmpX_Axis, tmpCh4), true, 100);
+                        seriesCH5.appendData(new DataPoint(tmpX_Axis, tmpCh5), true, 100);
+                        seriesCH6.appendData(new DataPoint(tmpX_Axis, tmpCh6), true, 100);
+
+                        //Schreibe alle Daten in die CSV:
+                        csvFile.appendRowToCSV(tmpX_Axis + ";" + tmpCh1 + ";" + tmpCh2 + ";"
+                                + tmpCh3 + ";" + tmpCh4 + ";" + tmpCh5 + ";" + tmpCh6 + ";");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -222,4 +247,5 @@ public class StartFragment extends Fragment {
         }
 
     }
+
 }
