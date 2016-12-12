@@ -118,4 +118,9 @@ public class CSVSetup{
         }
     }
 
+    public void createMarkInCSV() {
+        appendRowToCSV("-1" + ";" + "-1" + ";" + "-1" + ";" + "-1" + ";" + "-1" + ";" + "-1"
+                + ";" + "-1" + ";");
+    }
+
 }
