@@ -28,4 +28,14 @@
         android:gravity="center_horizontal"
         android:text="Edit fragment_home.xml to change the appearance." />
 
+    <Button
+        android:text="@string/btnNewCSVFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="createNewCsvFile"
+        android:id="@+id/btnCreateNewCSV"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="29dp" />
+
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
@@ -108,7 +109,8 @@ public class HomeFragment extends Fragment {
 
             csvFile.setCSVBoolean(true);
 
-            Toast.makeText(getActivity(), "CSV-Datei " + csvFile.getFileName() + " wurde erstellt", Toast.LENGTH_LONG).show();
+            // Meldung, dass eine CSV-Datei erstelt wurde.
+            //Toast.makeText(getActivity(), "CSV-Datei " + csvFile.getFileName() + " wurde erstellt", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -19,6 +19,7 @@ import android.view.View;
 import java.io.IOException;
 
 import bluetooth.BluetoothSetup;
+import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener  {
@@ -135,5 +136,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         displayView(1);
+    }
+
+    public void createNewCsvFile(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createNewCSVFile();
     }
 }
