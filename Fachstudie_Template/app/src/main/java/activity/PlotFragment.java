@@ -80,12 +80,12 @@ public class PlotFragment extends Fragment {
                         short tmpCh5 = wrapper.getShort();
                         short tmpCh6 = wrapper.getShort();
 
-                        seriesCH1.appendData(new DataPoint(tmpX_Axis, tmpCh1), true, 100);
-                        seriesCH2.appendData(new DataPoint(tmpX_Axis, tmpCh2), true, 100);
-                        seriesCH3.appendData(new DataPoint(tmpX_Axis, tmpCh3), true, 100);
-                        seriesCH4.appendData(new DataPoint(tmpX_Axis, tmpCh4), true, 100);
-                        seriesCH5.appendData(new DataPoint(tmpX_Axis, tmpCh5), true, 100);
-                        seriesCH6.appendData(new DataPoint(tmpX_Axis, tmpCh6), true, 100);
+                        seriesCH1.appendData(new DataPoint(tmpX_Axis, tmpCh1), true, 500);
+                        seriesCH2.appendData(new DataPoint(tmpX_Axis, tmpCh2), true, 500);
+                        seriesCH3.appendData(new DataPoint(tmpX_Axis, tmpCh3), true, 500);
+                        seriesCH4.appendData(new DataPoint(tmpX_Axis, tmpCh4), true, 500);
+                        seriesCH5.appendData(new DataPoint(tmpX_Axis, tmpCh5), true, 500);
+                        seriesCH6.appendData(new DataPoint(tmpX_Axis, tmpCh6), true, 500);
 
                         //Schreibe alle Daten in die CSV
                         csvFile.appendRowToCSV(tmpX_Axis + ";" + tmpCh1 + ";" + tmpCh2 + ";"
@@ -179,6 +179,7 @@ public class PlotFragment extends Fragment {
             plotRunnable.run();
             plotRunnable.run();
             plotRunnable.run();
+
         }
     }
 
@@ -205,9 +206,11 @@ public class PlotFragment extends Fragment {
         graphView.getViewport().setMaxY(1023);
         graphView.getViewport().setScrollable(true);
         graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
         graphView.getViewport().setScalable(true);
         graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graphView.getGridLabelRenderer().setVerticalLabelsVisible(true);
+        graphView.getGridLabelRenderer().setVerticalAxisTitle("Amplitude");
+        graphView.getGridLabelRenderer().setHorizontalAxisTitle("Time");
 
         seriesCH1.setThickness(3);
         seriesCH2.setThickness(3);
