@@ -5,7 +5,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="nav_item_start">Start</string>
+    <string name="nav_item_plot">Plot</string>
     <string name="nav_item_information">Information</string>
     <string name="nav_item_home">Home</string>
 
@@ -15,11 +15,11 @@
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
-        <item>@string/nav_item_start</item>
+        <item>@string/nav_item_plot</item>
         <item>@string/nav_item_information</item>
     </string-array>
 
-    <string name="title_start">Start</string>
+    <string name="title_plot">Plot</string>
     <string name="title_information">Information</string>
     <string name="title_home">Home</string>
 

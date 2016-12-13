@@ -37,13 +37,22 @@ byte buffer[14];
 
 void readEMG () {
   int valueCH1 = analogRead(INPUT_CH1);
-  int valueCH6 = analogRead(INPUT_CH6);
+  int valueCH2 = analogRead(INPUT_CH2);
   int valueCH3 = analogRead(INPUT_CH3);
+  int valueCH4 = analogRead(INPUT_CH4);
+  int valueCH5 = analogRead(INPUT_CH5);
+  int valueCH6 = analogRead(INPUT_CH6);
   
   buffer[2] = highByte(valueCH1);
   buffer[3] = lowByte(valueCH1);
+  buffer[4] = highByte(valueCH2);
+  buffer[5] = lowByte(valueCH2);
   buffer[6] = highByte(valueCH3);
   buffer[7] = lowByte(valueCH3);
+  buffer[8] = highByte(valueCH4);
+  buffer[9] = lowByte(valueCH4);
+  buffer[10] = highByte(valueCH5);
+  buffer[11] = lowByte(valueCH5);
   buffer[12] = highByte(valueCH6);
   buffer[13] = lowByte(valueCH6);
   

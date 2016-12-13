@@ -15,7 +15,6 @@ public class BluetoothSetup {
     private BluetoothDevice btDevice;
     private BluetoothSocket btSocket;
     private boolean connected;
-
     private static BluetoothSetup bluetoothSetup = new BluetoothSetup();
 
 
@@ -25,6 +24,10 @@ public class BluetoothSetup {
         if (!btAdapter.isEnabled()) {
             btAdapter.enable();
         }
+    }
+
+    public static BluetoothSetup getInstance() {
+        return bluetoothSetup;
     }
 
     public Set<BluetoothDevice> getPairedDevices() {
@@ -37,27 +40,25 @@ public class BluetoothSetup {
         connected = true;
     }
 
-    public void setBtDevice(BluetoothDevice btDevice) {
-        this.btDevice = btDevice;
-    }
-
-    public BluetoothSocket getBtSocket() {
-        return btSocket;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
     public boolean isConnected() {
         return connected;
     }
 
-    public void setConnected(boolean connected) {
-        this.connected = connected;
+    public BluetoothSocket getBtSocket() {
+        return btSocket;
     }
 
     public InputStream getBtData() throws IOException {
         return btSocket.getInputStream();
     }
 
-    public static BluetoothSetup getInstance() {
-        return bluetoothSetup;
+    public void setBtDevice(BluetoothDevice btDevice) {
+        this.btDevice = btDevice;
     }
+
+
 }

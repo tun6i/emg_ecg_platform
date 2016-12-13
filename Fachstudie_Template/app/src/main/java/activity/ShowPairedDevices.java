@@ -12,10 +12,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bluetooth.BluetoothSetup;
 import de.fachstudie.fachstudie_template.R;
 
 public class ShowPairedDevices extends AppCompatActivity {
     private List<BluetoothDevice> deviceList;
+    private BluetoothSetup btSetup = BluetoothSetup.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ public class ShowPairedDevices extends AppCompatActivity {
         deviceList = new ArrayList<>();
         List<String> address_nameList = new ArrayList<>();
 
-        for (BluetoothDevice bt: MainActivity.btSetup.getPairedDevices()) {
+        for (BluetoothDevice bt: btSetup.getPairedDevices()) {
             deviceList.add(bt);
             address_nameList.add(bt.getAddress() + "   " + bt.getName());
         }
@@ -40,9 +42,9 @@ public class ShowPairedDevices extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MainActivity.btSetup.setBtDevice(deviceList.get(position));
+                btSetup.setBtDevice(deviceList.get(position));
                 try {
-                    MainActivity.btSetup.establishConnection();
+                    btSetup.establishConnection();
                     setResult(RESULT_OK);
                     finish();
                 } catch (IOException e) {

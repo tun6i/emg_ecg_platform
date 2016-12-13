@@ -1,60 +1,32 @@
 package activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.nio.ByteBuffer;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
 import bluetooth.BluetoothSetup;
 import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
 
-public class StartFragment extends Fragment {
+public class PlotFragment extends Fragment {
 
-    private ImageButton imgButton;
-
-    private final int CONNECTION_ESTABLISHED = 1;
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
-
     private CSVSetup csvFile = CSVSetup.getInstance();
 
+    private ImageButton imgButton;
     private GraphView graphView;
     private LineGraphSeries<DataPoint> seriesCH1 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH2 = new LineGraphSeries<>();
@@ -62,6 +34,9 @@ public class StartFragment extends Fragment {
     private LineGraphSeries<DataPoint> seriesCH4 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH5 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH6 = new LineGraphSeries<>();
+
+    private final int CONNECTION_ESTABLISHED = 1;
+    private int numChannels;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
@@ -126,7 +101,7 @@ public class StartFragment extends Fragment {
         }
     };
 
-    public StartFragment() {
+    public PlotFragment() {
         // Required empty public constructor
     }
 
@@ -145,14 +120,8 @@ public class StartFragment extends Fragment {
         // Inflate the layout for this fragment
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton);
         graphView = (GraphView) rootView.findViewById(R.id.graph1);
-        graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(0);
-        graphView.getViewport().setMaxY(1023);
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
-        graphView.getViewport().setScalable(true);
-        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+
+        setupGraphView();
 
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,27 +144,6 @@ public class StartFragment extends Fragment {
             }
         });
 
-        seriesCH1.setThickness(3);
-        seriesCH2.setThickness(3);
-        seriesCH3.setThickness(3);
-        seriesCH4.setThickness(3);
-        seriesCH5.setThickness(3);
-        seriesCH6.setThickness(3);
-
-        seriesCH1.setColor(Color.BLUE);
-        seriesCH2.setColor(Color.RED);
-        seriesCH3.setColor(Color.GREEN);
-        seriesCH4.setColor(Color.GRAY);
-        seriesCH5.setColor(Color.BLACK);
-        seriesCH6.setColor(Color.MAGENTA);
-
-        graphView.addSeries(seriesCH1);
-        graphView.addSeries(seriesCH2);
-        graphView.addSeries(seriesCH3);
-        graphView.addSeries(seriesCH4);
-        graphView.addSeries(seriesCH5);
-        graphView.addSeries(seriesCH6);
-
         return rootView;
     }
 
@@ -207,10 +155,10 @@ public class StartFragment extends Fragment {
         }
     }
 
-    @Override
+    /*@Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-    }
+    }*/
 
     @Override
     public void onDetach() {
@@ -221,13 +169,6 @@ public class StartFragment extends Fragment {
     public void onPause() {
         super.onPause();
         plotRunnableHandler.removeCallbacks(plotRunnable);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        plotRunnableHandler.removeCallbacks(plotRunnable);
-
     }
 
     @Override
@@ -242,6 +183,12 @@ public class StartFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        plotRunnableHandler.removeCallbacks(plotRunnable);
+    }
+
+    @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (!btSetup.isConnected()) {
@@ -250,6 +197,81 @@ public class StartFragment extends Fragment {
             imgButton.setImageResource(R.drawable.ic_bluetooth_connection);
         }
 
+    }
+
+    private void setupGraphView() {
+        graphView.getViewport().setYAxisBoundsManual(true);
+        graphView.getViewport().setMinY(0);
+        graphView.getViewport().setMaxY(1023);
+        graphView.getViewport().setScrollable(true);
+        graphView.getViewport().setXAxisBoundsManual(true);
+        graphView.getViewport().setMinX(0);
+        graphView.getViewport().setScalable(true);
+        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+
+        seriesCH1.setThickness(3);
+        seriesCH2.setThickness(3);
+        seriesCH3.setThickness(3);
+        seriesCH4.setThickness(3);
+        seriesCH5.setThickness(3);
+        seriesCH6.setThickness(3);
+
+        seriesCH1.setColor(Color.BLUE);
+        seriesCH2.setColor(Color.RED);
+        seriesCH3.setColor(Color.GREEN);
+        seriesCH4.setColor(Color.GRAY);
+        seriesCH5.setColor(Color.BLACK);
+        seriesCH6.setColor(Color.MAGENTA);
+
+        graphView.removeAllSeries();
+
+        numChannels = Settings.getInstance().getNumChannels();
+
+        switch(numChannels) {
+            case 1:
+                graphView.addSeries(seriesCH1);
+                break;
+            case 2:
+                graphView.addSeries(seriesCH1);
+                graphView.addSeries(seriesCH2);
+                break;
+            case 3:
+                graphView.addSeries(seriesCH1);
+                graphView.addSeries(seriesCH2);
+                graphView.addSeries(seriesCH3);
+                break;
+            case 4:
+                graphView.addSeries(seriesCH1);
+                graphView.addSeries(seriesCH2);
+                graphView.addSeries(seriesCH3);
+                graphView.addSeries(seriesCH4);
+                break;
+            case 5:
+                graphView.addSeries(seriesCH1);
+                graphView.addSeries(seriesCH2);
+                graphView.addSeries(seriesCH3);
+                graphView.addSeries(seriesCH4);
+                graphView.addSeries(seriesCH5);
+                break;
+            case 6:
+                graphView.addSeries(seriesCH1);
+                graphView.addSeries(seriesCH2);
+                graphView.addSeries(seriesCH3);
+                graphView.addSeries(seriesCH4);
+                graphView.addSeries(seriesCH5);
+                graphView.addSeries(seriesCH6);
+                break;
+            default:
+                graphView.addSeries(seriesCH1);
+                graphView.addSeries(seriesCH2);
+                graphView.addSeries(seriesCH3);
+                graphView.addSeries(seriesCH4);
+                graphView.addSeries(seriesCH5);
+                graphView.addSeries(seriesCH6);
+                break;
+        }
+
+        graphView.invalidate();
     }
 
 }
