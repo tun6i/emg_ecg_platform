@@ -118,9 +118,10 @@ public class CSVSetup{
         }
     }
 
-    public void createMarkInCSV() {
-        appendRowToCSV("-1" + ";" + "-1" + ";" + "-1" + ";" + "-1" + ";" + "-1" + ";" + "-1"
-                + ";" + "-1" + ";");
+    public void createMarkInCSV(String timestmp, String ch1, String ch2, String ch3, String ch4,
+                                String ch5, String ch6) {
+        appendRowToCSV(timestmp + ";" + ch1 + ";" + ch2 + ";" + ch3 + ";" + ch4 + ";" + ch5
+                + ";" + ch6 + ";");
     }
 
 }

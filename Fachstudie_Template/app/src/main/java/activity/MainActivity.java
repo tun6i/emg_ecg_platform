@@ -128,6 +128,46 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     public void createMarkInCsv(View view) {
         CSVSetup csv = CSVSetup.getInstance();
-        csv.createMarkInCSV();
+        //csv.createMarkInCSV();
+    }
+
+    public void csvMarkStartExperiment(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-1", "-1", "-1", "-1", "-1", "-1", "-1");
+    }
+
+    public void csvMarkStopExperiment(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-2", "-2", "-2", "-2", "-2", "-2", "-2");
+    }
+
+    public void csvMarkStartRotation(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-3", "-3", "-3", "-3", "-3", "-3", "-3");
+    }
+
+    public void csvMarkStopRotation(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-4", "-4", "-4", "-4", "-4", "-4", "-4");
+    }
+
+    public void csvMarkStartPush(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-5", "-5", "-5", "-5", "-5", "-5", "-5");
+    }
+
+    public void csvMarkStopPush(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-6", "-6", "-6", "-6", "-6", "-6", "-6");
+    }
+
+    public void csvMarkStartLiftUp(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-7", "-7", "-7", "-7", "-7", "-7", "-7");
+    }
+
+    public void csvMarkStopLiftUp(View view) {
+        CSVSetup csv = CSVSetup.getInstance();
+        csv.createMarkInCSV("-8", "-8", "-8", "-8", "-8", "-8", "-8");
     }
 }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="activity.ExperimentFragment">
+
+    <Button
+        android:text="@string/btnNewCSVFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="createNewCsvFile"
+        android:id="@+id/btnCreateNewCSV"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+    <Button
+        android:text="@string/btnStartExperiment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStartExperiment"
+        android:id="@+id/btnStartExperiment"
+        android:layout_marginTop="85dp"
+        android:layout_marginLeft="30dp" />
+
+    <Button
+        android:text="@string/btnStopExperiment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStopExperiment"
+        android:id="@+id/btnStopExperiment"
+        android:layout_marginTop="85dp"
+        android:layout_marginLeft="200dp" />
+
+    <Button
+        android:text="@string/btnStartRotation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStartRotation"
+        android:id="@+id/btnStartRotation"
+        android:layout_marginTop="145dp"
+        android:layout_marginLeft="30dp" />
+
+    <Button
+        android:text="@string/btnStopRotation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStopRotation"
+        android:id="@+id/btnStopRotation"
+        android:layout_marginTop="145dp"
+        android:layout_marginLeft="200dp" />
+
+    <Button
+        android:text="@string/btnStartPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStartPush"
+        android:id="@+id/btnStartPush"
+        android:layout_marginTop="205dp"
+        android:layout_marginLeft="30dp" />
+
+    <Button
+        android:text="@string/btnStopPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStopPush"
+        android:id="@+id/btnStopPush"
+        android:layout_marginTop="205dp"
+        android:layout_marginLeft="200dp" />
+
+    <Button
+        android:text="@string/btnStartLiftUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStartLiftUp"
+        android:id="@+id/btnStartLiftUp"
+        android:layout_marginTop="265dp"
+        android:layout_marginLeft="30dp" />
+
+    <Button
+        android:text="@string/btnStopLiftUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="csvMarkStopLiftUp"
+        android:id="@+id/btnStopLiftUp"
+        android:layout_marginTop="265dp"
+        android:layout_marginLeft="200dp" />
+
+</RelativeLayout>
