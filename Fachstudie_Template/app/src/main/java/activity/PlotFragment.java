@@ -36,7 +36,6 @@ public class PlotFragment extends Fragment {
     private LineGraphSeries<DataPoint> seriesCH6 = new LineGraphSeries<>();
 
     private final int CONNECTION_ESTABLISHED = 1;
-    private int numChannels;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
@@ -115,7 +114,7 @@ public class PlotFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_start, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_plot, container, false);
 
         // Inflate the layout for this fragment
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton);
@@ -212,12 +211,12 @@ public class PlotFragment extends Fragment {
         graphView.getGridLabelRenderer().setVerticalAxisTitle("Amplitude");
         graphView.getGridLabelRenderer().setHorizontalAxisTitle("Time");
 
-        seriesCH1.setThickness(3);
-        seriesCH2.setThickness(3);
-        seriesCH3.setThickness(3);
-        seriesCH4.setThickness(3);
-        seriesCH5.setThickness(3);
-        seriesCH6.setThickness(3);
+        seriesCH1.setThickness(2);
+        seriesCH2.setThickness(2);
+        seriesCH3.setThickness(2);
+        seriesCH4.setThickness(2);
+        seriesCH5.setThickness(2);
+        seriesCH6.setThickness(2);
 
         seriesCH1.setColor(Color.BLUE);
         seriesCH2.setColor(Color.RED);
@@ -228,7 +227,7 @@ public class PlotFragment extends Fragment {
 
         graphView.removeAllSeries();
 
-        numChannels = Settings.getInstance().getNumChannels();
+        int numChannels = Settings.getInstance().getNumChannels();
 
         switch(numChannels) {
             case 1:

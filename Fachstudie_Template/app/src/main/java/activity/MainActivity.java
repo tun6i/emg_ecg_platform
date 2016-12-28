@@ -42,7 +42,11 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         btSetup = BluetoothSetup.getInstance();
 
         // display the first navigation drawer view on app launch
-        displayView(0);
+        if (savedInstanceState == null) {
+            displayView(0);
+        } else {
+            displayView(Settings.getInstance().getActiveFragment());
+        }
 
     }
 
@@ -87,14 +91,17 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             case 0:
                 fragment = new HomeFragment();
                 title = getString(R.string.title_home);
+                Settings.getInstance().setActiveFragment(0);
                 break;
             case 1:
                 fragment = new PlotFragment();
                 title = getString(R.string.title_plot);
+                Settings.getInstance().setActiveFragment(1);
                 break;
             case 2:
                 fragment = new InformationFragment();
                 title = getString(R.string.title_information);
+                Settings.getInstance().setActiveFragment(2);
                 break;
             default:
                 break;
@@ -120,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
     }
+
 
     public void createNewCsvFile(View view) {
         CSVSetup csv = CSVSetup.getInstance();

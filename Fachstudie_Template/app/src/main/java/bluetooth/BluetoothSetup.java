@@ -18,7 +18,7 @@ public class BluetoothSetup {
     private static BluetoothSetup bluetoothSetup = new BluetoothSetup();
 
 
-    public BluetoothSetup() {
+    private BluetoothSetup() {
         btAdapter = BluetoothAdapter.getDefaultAdapter();
         connected = false;
         if (!btAdapter.isEnabled()) {
