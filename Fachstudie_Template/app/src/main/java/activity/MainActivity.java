@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 title = getString(R.string.title_information);
                 Settings.getInstance().setActiveFragment(2);
                 break;
+            case 3:
+                fragment = new ExperimentFragment();
+                title = getString(R.string.title_experiment);
+                Settings.getInstance().setActiveFragment(3);
             default:
                 break;
         }

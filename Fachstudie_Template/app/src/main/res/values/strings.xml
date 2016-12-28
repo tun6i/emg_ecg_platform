@@ -17,8 +17,8 @@
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
         <item>@string/nav_item_plot</item>
-        <item>@string/nav_item_experiment</item>
         <item>@string/nav_item_information</item>
+        <item>@string/nav_item_experiment</item>
     </string-array>
 
     <string name="title_home">Home</string>

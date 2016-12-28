@@ -178,7 +178,6 @@ public class PlotFragment extends Fragment {
             plotRunnable.run();
             plotRunnable.run();
             plotRunnable.run();
-
         }
     }
 
