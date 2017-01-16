@@ -87,14 +87,6 @@
         android:layout_marginTop="265dp"
         android:layout_marginLeft="200dp" />
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graphExperiment"
-        android:layout_width="match_parent"
-        android:layout_height="243dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <Button
         android:text="Connect"
         android:layout_width="wrap_content"
@@ -103,5 +95,23 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Bytes Available:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/btnStartLiftUp"
+        android:layout_toEndOf="@+id/btnStartLiftUp"
+        android:id="@+id/textView2" />
 
 </RelativeLayout>
