@@ -110,7 +110,7 @@ public class HomeFragment extends Fragment {
             csvFile.setCSVBoolean(true);
 
             // Meldung, dass eine CSV-Datei erstelt wurde.
-            //Toast.makeText(getActivity(), "CSV-Datei " + csvFile.getFileName() + " wurde erstellt", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "CSV-Datei " + csvFile.getFileName() + " wurde erstellt", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }

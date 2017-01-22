@@ -14,6 +14,7 @@ import android.view.View;
 import bluetooth.BluetoothSetup;
 import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener  {
 
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 
     public void createNewCsvFile(View view) {
+        Toast.makeText(getApplicationContext(), "Created New CSV File", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createNewCSVFile();
     }
@@ -144,41 +146,49 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     public void csvMarkStartExperiment(View view) {
+        Toast.makeText(getApplicationContext(), "START EXPERIMENT", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-1", "-1", "-1", "-1", "-1", "-1", "-1");
     }
 
     public void csvMarkStopExperiment(View view) {
+        Toast.makeText(getApplicationContext(), "STOP EXPERIMENT", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-2", "-2", "-2", "-2", "-2", "-2", "-2");
     }
 
     public void csvMarkStartRotation(View view) {
+        Toast.makeText(getApplicationContext(), "START ROTATION", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-3", "-3", "-3", "-3", "-3", "-3", "-3");
     }
 
     public void csvMarkStopRotation(View view) {
+        Toast.makeText(getApplicationContext(), "STOP ROTATION", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-4", "-4", "-4", "-4", "-4", "-4", "-4");
     }
 
     public void csvMarkStartPush(View view) {
+        Toast.makeText(getApplicationContext(), "START PUSH", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-5", "-5", "-5", "-5", "-5", "-5", "-5");
     }
 
     public void csvMarkStopPush(View view) {
+        Toast.makeText(getApplicationContext(), "STOP PUSH", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-6", "-6", "-6", "-6", "-6", "-6", "-6");
     }
 
     public void csvMarkStartLiftUp(View view) {
+        Toast.makeText(getApplicationContext(), "START LIFT UP", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-7", "-7", "-7", "-7", "-7", "-7", "-7");
     }
 
     public void csvMarkStopLiftUp(View view) {
+        Toast.makeText(getApplicationContext(), "STOP LIFT UP", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-8", "-8", "-8", "-8", "-8", "-8", "-8");
     }
