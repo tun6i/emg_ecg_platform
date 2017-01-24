@@ -1,121 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:padding="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context="activity.ExperimentFragment">
 
-    <Button
-        android:text="@string/btnNewCSVFile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="createNewCsvFile"
-        android:id="@+id/btnCreateNewCSV"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <Button
-        android:text="@string/btnStartExperiment"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="csvMarkStartExperiment"
-        android:id="@+id/btnStartExperiment"
-        android:layout_marginTop="85dp"
-        android:layout_marginLeft="30dp" />
+        android:orientation="vertical" >
 
-    <Button
-        android:text="@string/btnStopExperiment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="csvMarkStopExperiment"
-        android:id="@+id/btnStopExperiment"
-        android:layout_marginTop="85dp"
-        android:layout_marginLeft="200dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp">
 
-    <Button
-        android:text="@string/btnStartRotation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="csvMarkStartRotation"
-        android:id="@+id/btnStartRotation"
-        android:layout_marginTop="145dp"
-        android:layout_marginLeft="30dp" />
+            <TextView
+                android:text="Current Participant:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/currParticipant" />
 
-    <Button
-        android:text="@string/btnStopRotation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="csvMarkStopRotation"
-        android:id="@+id/btnStopRotation"
-        android:layout_marginTop="145dp"
-        android:layout_marginLeft="200dp" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="textPersonName"
+                android:id="@+id/participantName" />
 
-    <Button
-        android:text="@string/btnStartPush"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="csvMarkStartPush"
-        android:id="@+id/btnStartPush"
-        android:layout_marginTop="205dp"
-        android:layout_marginLeft="30dp" />
+        </LinearLayout>
 
-    <Button
-        android:text="@string/btnStopPush"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="csvMarkStopPush"
-        android:id="@+id/btnStopPush"
-        android:layout_marginTop="205dp"
-        android:layout_marginLeft="200dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp">
 
-    <Button
-        android:text="Connect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/connectExperiment"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+            <Button
+                android:text="@string/btnNewCSVFile"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="createNewCsvFile"
+                android:id="@+id/btnCreateNewCSV"
+                android:layout_weight="0.5" />
 
-    <TextView
-        android:text="Bytes Available:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+            <Button
+                android:text="Connect Bluetooth"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:id="@+id/connectExperiment"
+                android:layout_weight="0.5" />
+        </LinearLayout>
 
-    <TextView
-        android:text="0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/btnStartLiftUp"
-        android:layout_toEndOf="@+id/btnStartLiftUp"
-        android:id="@+id/textView2" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
 
-    <Button
-        android:text="@string/btnStartLiftUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="csvMarkStartLiftUp"
-        android:id="@+id/btnStartLiftUp"
-        android:layout_alignBottom="@+id/btnStopLiftUp"
-        android:layout_alignLeft="@+id/btnStartPush"
-        android:layout_alignStart="@+id/btnStartPush"
-        android:layout_marginBottom="55dp" />
+            <Button
+                android:text="@string/btnStartExperiment"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStartExperiment"
+                android:id="@+id/btnStartExperiment"
+                android:layout_weight="0.5" />
 
-    <Button
-        android:text="@string/btnStopLiftUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="csvMarkStopLiftUp"
-        android:id="@+id/btnStopLiftUp"
-        android:layout_marginTop="58dp"
-        android:layout_below="@+id/btnStopPush"
-        android:layout_toRightOf="@+id/btnStartExperiment"
-        android:layout_toEndOf="@+id/btnStartExperiment" />
+            <Button
+                android:text="@string/btnStopExperiment"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStopExperiment"
+                android:id="@+id/btnStopExperiment"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:text="@string/btnStartRotation"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStartRotation"
+                android:id="@+id/btnStartRotation"
+                android:layout_weight="0.5" />
+
+            <Button
+                android:text="@string/btnStopRotation"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStopRotation"
+                android:id="@+id/btnStopRotation"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:text="@string/btnStartPush"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStartPush"
+                android:id="@+id/btnStartPush"
+                android:layout_weight="0.5" />
+
+            <Button
+                android:text="@string/btnStopPush"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStopPush"
+                android:id="@+id/btnStopPush"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <Button
+                android:text="@string/btnStartLiftUp"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStartLiftUp"
+                android:id="@+id/btnStartLiftUp"
+                android:layout_weight="0.5" />
+
+            <Button
+                android:text="@string/btnStopLiftUp"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:onClick="csvMarkStopLiftUp"
+                android:id="@+id/btnStopLiftUp"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Bytes Available:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView" />
+
+        <TextView
+            android:text="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2" />
+    </LinearLayout>
 
 </RelativeLayout>
+
+</ScrollView>

@@ -37,7 +37,7 @@ public class CSVSetup{
                 + min + "_" + sec + ".csv";
     }
 
-    public void createNewCSVFile() {
+    public void createNewCSVFile(String participantName) {
         // Dateiname wird generiert.
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -47,7 +47,7 @@ public class CSVSetup{
         int min = calendar.get(Calendar.MINUTE);
         int sec = calendar.get(Calendar.SECOND);
 
-        this.fileName = "EMGData_" + day + "_" + month + "_" + year + "_" + hour + "_"
+        this.fileName = participantName + "_" + day + "_" + month + "_" + year + "_" + hour + "_"
                 + min + "_" + sec + ".csv";
 
         writeFile(this.fileName);

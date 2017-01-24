@@ -14,6 +14,8 @@ import android.view.View;
 import bluetooth.BluetoothSetup;
 import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
+
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener  {
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
     static BluetoothSetup btSetup;
+
+    EditText currentParticipantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,9 +139,10 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
 
     public void createNewCsvFile(View view) {
-        Toast.makeText(getApplicationContext(), "Created New CSV File", Toast.LENGTH_LONG).show();
+        currentParticipantName = (EditText)findViewById(R.id.participantName);
         CSVSetup csv = CSVSetup.getInstance();
-        csv.createNewCSVFile();
+        csv.createNewCSVFile(currentParticipantName.getText().toString());
+        Toast.makeText(getApplicationContext(), "Created New CSV File", Toast.LENGTH_LONG).show();
     }
 
     public void createMarkInCsv(View view) {

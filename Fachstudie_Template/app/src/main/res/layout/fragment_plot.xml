@@ -15,22 +15,18 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnMarkCsv" />
+        android:layout_above="@+id/imgbutton" />
 
     <ImageButton
         android:id="@+id/imgbutton"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:gravity="center_horizontal"
         app:srcCompat="@drawable/ic_bluetooth_no_connection"
         android:onClick="showDevice (StartFragment)"
-        android:adjustViewBounds="false"
-        android:layout_gravity="center"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_centerHorizontal="true" />
 
-    <Button
+    <!-- <Button
         android:text="@string/btnCreateMarkInCsv"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -39,5 +35,5 @@
         android:id="@+id/btnMarkCsv"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/imgbutton"
-        android:layout_toStartOf="@+id/imgbutton" />
+        android:layout_toStartOf="@+id/imgbutton" /> -->
 </RelativeLayout>
