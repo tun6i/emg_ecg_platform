@@ -104,14 +104,20 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 Settings.getInstance().setActiveFragment(1);
                 break;
             case 2:
-                fragment = new InformationFragment();
-                title = getString(R.string.title_information);
+                fragment = new HeatmapFragment();
+                title = getString(R.string.title_heatmap);
                 Settings.getInstance().setActiveFragment(2);
                 break;
             case 3:
+                fragment = new InformationFragment();
+                title = getString(R.string.title_information);
+                Settings.getInstance().setActiveFragment(3);
+                break;
+            case 4:
                 fragment = new ExperimentFragment();
                 title = getString(R.string.title_experiment);
-                Settings.getInstance().setActiveFragment(3);
+                Settings.getInstance().setActiveFragment(4);
+
             default:
                 break;
         }
