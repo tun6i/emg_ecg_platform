@@ -65,7 +65,7 @@ public class HeatmapFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
 
 
-        view = (ImageView) rootView.findViewById(R.id.imageView2);
+        /*view = (ImageView) rootView.findViewById(R.id.imageView2);
         view.setClickable(true);
         view.setImageBitmap(b);
 
@@ -79,7 +79,7 @@ public class HeatmapFragment extends Fragment {
             public void onClick(View v) {
                 c.drawLine(123,123,0,0, paint);
             }
-        });
+        });*/
 
 
 
