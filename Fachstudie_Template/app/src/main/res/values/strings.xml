@@ -6,9 +6,9 @@
     <string name="drawer_close">Close</string>
 
     <string name="nav_item_home">Home</string>
+    <string name="nav_item_information">Information</string>
     <string name="nav_item_experiment">Experiment</string>
     <string name="nav_item_plot">Plot</string>
-    <string name="nav_item_information">Information</string>
     <string name="nav_item_heatmap">Heatmap</string>
 
     <string name="not_connected">Connect to device</string>
@@ -17,16 +17,16 @@
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
+        <item>@string/nav_item_information</item>
         <item>@string/nav_item_plot</item>
         <item>@string/nav_item_heatmap</item>
-        <item>@string/nav_item_information</item>
         <item>@string/nav_item_experiment</item>
     </string-array>
 
     <string name="title_home">Home</string>
+    <string name="title_information">Information</string>
     <string name="title_plot">Plot</string>
     <string name="title_experiment">Experiment</string>
-    <string name="title_information">Information</string>
     <string name="title_heatmap">Heatmap</string>
 
 
