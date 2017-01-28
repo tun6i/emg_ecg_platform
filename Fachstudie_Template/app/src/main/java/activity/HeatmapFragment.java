@@ -2,6 +2,7 @@ package activity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -23,8 +24,8 @@ import java.util.Random;
 import de.fachstudie.fachstudie_template.R;
 
 public class HeatmapFragment extends Fragment {
-    public HeatmapFragment() {
 
+    public HeatmapFragment() {
     }
 
     @Override
@@ -36,6 +37,14 @@ public class HeatmapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
 
+
+
+        /*ShapeDrawable sd = new ShapeDrawable(new OvalShape());
+        sd.setIntrinsicHeight(100);
+        sd.setIntrinsicWidth(100);
+        sd.getPaint().setColor(Color.parseColor("#abcd123"));
+        ImageView iv = (ImageView) rootView.findViewById(R.id.imageView);
+        iv.setBackground(sd);*/
 
         return rootView;
     }

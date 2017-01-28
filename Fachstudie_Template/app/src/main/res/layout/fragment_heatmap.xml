@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:orientation="vertical"
+    tools:context="activity.HeatmapFragment">
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_weight=".5"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/unterarm2"
-        android:id="@+id/imageView" />
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="55dp">
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/unterarm1"
-        android:id="@+id/imageView2"
-        android:layout_weight=".5" />
-</LinearLayout>
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight=".5"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/unterarm2"
+            android:id="@+id/imageView" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/unterarm1"
+            android:id="@+id/imageView2"
+            android:layout_weight=".5" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imgbutton"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/ic_bluetooth_no_connection"
+        android:onClick="showDevice (StartFragment)"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
