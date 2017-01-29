@@ -61,11 +61,10 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/imgbutton"
+        android:id="@+id/imgbutton2"
         android:layout_width="150dp"
         android:layout_height="50dp"
         app:srcCompat="@drawable/ic_bluetooth_no_connection"
-        android:onClick="showDevice (StartFragment)"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
