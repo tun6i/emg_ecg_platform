@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -51,11 +52,14 @@ public class HeatmapFragment extends Fragment {
         imageViewArm1.setImageResource(R.drawable.unterarm1);
         imageViewArm2.setImageResource(R.drawable.unterarm2);
 
-        imageViewArm1.setClickable(true);
-        imageViewArm1.setOnClickListener(new View.OnClickListener() {
+        imageViewArm1.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-
+            public boolean onTouch(View v, MotionEvent event) {
+                imageViewArm1.x = event.getX();
+                imageViewArm1.y = event.getY();
+                imageViewArm1.paint.setColor(Color.RED);
+                imageViewArm1.invalidate();
+                return false;
             }
         });
 
