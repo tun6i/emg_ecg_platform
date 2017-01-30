@@ -12,6 +12,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.hardware.display.DisplayManager;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -33,6 +34,18 @@ public class HeatmapFragment extends Fragment {
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
     private ImageButton imgButton;
     private final int CONNECTION_ESTABLISHED = 1;
+    CustomImageView imageViewArm1;
+
+    Handler handler = new Handler();
+    Runnable changeColors = new Runnable() {
+        @Override
+        public void run() {
+            Random rnd = new Random();
+            imageViewArm1.paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+            imageViewArm1.invalidate();
+            handler.postDelayed(this, 700);
+        }
+    };
 
 
     public HeatmapFragment() {
@@ -47,7 +60,7 @@ public class HeatmapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton2);
-        final CustomImageView imageViewArm1 = (CustomImageView) rootView.findViewById(R.id.customImageView);
+        imageViewArm1 = (CustomImageView) rootView.findViewById(R.id.customImageView);
         CustomImageView imageViewArm2 = (CustomImageView) rootView.findViewById(R.id.customImageView2);
         imageViewArm1.setImageResource(R.drawable.unterarm1);
         imageViewArm2.setImageResource(R.drawable.unterarm2);
@@ -57,11 +70,11 @@ public class HeatmapFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 imageViewArm1.x = event.getX();
                 imageViewArm1.y = event.getY();
-                imageViewArm1.paint.setColor(Color.RED);
                 imageViewArm1.invalidate();
                 return false;
             }
         });
+        changeColors.run();
 
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override

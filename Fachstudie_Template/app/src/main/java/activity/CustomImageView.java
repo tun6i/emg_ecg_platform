@@ -37,8 +37,7 @@ public class CustomImageView extends ImageView{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        paint.setColor(Color.RED);
-        invalidate();
+         invalidate();
         return true;
     }
 }
