@@ -44,18 +44,19 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp">
 
-        <ImageView
+        <view
             android:layout_width="0dp"
-            android:layout_weight=".5"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/unterarm2"
-            android:id="@+id/imageView" />
+            class="activity.CustomImageView"
+            android:id="@+id/customImageView"
 
-        <ImageView
+            android:layout_weight=".5" />
+
+        <view
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/unterarm1"
-            android:id="@+id/imageView2"
+            class="activity.CustomImageView"
+            android:id="@+id/customImageView2"
             android:layout_weight=".5" />
 
     </LinearLayout>

@@ -46,13 +46,18 @@ public class HeatmapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton2);
+        final CustomImageView imageViewArm1 = (CustomImageView) rootView.findViewById(R.id.customImageView);
+        CustomImageView imageViewArm2 = (CustomImageView) rootView.findViewById(R.id.customImageView2);
+        imageViewArm1.setImageResource(R.drawable.unterarm1);
+        imageViewArm2.setImageResource(R.drawable.unterarm2);
 
-        /*ShapeDrawable sd = new ShapeDrawable(new OvalShape());
-        sd.setIntrinsicHeight(100);
-        sd.setIntrinsicWidth(100);
-        sd.getPaint().setColor(Color.parseColor("#abcd123"));
-        ImageView iv = (ImageView) rootView.findViewById(R.id.imageView);
-        iv.setBackground(sd);*/
+        imageViewArm1.setClickable(true);
+        imageViewArm1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +78,7 @@ public class HeatmapFragment extends Fragment {
 
             }
         });
+
 
         return rootView;
     }
