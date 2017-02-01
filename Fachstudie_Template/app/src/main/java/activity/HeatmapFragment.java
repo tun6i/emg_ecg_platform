@@ -35,6 +35,7 @@ public class HeatmapFragment extends Fragment {
     private ImageButton imgButton;
     private final int CONNECTION_ESTABLISHED = 1;
     CustomImageView imageViewArm1;
+    CustomImageView imageViewArm2;
 
     Handler handler = new Handler();
     Runnable changeColors = new Runnable() {
@@ -61,16 +62,24 @@ public class HeatmapFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton2);
         imageViewArm1 = (CustomImageView) rootView.findViewById(R.id.customImageView);
-        CustomImageView imageViewArm2 = (CustomImageView) rootView.findViewById(R.id.customImageView2);
-        imageViewArm1.setImageResource(R.drawable.unterarm1);
-        imageViewArm2.setImageResource(R.drawable.unterarm2);
+        imageViewArm2 = (CustomImageView) rootView.findViewById(R.id.customImageView2);
+        //imageViewArm1.setImageResource(R.drawable.unterarm1);
+        //imageViewArm2.setImageResource(R.drawable.unterarm2);
 
         imageViewArm1.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 imageViewArm1.x = event.getX();
                 imageViewArm1.y = event.getY();
-                imageViewArm1.invalidate();
+                return false;
+            }
+        });
+
+        imageViewArm2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                imageViewArm2.x = event.getX();
+                imageViewArm2.y = event.getY();
                 return false;
             }
         });

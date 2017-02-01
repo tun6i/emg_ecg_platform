@@ -37,7 +37,7 @@ public class CustomImageView extends ImageView{
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-         invalidate();
+        invalidate();
         return true;
     }
 }
