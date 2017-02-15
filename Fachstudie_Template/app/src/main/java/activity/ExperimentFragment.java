@@ -110,7 +110,7 @@ public class ExperimentFragment extends Fragment {
                 }
             }
             x_Axis = x_Axis + 0.01;
-            plotRunnableHandler.post(this);
+            plotRunnableHandler.postDelayed(this, 15);
         }
     };
 
@@ -168,9 +168,9 @@ public class ExperimentFragment extends Fragment {
         super.onResume();
         if (btSetup.isConnected()) {
             plotRunnable.run();
-            plotRunnable.run();
-            plotRunnable.run();
-            plotRunnable.run();
+            //plotRunnable.run();
+            //plotRunnable.run();
+            //plotRunnable.run();
         }
     }
 
