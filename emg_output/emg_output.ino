@@ -47,14 +47,14 @@ void readEMG () {
   buffer[3] = lowByte(valueCH1);
   buffer[4] = highByte(valueCH2);
   buffer[5] = lowByte(valueCH2);
-  buffer[6] = highByte(valueCH3);
-  buffer[7] = lowByte(valueCH3);
-  buffer[8] = highByte(valueCH4);
-  buffer[9] = lowByte(valueCH4);
-  buffer[10] = highByte(valueCH5);
-  buffer[11] = lowByte(valueCH5);
-  buffer[12] = highByte(valueCH6);
-  buffer[13] = lowByte(valueCH6);
+  //buffer[6] = highByte(valueCH3);
+  //buffer[7] = lowByte(valueCH3);
+  //buffer[8] = highByte(valueCH4);
+  //buffer[9] = lowByte(valueCH4);
+  //buffer[10] = highByte(valueCH5);
+  //buffer[11] = lowByte(valueCH5);
+  //buffer[12] = highByte(valueCH6);
+  //buffer[13] = lowByte(valueCH6);
   
   //btSerial.write(highByte(valueCH1));
   //btSerial.write(lowByte(valueCH1));
