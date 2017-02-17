@@ -59,6 +59,7 @@ public class ExperimentFragment extends Fragment {
     //Debug
     long starttime = System.currentTimeMillis();
     long stoptime = System.currentTimeMillis();
+    double tmpX_Axis;
 
     private Handler plotRunnableHandler = new Handler();
     private Runnable plotRunnable = new Runnable() {
@@ -86,7 +87,7 @@ public class ExperimentFragment extends Fragment {
                         wrapper = ByteBuffer.wrap(buffer);
 
 
-                        double tmpX_Axis = x_Axis;
+                        tmpX_Axis = x_Axis;
                         short tmpCh1 = wrapper.getShort();
                         short tmpCh2 = wrapper.getShort();
                         short tmpCh3 = wrapper.getShort();
@@ -168,9 +169,10 @@ public class ExperimentFragment extends Fragment {
         super.onResume();
         if (btSetup.isConnected()) {
             plotRunnable.run();
-            plotRunnable.run();
-            plotRunnable.run();
-            plotRunnable.run();
+            //plotRunnable.run();
+            //plotRunnable.run();
+            //plotRunnable.run();
+            //plotRunnable.run();
         }
     }
 
