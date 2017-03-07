@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -33,21 +34,59 @@ public class HeatmapFragment extends Fragment {
 
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
     private ImageButton imgButton;
+    private Button buttonAdd;
+    private Button buttonDel;
     private final int CONNECTION_ESTABLISHED = 1;
     CustomImageView imageViewArm1;
     CustomImageView imageViewArm2;
 
     Handler handler = new Handler();
     Runnable changeColors = new Runnable() {
+        int g = 255;
+        int r = 5;
         @Override
         public void run() {
             Random rnd = new Random();
-            imageViewArm1.paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+
+            /*
+            * 255...... 0......0 1023
+            * 255..... 25......0 985
+            * 255..... 50......0 960
+            * 255..... 75......0 935
+            * 255.....100......0 910
+            * 255.....125......0 885
+            * 255.....150......0 860
+            * 255.....175......0 835
+            * 255.....200......0 810
+            * 255.....225......0 785
+            * 255.....255......0 760
+            * 225.....255......0 735
+            * 200.....255......0 710
+            * 175.....255......0 685
+            * 250.....255......0 660
+            * 125.....255......0 635
+            * 100.....255......0 610
+            *  75.....255......0 585
+            *  50.....255......0 560
+            *  25.....255......0 535
+            *   0.....255......0 510
+             */
+            imageViewArm1.setColor(r, g, 0, imageViewArm1.circle1);
+            imageViewArm1.setColor(r, g, 255,imageViewArm1.circle2);
             imageViewArm1.invalidate();
-            handler.postDelayed(this, 700);
+            imageViewArm2.invalidate();
+            handler.postDelayed(this, 100);
+            if (r < 250) {
+                r+=25;
+            } else if (g > 5) {
+                g-=25;
+            } else {
+                g = 255;
+                r = 5;
+            }
+
         }
     };
-
 
     public HeatmapFragment() {
     }
@@ -61,6 +100,8 @@ public class HeatmapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton2);
+        buttonAdd = (Button) rootView.findViewById(R.id.button_add);
+        buttonDel = (Button) rootView.findViewById(R.id.button_del);
         imageViewArm1 = (CustomImageView) rootView.findViewById(R.id.customImageView);
         imageViewArm2 = (CustomImageView) rootView.findViewById(R.id.customImageView2);
         //imageViewArm1.setImageResource(R.drawable.unterarm1);
@@ -83,6 +124,8 @@ public class HeatmapFragment extends Fragment {
                 return false;
             }
         });
+
+
         changeColors.run();
 
         imgButton.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +145,24 @@ public class HeatmapFragment extends Fragment {
                     }
                 }
 
+            }
+        });
+
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageViewArm1.channels < 6) {
+                    imageViewArm1.channels += 1;
+                }
+            }
+        });
+
+        buttonDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageViewArm1.channels > 1) {
+                    imageViewArm1.channels -= 1;
+                }
             }
         });
 

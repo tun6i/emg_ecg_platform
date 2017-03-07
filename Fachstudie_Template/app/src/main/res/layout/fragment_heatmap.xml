@@ -62,12 +62,35 @@
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imgbutton2"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        app:srcCompat="@drawable/ic_bluetooth_no_connection"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:text="+"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/button_add" />
+
+        <Button
+            android:text="-"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_del"
+            android:layout_weight="1" />
+
+        <ImageButton
+            android:id="@+id/imgbutton2"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_bluetooth_no_connection"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+    </LinearLayout>
+
 
 </RelativeLayout>
