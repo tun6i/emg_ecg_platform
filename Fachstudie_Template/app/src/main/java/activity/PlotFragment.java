@@ -60,7 +60,7 @@ public class PlotFragment extends Fragment {
                     stoptime = System.currentTimeMillis();
                     Log.w("Time", stoptime - starttime + "");
                     starttime = System.currentTimeMillis();
-                    if (inputStream.available() > 0) {
+                    if (inputStream.available() > 120) {
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
                             wrapper = ByteBuffer.wrap(buffer);
