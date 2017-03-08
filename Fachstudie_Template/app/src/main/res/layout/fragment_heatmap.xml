@@ -16,22 +16,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp">
 
-            <TextView
-                android:text="Obere Seite "
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="wrap_content"
-                android:id="@+id/obereUnterarmSeite"
-                android:gravity="center" />
-
-            <TextView
-                android:text="Untere Seite "
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:layout_height="wrap_content"
-                android:id="@+id/untereUnterarmSeite"
-                android:gravity="center" />
-
         </LinearLayout>
 
     </LinearLayout>
@@ -45,20 +29,12 @@
         android:layout_marginRight="10dp">
 
         <view
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             class="activity.CustomImageView"
             android:id="@+id/customImageView"
             android:layout_weight=".5"
             android:src="@drawable/unterarm1" />
-
-        <view
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            class="activity.CustomImageView"
-            android:id="@+id/customImageView2"
-            android:layout_weight=".5"
-            android:src="@drawable/unterarm2" />
 
     </LinearLayout>
 

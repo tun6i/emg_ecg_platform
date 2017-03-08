@@ -17,12 +17,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import java.io.IOException;
 import java.util.Random;
@@ -74,7 +78,6 @@ public class HeatmapFragment extends Fragment {
             imageViewArm1.setColor(r, g, 0, imageViewArm1.circle1);
             imageViewArm1.setColor(r, g, 255,imageViewArm1.circle2);
             imageViewArm1.invalidate();
-            imageViewArm2.invalidate();
             handler.postDelayed(this, 100);
             if (r < 250) {
                 r+=25;
@@ -94,6 +97,7 @@ public class HeatmapFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -103,7 +107,6 @@ public class HeatmapFragment extends Fragment {
         buttonAdd = (Button) rootView.findViewById(R.id.button_add);
         buttonDel = (Button) rootView.findViewById(R.id.button_del);
         imageViewArm1 = (CustomImageView) rootView.findViewById(R.id.customImageView);
-        imageViewArm2 = (CustomImageView) rootView.findViewById(R.id.customImageView2);
         //imageViewArm1.setImageResource(R.drawable.unterarm1);
         //imageViewArm2.setImageResource(R.drawable.unterarm2);
 
@@ -112,15 +115,6 @@ public class HeatmapFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 imageViewArm1.x = event.getX();
                 imageViewArm1.y = event.getY();
-                return false;
-            }
-        });
-
-        imageViewArm2.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                imageViewArm2.x = event.getX();
-                imageViewArm2.y = event.getY();
                 return false;
             }
         });
@@ -170,6 +164,16 @@ public class HeatmapFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_options, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
 
 
     @Override
