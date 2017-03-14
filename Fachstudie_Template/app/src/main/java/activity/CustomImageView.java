@@ -129,8 +129,8 @@ public class CustomImageView extends ImageView{
     }
 
     private static class Circle {
-        private float centerX = 30;
-        private float centerY = 75;
+        private float centerX = 100;
+        private float centerY = 100;
         private Paint paint = new Paint();
 
         public Circle() {

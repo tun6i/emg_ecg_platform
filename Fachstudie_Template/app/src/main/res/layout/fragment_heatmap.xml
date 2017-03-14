@@ -20,20 +20,20 @@
         android:orientation="horizontal">
 
         <Button
-            android:text="Next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_next"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true" />
-
-        <Button
             android:text="Prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button_prev"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true" />
+
+        <Button
+            android:text="Next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_next"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
 
     </LinearLayout>
 
