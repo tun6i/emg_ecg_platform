@@ -64,27 +64,27 @@ public class CustomImageView extends ImageView{
         float c6Y = circle6.getCenterY();
 
         if (((tmpX >= c1X - precision) & (tmpX <= c1X + precision)) & (tmpY >= c1Y - precision) & (tmpY <= c1Y + precision)) {
-            //Log.d("long", "Channel1 getroffen");
+            Log.d("long", "Channel1 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle1;
         } else if (((tmpX >= c2X - precision) & (tmpX <= c2X + precision)) & (tmpY >= c2Y - precision) & (tmpY <= c2Y + precision)) {
-            //Log.d("long", "Channel2 getroffen");
+            Log.d("long", "Channel2 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle2;
         } else if (((tmpX >= c3X - precision) & (tmpX <= c3X + precision)) & (tmpY >= c3Y - precision) & (tmpY <= c3Y + precision)) {
-            //Log.d("long", "Channel3 getroffen");
+            Log.d("long", "Channel3 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle3;
         } else if (((tmpX >= c4X - precision) & (tmpX <= c4X + precision)) & (tmpY >= c4Y - precision) & (tmpY <= c4Y + precision)) {
-            //Log.d("long", "Channel4 getroffen");
+            Log.d("long", "Channel4 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle4;
         } else if (((tmpX >= c5X - precision) & (tmpX <= c5X + precision)) & (tmpY >= c5Y - precision) & (tmpY <= c5Y + precision)) {
-            //Log.d("long", "Channel5 getroffen");
+            Log.d("long", "Channel5 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle5;
         } else if (((tmpX >= c6X - precision) & (tmpX <= c6X + precision)) & (tmpY >= c6Y - precision) & (tmpY <= c6Y + precision)) {
-            //Log.d("long", "Channel6 getroffen");
+            Log.d("long", "Channel6 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle6;
         }
@@ -105,7 +105,7 @@ public class CustomImageView extends ImageView{
 
     private boolean isChannelActive = false;
     // Precision (0 Circle muss genau in der Mitte getroffen werden)
-    private int precision = 80;
+    private int precision = 40;
     private Vibrator v = (Vibrator) this.getContext().getSystemService(Context.VIBRATOR_SERVICE);
     private int firstDuration = 50;
     private int secondDuration = 200;
