@@ -10,12 +10,12 @@
     <TextView
         android:id="@+id/label"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="5dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="45dp"
-        android:text="HOME"
+        android:textSize="40dp"
+        android:text="EMG Viewer"
         android:textStyle="bold"/>
 
     <TextView
@@ -23,10 +23,40 @@
         android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Edit fragment_home.xml to change the appearance." />
+        android:textSize="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:text="Plot" />
+
+    <TextView
+        android:layout_below="@id/label"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="30dp"
+        android:text="Text" />
+
+    <TextView
+        android:layout_below="@id/label"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="30dp"
+        android:text="Heatmap" />
+
+    <TextView
+        android:layout_below="@id/label"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:layout_marginTop="285dp"
+        android:layout_marginLeft="30dp"
+        android:text="Text" />
 
     <!--<Button
         android:text="@string/btnNewCSVFile"

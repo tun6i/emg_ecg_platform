@@ -105,7 +105,7 @@ public class CustomImageView extends ImageView{
 
     private boolean isChannelActive = false;
     // Precision (0 Circle muss genau in der Mitte getroffen werden)
-    private int precision = 60;
+    private int precision = 80;
     private Vibrator v = (Vibrator) this.getContext().getSystemService(Context.VIBRATOR_SERVICE);
     private int firstDuration = 50;
     private int secondDuration = 200;
