@@ -117,9 +117,6 @@ public class HeatmapFragment extends Fragment {
                         short tmpCh5 = wrapper.getShort();
                         short tmpCh6 = wrapper.getShort();
 
-
-
-
                         if (tmpCh1 <= 255) {
                             CustomImageView.setColor(255, tmpCh1, 0, CustomImageView.circle1);
                         } else if (tmpCh1 >= 256 && tmpCh1 <= 511) {
@@ -130,8 +127,55 @@ public class HeatmapFragment extends Fragment {
                             CustomImageView.setColor(255, 1023 - tmpCh1, 0, CustomImageView.circle1);
                         }
 
+                        if (tmpCh2 <= 255) {
+                            CustomImageView.setColor(255, tmpCh2, 0, CustomImageView.circle2);
+                        } else if (tmpCh2 >= 256 && tmpCh2 <= 511) {
+                            CustomImageView.setColor(511 - tmpCh2, 255, 0, CustomImageView.circle2);
+                        } else if (tmpCh2 >= 512 && tmpCh2 <=  767) {
+                            CustomImageView.setColor(tmpCh2 - 512, 255, 0, CustomImageView.circle2);
+                        } else {
+                            CustomImageView.setColor(255, 1023 - tmpCh2, 0, CustomImageView.circle2);
+                        }
 
+                        if (tmpCh3 <= 255) {
+                            CustomImageView.setColor(255, tmpCh3, 0, CustomImageView.circle3);
+                        } else if (tmpCh3 >= 256 && tmpCh3 <= 511) {
+                            CustomImageView.setColor(511 - tmpCh3, 255, 0, CustomImageView.circle3);
+                        } else if (tmpCh3 >= 512 && tmpCh3 <=  767) {
+                            CustomImageView.setColor(tmpCh3 - 512, 255, 0, CustomImageView.circle3);
+                        } else {
+                            CustomImageView.setColor(255, 1023 - tmpCh3, 0, CustomImageView.circle3);
+                        }
 
+                        if (tmpCh4 <= 255) {
+                            CustomImageView.setColor(255, tmpCh4, 0, CustomImageView.circle4);
+                        } else if (tmpCh4 >= 256 && tmpCh4 <= 511) {
+                            CustomImageView.setColor(511 - tmpCh4, 255, 0, CustomImageView.circle4);
+                        } else if (tmpCh4 >= 512 && tmpCh4 <=  767) {
+                            CustomImageView.setColor(tmpCh4 - 512, 255, 0, CustomImageView.circle4);
+                        } else {
+                            CustomImageView.setColor(255, 1023 - tmpCh4, 0, CustomImageView.circle4);
+                        }
+
+                        if (tmpCh5 <= 255) {
+                            CustomImageView.setColor(255, tmpCh5, 0, CustomImageView.circle5);
+                        } else if (tmpCh5 >= 256 && tmpCh5 <= 511) {
+                            CustomImageView.setColor(511 - tmpCh5, 255, 0, CustomImageView.circle5);
+                        } else if (tmpCh5 >= 512 && tmpCh5 <=  767) {
+                            CustomImageView.setColor(tmpCh5 - 512, 255, 0, CustomImageView.circle5);
+                        } else {
+                            CustomImageView.setColor(255, 1023 - tmpCh5, 0, CustomImageView.circle5);
+                        }
+
+                        if (tmpCh6 <= 255) {
+                            CustomImageView.setColor(255, tmpCh6, 0, CustomImageView.circle6);
+                        } else if (tmpCh6 >= 256 && tmpCh6 <= 511) {
+                            CustomImageView.setColor(511 - tmpCh5, 255, 0, CustomImageView.circle6);
+                        } else if (tmpCh6 >= 512 && tmpCh6 <=  767) {
+                            CustomImageView.setColor(tmpCh6 - 512, 255, 0, CustomImageView.circle6);
+                        } else {
+                            CustomImageView.setColor(255, 1023 - tmpCh6, 0, CustomImageView.circle6);
+                        }
 
                         imageViewArm1.invalidate();
 
