@@ -4,11 +4,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v4.hardware.display.DisplayManagerCompat;
+import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.os.Vibrator;
 
@@ -29,20 +32,24 @@ public class CustomImageView extends ImageView{
         super(context, attributeSet, defStyle);
     }
 
-    final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
+    /*final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
         public void onLongPress(MotionEvent e) {
-            Log.e("LongTouch", "Longpress detected");
 
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            Log.e("LongTouch", "Longpress detected");
             if (!isChannelActive) {
                 // Wenn Channel deaktiviert ist, dann aktiviere ihn.
                 activateChannel(e);
                 Log.d("long", "Active Channel");
-            } else {
-                isChannelActive = false;
-                v.vibrate(secondDuration);
             }
+            return true;
         }
-    });
+    });*/
+
+
 
     private void activateChannel(MotionEvent event) {
         // X und Y - Werte aus dem Event.
@@ -62,32 +69,32 @@ public class CustomImageView extends ImageView{
         float c6X = circle6.getCenterX();
         float c6Y = circle6.getCenterY();
 
-        if (((tmpX >= c1X - precision) & (tmpX <= c1X + precision)) & (tmpY >= c1Y - precision) & (tmpY <= c1Y + precision)) {
+        if (((tmpX >= c1X - (ovalWidth + precision)) & (tmpX <= c1X + ovalWidth + precision)) & (tmpY >= c1Y - (ovalHeight + precision)) & (tmpY <= c1Y + ovalHeight + precision)) {
             Log.d("long", "Channel1 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle1;
             isChannelActive = true;
-        } else if (((tmpX >= c2X - precision) & (tmpX <= c2X + precision)) & (tmpY >= c2Y - precision) & (tmpY <= c2Y + precision)) {
+        } else if (((tmpX >= c2X - (ovalWidth + precision)) & (tmpX <= c2X + ovalWidth + precision)) & (tmpY >= c2Y - (ovalHeight + precision)) & (tmpY <= c2Y + ovalHeight + precision)) {
             Log.d("long", "Channel2 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle2;
             isChannelActive = true;
-        } else if (((tmpX >= c3X - precision) & (tmpX <= c3X + precision)) & (tmpY >= c3Y - precision) & (tmpY <= c3Y + precision)) {
+        } else if (((tmpX >= c3X - (ovalWidth + precision)) & (tmpX <= c3X + ovalWidth + precision)) & (tmpY >= c3Y - (ovalHeight + precision)) & (tmpY <= c3Y + ovalHeight + precision)) {
             Log.d("long", "Channel3 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle3;
             isChannelActive = true;
-        } else if (((tmpX >= c4X - precision) & (tmpX <= c4X + precision)) & (tmpY >= c4Y - precision) & (tmpY <= c4Y + precision)) {
+        } else if (((tmpX >= c4X - (ovalWidth + precision)) & (tmpX <= c4X + ovalWidth + precision)) & (tmpY >= c4Y - (ovalHeight + precision)) & (tmpY <= c4Y + ovalHeight + precision)) {
             Log.d("long", "Channel4 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle4;
             isChannelActive = true;
-        } else if (((tmpX >= c5X - precision) & (tmpX <= c5X + precision)) & (tmpY >= c5Y - precision) & (tmpY <= c5Y + precision)) {
+        } else if (((tmpX >= c5X - (ovalWidth + precision)) & (tmpX <= c5X + ovalWidth + precision)) & (tmpY >= c5Y - (ovalHeight + precision)) & (tmpY <= c5Y + ovalHeight + precision)) {
             Log.d("long", "Channel5 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle5;
             isChannelActive = true;
-        } else if (((tmpX >= c6X - precision) & (tmpX <= c6X + precision)) & (tmpY >= c6Y - precision) & (tmpY <= c6Y + precision)) {
+        } else if (((tmpX >= c6X - (ovalWidth + precision)) & (tmpX <= c6X + ovalWidth + precision)) & (tmpY >= c6Y - (ovalHeight + precision)) & (tmpY <= c6Y + ovalHeight + precision)) {
             Log.d("long", "Channel6 getroffen");
             v.vibrate(firstDuration);
             activeCircle = circle6;
@@ -110,10 +117,12 @@ public class CustomImageView extends ImageView{
 
     private boolean isChannelActive = false;
     // Precision (0 Circle muss genau in der Mitte getroffen werden)
-    private int precision = 80;
+    private int precision = 20;
     private Vibrator v = (Vibrator) this.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-    private int firstDuration = 50;
-    private int secondDuration = 200;
+    private int firstDuration = 25;
+    private int secondDuration = 25;
+    int ovalWidth = 30;
+    int ovalHeight = 75;
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -122,92 +131,83 @@ public class CustomImageView extends ImageView{
         paint.setUnderlineText(true);
         paint.setARGB(255, 255, 255, 255);
 
-        //activeCircle = circle1;
-
         switch (channels) {
             case 1:
-                canvas.drawOval(circle1.getCenterX() - 30, circle1.getCenterY() - 75,
-                        circle1.getCenterX() + 30, circle1.getCenterY() + 75,circle1.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - 30, circle1.getCenterY() + 15, paint);
-                //activeCircle = circle1;
+                canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
+                        circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
                 break;
             case 2:
-                canvas.drawOval(circle1.getCenterX() - 30, circle1.getCenterY() - 75,
-                        circle1.getCenterX() + 30, circle1.getCenterY() + 75,circle1.paint);
-                canvas.drawOval(circle2.getCenterX() - 30, circle2.getCenterY() - 75,
-                        circle2.getCenterX() + 30, circle2.getCenterY() + 75,circle2.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - 30, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - 30, circle2.getCenterY() + 15, paint);
-                //activeCircle = circle2;
-
+                canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
+                        circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
+                canvas.drawOval(circle2.getCenterX() - ovalWidth, circle2.getCenterY() - ovalHeight,
+                        circle2.getCenterX() + ovalWidth, circle2.getCenterY() + ovalHeight,circle2.paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
                 break;
             case 3:
-                canvas.drawOval(circle1.getCenterX() - 30, circle1.getCenterY() - 75,
-                        circle1.getCenterX() + 30, circle1.getCenterY() + 75,circle1.paint);
-                canvas.drawOval(circle2.getCenterX() - 30, circle2.getCenterY() - 75,
-                        circle2.getCenterX() + 30, circle2.getCenterY() + 75,circle2.paint);
-                canvas.drawOval(circle3.getCenterX() - 30, circle3.getCenterY() - 75,
-                        circle3.getCenterX() + 30, circle3.getCenterY() + 75,circle3.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - 30, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - 30, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - 30, circle3.getCenterY() + 15, paint);
-                //activeCircle = circle3;
+                canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
+                        circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
+                canvas.drawOval(circle2.getCenterX() - ovalWidth, circle2.getCenterY() - ovalHeight,
+                        circle2.getCenterX() + ovalWidth, circle2.getCenterY() + ovalHeight,circle2.paint);
+                canvas.drawOval(circle3.getCenterX() - ovalWidth, circle3.getCenterY() - ovalHeight,
+                        circle3.getCenterX() + ovalWidth, circle3.getCenterY() + ovalHeight,circle3.paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
 
                 break;
             case 4:
-                canvas.drawOval(circle1.getCenterX() - 30, circle1.getCenterY() - 75,
-                        circle1.getCenterX() + 30, circle1.getCenterY() + 75,circle1.paint);
-                canvas.drawOval(circle2.getCenterX() - 30, circle2.getCenterY() - 75,
-                        circle2.getCenterX() + 30, circle2.getCenterY() + 75,circle2.paint);
-                canvas.drawOval(circle3.getCenterX() - 30, circle3.getCenterY() - 75,
-                        circle3.getCenterX() + 30, circle3.getCenterY() + 75,circle3.paint);
-                canvas.drawOval(circle4.getCenterX() - 30, circle4.getCenterY() - 75,
-                        circle4.getCenterX() + 30, circle4.getCenterY() + 75,circle4.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - 30, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - 30, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - 30, circle3.getCenterY() + 15, paint);
-                canvas.drawText("CH4", circle4.getCenterX() - 30, circle4.getCenterY() + 15, paint);
-                //activeCircle = circle4;
+                canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
+                        circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
+                canvas.drawOval(circle2.getCenterX() - ovalWidth, circle2.getCenterY() - ovalHeight,
+                        circle2.getCenterX() + ovalWidth, circle2.getCenterY() + ovalHeight,circle2.paint);
+                canvas.drawOval(circle3.getCenterX() - ovalWidth, circle3.getCenterY() - ovalHeight,
+                        circle3.getCenterX() + ovalWidth, circle3.getCenterY() + ovalHeight,circle3.paint);
+                canvas.drawOval(circle4.getCenterX() - ovalWidth, circle4.getCenterY() - ovalHeight,
+                        circle4.getCenterX() + ovalWidth, circle4.getCenterY() + ovalHeight,circle4.paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
+                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + 15, paint);
 
                 break;
             case 5:
-                canvas.drawOval(circle1.getCenterX() - 30, circle1.getCenterY() - 75,
-                        circle1.getCenterX() + 30, circle1.getCenterY() + 75,circle1.paint);
-                canvas.drawOval(circle2.getCenterX() - 30, circle2.getCenterY() - 75,
-                        circle2.getCenterX() + 30, circle2.getCenterY() + 75,circle2.paint);
-                canvas.drawOval(circle3.getCenterX() - 30, circle3.getCenterY() - 75,
-                        circle3.getCenterX() + 30, circle3.getCenterY() + 75,circle3.paint);
-                canvas.drawOval(circle4.getCenterX() - 30, circle4.getCenterY() - 75,
-                        circle4.getCenterX() + 30, circle4.getCenterY() + 75,circle4.paint);
-                canvas.drawOval(circle5.getCenterX() - 30, circle5.getCenterY() - 75,
-                        circle5.getCenterX() + 30, circle5.getCenterY() + 75,circle5.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - 30, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - 30, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - 30, circle3.getCenterY() + 15, paint);
-                canvas.drawText("CH4", circle4.getCenterX() - 30, circle4.getCenterY() + 15, paint);
-                canvas.drawText("CH5", circle5.getCenterX() - 30, circle5.getCenterY() + 15, paint);
-                //activeCircle = circle5;
+                canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
+                        circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
+                canvas.drawOval(circle2.getCenterX() - ovalWidth, circle2.getCenterY() - ovalHeight,
+                        circle2.getCenterX() + ovalWidth, circle2.getCenterY() + ovalHeight,circle2.paint);
+                canvas.drawOval(circle3.getCenterX() - ovalWidth, circle3.getCenterY() - ovalHeight,
+                        circle3.getCenterX() + ovalWidth, circle3.getCenterY() + ovalHeight,circle3.paint);
+                canvas.drawOval(circle4.getCenterX() - ovalWidth, circle4.getCenterY() - ovalHeight,
+                        circle4.getCenterX() + ovalWidth, circle4.getCenterY() + ovalHeight,circle4.paint);
+                canvas.drawOval(circle5.getCenterX() - ovalWidth, circle5.getCenterY() - ovalHeight,
+                        circle5.getCenterX() + ovalWidth, circle5.getCenterY() + ovalHeight,circle5.paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
+                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + 15, paint);
+                canvas.drawText("CH5", circle5.getCenterX() - ovalWidth, circle5.getCenterY() + 15, paint);
                 break;
             case 6:
-                canvas.drawOval(circle1.getCenterX() - 30, circle1.getCenterY() - 75,
-                        circle1.getCenterX() + 30, circle1.getCenterY() + 75,circle1.paint);
-                canvas.drawOval(circle2.getCenterX() - 30, circle2.getCenterY() - 75,
-                        circle2.getCenterX() + 30, circle2.getCenterY() + 75,circle2.paint);
-                canvas.drawOval(circle3.getCenterX() - 30, circle3.getCenterY() - 75,
-                        circle3.getCenterX() + 30, circle3.getCenterY() + 75,circle3.paint);
-                canvas.drawOval(circle4.getCenterX() - 30, circle4.getCenterY() - 75,
-                        circle4.getCenterX() + 30, circle4.getCenterY() + 75,circle4.paint);
-                canvas.drawOval(circle5.getCenterX() - 30, circle5.getCenterY() - 75,
-                        circle5.getCenterX() + 30, circle5.getCenterY() + 75,circle5.paint);
-                canvas.drawOval(circle6.getCenterX() - 30, circle6.getCenterY() - 75,
-                        circle6.getCenterX() + 30, circle6.getCenterY() + 75,circle6.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - 30, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - 30, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - 30, circle3.getCenterY() + 15, paint);
-                canvas.drawText("CH4", circle4.getCenterX() - 30, circle4.getCenterY() + 15, paint);
-                canvas.drawText("CH5", circle5.getCenterX() - 30, circle5.getCenterY() + 15, paint);
-                canvas.drawText("CH6", circle6.getCenterX() - 30, circle6.getCenterY() + 15, paint);
-                //activeCircle = circle6;
+                canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
+                        circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
+                canvas.drawOval(circle2.getCenterX() - ovalWidth, circle2.getCenterY() - ovalHeight,
+                        circle2.getCenterX() + ovalWidth, circle2.getCenterY() + ovalHeight,circle2.paint);
+                canvas.drawOval(circle3.getCenterX() - ovalWidth, circle3.getCenterY() - ovalHeight,
+                        circle3.getCenterX() + ovalWidth, circle3.getCenterY() + ovalHeight,circle3.paint);
+                canvas.drawOval(circle4.getCenterX() - ovalWidth, circle4.getCenterY() - ovalHeight,
+                        circle4.getCenterX() + ovalWidth, circle4.getCenterY() + ovalHeight,circle4.paint);
+                canvas.drawOval(circle5.getCenterX() - ovalWidth, circle5.getCenterY() - ovalHeight,
+                        circle5.getCenterX() + ovalWidth, circle5.getCenterY() + ovalHeight,circle5.paint);
+                canvas.drawOval(circle6.getCenterX() - ovalWidth, circle6.getCenterY() - ovalHeight,
+                        circle6.getCenterX() + ovalWidth, circle6.getCenterY() + ovalHeight,circle6.paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
+                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + 15, paint);
+                canvas.drawText("CH5", circle5.getCenterX() - ovalWidth, circle5.getCenterY() + 15, paint);
+                canvas.drawText("CH6", circle6.getCenterX() - ovalWidth, circle6.getCenterY() + 15, paint);
 
                 break;
         }
@@ -218,23 +218,43 @@ public class CustomImageView extends ImageView{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (isChannelActive) {
-            activeCircle.setCenterX(x);
-            activeCircle.setCenterY(y);
+        int action = MotionEventCompat.getActionMasked(event);
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                if (!isChannelActive) {
+                    // Wenn Channel deaktiviert ist, dann aktiviere ihn.
+                    activateChannel(event);
+                    Log.d("long", "Active Channel");
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if(isChannelActive) {
+                    v.vibrate(secondDuration);
+                }
+                isChannelActive = false;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (isChannelActive) {
+                    if (x - ovalWidth < 0) {
+                        x = 30;
+                    } else if (x + ovalWidth > getWidth()) {
+                        x = getWidth() - 30;
+                    }
+
+                    if (y - ovalHeight < 0) {
+                        y = 75;
+                    } else if (y + ovalHeight > getHeight()){
+                        y = getHeight() - 75;
+                    }
+
+                    activeCircle.setCenterX(x);
+                    activeCircle.setCenterY(y);
+                }
+                break;
+            default:
+                super.onTouchEvent(event);
+
         }
-
-        gestureDetector.onTouchEvent(event);
-
-        /*Log.d("touch", x + " : X");
-        Log.d("touch", y + " : Y");
-        Log.d("touch", circle1.getCenterX() + " : Circle1 X");
-        Log.d("touch", circle1.getCenterY() + " : Circle1 Y");*/
-
-        //activeCircle.setCenterX(x);
-        //activeCircle.setCenterY(y);
-
-
-
         invalidate();
         return true;
     }
@@ -253,7 +273,6 @@ public class CustomImageView extends ImageView{
             paint.setAntiAlias(true);
             paint.setAlpha(150);
         }
-
 
         public float getCenterX() {
             return centerX;
@@ -274,7 +293,22 @@ public class CustomImageView extends ImageView{
         public Paint getPaint() {
             return paint;
         }
+    }
 
+    public void initialize() {
+        circle1.setCenterX(100);
+        circle1.setCenterY(100);
+        circle2.setCenterX(100);
+        circle2.setCenterY(100);
+        circle3.setCenterX(100);
+        circle3.setCenterY(100);
+        circle4.setCenterX(100);
+        circle4.setCenterY(100);
+        circle5.setCenterX(100);
+        circle5.setCenterY(100);
+        circle6.setCenterX(100);
+        circle6.setCenterY(100);
+        channels = 1;
 
     }
 }

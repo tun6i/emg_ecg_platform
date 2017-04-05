@@ -1,5 +1,6 @@
 package activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +24,6 @@ import android.widget.ViewSwitcher;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.Random;
 
 import bluetooth.BluetoothSetup;
 import de.fachstudie.fachstudie_template.R;
@@ -34,63 +34,17 @@ public class HeatmapFragment extends Fragment {
     CustomImageView imageViewArm1;
     int imageIndex = 0;
     int[] imageIds = {R.drawable.arm_left_posterior, R.drawable.armleft, R.drawable.armright, R.drawable.bein, R.drawable.unterarm1, R.drawable.unterarm2};
-    Handler handler = new Handler();
-    Runnable changeColors = new Runnable() {
-        int g = 255;
-        int r = 5;
 
-        @Override
-        public void run() {
-            Random rnd = new Random();
-
-            /*
-            * 255...... 0......0 1023 0
-            * 255..... 25......0 985 25
-            * 255..... 50......0 960 50
-            * 255..... 75......0 935 75
-            * 255.....100......0 910 100
-            * 255.....125......0 885 125
-            * 255.....150......0 860 150
-            * 255.....175......0 835 175
-            * 255.....200......0 810 200
-            * 255.....225......0 785 225
-            * 255.....255......0 760 250
-            * 225.....255......0 735 275
-            * 200.....255......0 710 300
-            * 175.....255......0 685 325
-            * 150.....255......0 660 350
-            * 125.....255......0 635 375
-            * 100.....255......0 610 400
-            *  75.....255......0 585 425
-            *  50.....255......0 560 450
-            *  25.....255......0 535 475
-            *   0.....255......0 510 500
-             */
-            CustomImageView.setColor(r, g, 0, CustomImageView.circle1);
-            CustomImageView.setColor(r, g, 255, CustomImageView.circle2);
-            imageViewArm1.invalidate();
-            handler.postDelayed(this, 100);
-            if (r < 250) {
-                r += 25;
-            } else if (g > 5) {
-                g -= 25;
-            } else {
-                g = 255;
-                r = 5;
-            }
-
-        }
-    };
     Handler heatmapHandler = new Handler();
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
+    //private BluetoothSetup btSetup;
     private ImageSwitcher imageSwitcher;
     private Button buttonNext;
     private Button buttonPrev;
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
     private byte[] buffer = new byte[12];
-    private short[] filterBuffer = new short[5];
-    private int filterBufferIndex = 0;
+
     private Runnable heatmapRunnable = new Runnable() {
         ByteBuffer wrapper;
         InputStream inputStream;
@@ -232,32 +186,19 @@ public class HeatmapFragment extends Fragment {
         });
         imageSwitcher.setImageResource(imageIds[imageIndex]);
 
-
-        /*final Animation inLeft = AnimationUtils.loadAnimation(rootView.getContext(), android.R.anim.slide_in_left);
-        final Animation outRight = AnimationUtils.loadAnimation(rootView.getContext(), android.R.anim.slide_out_right);
-
-        final Animation inRight = AnimationUtils.loadAnimation(rootView.getContext(), R.anim.slide_in_right);
-        final Animation outLeft = AnimationUtils.loadAnimation(rootView.getContext(), R.anim.slide_out_left);*/
-
-
         heatmapRunnable.run();
         heatmapRunnable.run();
-        //heatmapRunnable.run();
-        //heatmapRunnable.run();
-
 
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (imageIndex < 5) {
-                    //imageSwitcher.setInAnimation(inLeft);
-                    //imageSwitcher.setOutAnimation(outRight);
+                    imageViewArm1.initialize();
                     imageIndex++;
                     imageSwitcher.setImageResource(imageIds[imageIndex]);
                 }
                 imageSwitcher.invalidate();
-                //mageViewArm1.channels = 0;
 
             }
         });
@@ -265,14 +206,12 @@ public class HeatmapFragment extends Fragment {
         buttonPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //imageSwitcher.setInAnimation(inRight);
-                //imageSwitcher.setOutAnimation(outLeft);
                 if (imageIndex > 0) {
+                    imageViewArm1.initialize();
                     imageIndex--;
                     imageSwitcher.setImageResource(imageIds[imageIndex]);
                 }
                 imageSwitcher.invalidate();
-                //imageViewArm1.channels = 0;
             }
         });
 
@@ -306,15 +245,19 @@ public class HeatmapFragment extends Fragment {
             if (!btSetup.isConnected()) {
                 Intent intent = new Intent(getActivity(), ShowPairedDevices.class);
                 startActivityForResult(intent, CONNECTION_ESTABLISHED);
-                item.setTitle("Disconnect");
-                item.setIcon(R.drawable.ic_bluetooth_connection);
+                if (btSetup.isConnected()) {
+                    item.setTitle("Disconnect");
+                    item.setIcon(R.drawable.ic_bluetooth_connection);
+                }
             } else {
                 try {
                     btSetup.getBtData().close();
                     btSetup.getBtSocket().close();
                     btSetup.setConnected(false);
-                    item.setTitle("Connect");
-                    item.setIcon(R.drawable.ic_bluetooth_no_connection);
+                    if (!btSetup.isConnected()) {
+                        item.setTitle("Connect");
+                        item.setIcon(R.drawable.ic_bluetooth_no_connection);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -322,6 +265,7 @@ public class HeatmapFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 
     @Override
