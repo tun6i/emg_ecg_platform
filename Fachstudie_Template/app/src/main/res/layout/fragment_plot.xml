@@ -18,11 +18,11 @@
         android:layout_above="@+id/imgbutton" />
 
     <ImageButton
+        android:contentDescription="@string/connect"
         android:id="@+id/imgbutton"
         android:layout_width="150dp"
         android:layout_height="50dp"
         app:srcCompat="@drawable/ic_bluetooth_no_connection"
-        android:onClick="showDevice (StartFragment)"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

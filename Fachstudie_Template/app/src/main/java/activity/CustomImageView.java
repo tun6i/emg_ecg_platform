@@ -122,7 +122,7 @@ public class CustomImageView extends ImageView{
     private int firstDuration = 25;
     private int secondDuration = 25;
     int ovalWidth = 30;
-    int ovalHeight = 75;
+    int ovalHeight = 80;
 
     @Override
     protected void onDraw(Canvas canvas) {

@@ -1,6 +1,5 @@
 package activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +12,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageSwitcher;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.ViewSwitcher;
 
 import java.io.IOException;
@@ -30,17 +28,14 @@ import de.fachstudie.fachstudie_template.R;
 
 public class HeatmapFragment extends Fragment {
 
-    private final int CONNECTION_ESTABLISHED = 1;
-    CustomImageView imageViewArm1;
-    int imageIndex = 0;
-    int[] imageIds = {R.drawable.arm_left_posterior, R.drawable.armleft, R.drawable.armright, R.drawable.bein, R.drawable.unterarm1, R.drawable.unterarm2};
+    private CustomImageView imageViewArm1;
+    private int imageIndex = 0;
+    private int[] imageIds = {R.drawable.arm_left_posterior, R.drawable.armleft, R.drawable.armright, R.drawable.bein, R.drawable.unterarm1, R.drawable.unterarm2};
 
-    Handler heatmapHandler = new Handler();
+    private Handler heatmapHandler = new Handler();
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
-    //private BluetoothSetup btSetup;
     private ImageSwitcher imageSwitcher;
-    private Button buttonNext;
-    private Button buttonPrev;
+
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
     private byte[] buffer = new byte[12];
@@ -146,6 +141,19 @@ public class HeatmapFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        heatmapHandler.removeCallbacks(heatmapRunnable);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        heatmapRunnable.run();
+        heatmapRunnable.run();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -156,13 +164,10 @@ public class HeatmapFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
         imageSwitcher = (ImageSwitcher) rootView.findViewById(R.id.image_switcher);
         imageSwitcher.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-        buttonNext = (Button) rootView.findViewById(R.id.button_next);
-        buttonPrev = (Button) rootView.findViewById(R.id.button_prev);
+        Button buttonNext = (Button) rootView.findViewById(R.id.button_next);
+        Button buttonPrev = (Button) rootView.findViewById(R.id.button_prev);
+        SeekBar seekBar = (SeekBar) rootView.findViewById(R.id.seekBar2);
         imageIndex = 0;
-
-        //imageViewArm1.setImageResource(R.drawable.unterarm1);
-        //imageViewArm2.setImageResource(R.drawable.unterarm2);
-
 
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
@@ -186,8 +191,6 @@ public class HeatmapFragment extends Fragment {
         });
         imageSwitcher.setImageResource(imageIds[imageIndex]);
 
-        heatmapRunnable.run();
-        heatmapRunnable.run();
 
 
         buttonNext.setOnClickListener(new View.OnClickListener() {
@@ -215,13 +218,38 @@ public class HeatmapFragment extends Fragment {
             }
         });
 
+        seekBar.setMax(100);
+        seekBar.setProgress(imageViewArm1.ovalHeight);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                imageViewArm1.ovalWidth = progress * 3 / 8;
+                imageViewArm1.ovalHeight = progress;
+                imageViewArm1.invalidate();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
         return rootView;
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_options, menu);
+        if(btSetup.isConnected()) {
+            inflater.inflate(R.menu.menu_options_connected, menu);
+        } else {
+            inflater.inflate(R.menu.menu_options, menu);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -244,6 +272,7 @@ public class HeatmapFragment extends Fragment {
         } else if (id == R.id.connect) {
             if (!btSetup.isConnected()) {
                 Intent intent = new Intent(getActivity(), ShowPairedDevices.class);
+                int CONNECTION_ESTABLISHED = 1;
                 startActivityForResult(intent, CONNECTION_ESTABLISHED);
                 if (btSetup.isConnected()) {
                     item.setTitle("Disconnect");
@@ -265,8 +294,6 @@ public class HeatmapFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     public void onAttach(Context context) {

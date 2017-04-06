@@ -8,6 +8,9 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -108,6 +111,7 @@ public class PlotFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
 
     }
 
@@ -154,10 +158,6 @@ public class PlotFragment extends Fragment {
         }
     }
 
-    /*@Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }*/
 
     @Override
     public void onDetach() {
@@ -168,6 +168,7 @@ public class PlotFragment extends Fragment {
     public void onPause() {
         super.onPause();
         plotRunnableHandler.removeCallbacks(plotRunnable);
+        graphView.removeAllSeries();
     }
 
     @Override
@@ -176,8 +177,8 @@ public class PlotFragment extends Fragment {
         if (btSetup.isConnected()) {
             plotRunnable.run();
             plotRunnable.run();
-            plotRunnable.run();
-            plotRunnable.run();
+            //plotRunnable.run();
+            //plotRunnable.run();
         }
     }
 
@@ -226,7 +227,7 @@ public class PlotFragment extends Fragment {
 
         graphView.removeAllSeries();
 
-        int numChannels = Settings.getInstance().getNumChannels();
+        /*int numChannels = Settings.getInstance().getNumChannels();
 
         switch(numChannels) {
             case 1:
@@ -270,9 +271,93 @@ public class PlotFragment extends Fragment {
                 graphView.addSeries(seriesCH5);
                 graphView.addSeries(seriesCH6);
                 break;
-        }
+        }*/
 
         graphView.invalidate();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_options_plot, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id) {
+            case R.id.menuChannel1:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    graphView.removeSeries(seriesCH1);
+                } else {
+                    item.setChecked(true);
+                    graphView.addSeries(seriesCH1);
+                }
+                break;
+            case R.id.menuChannel2:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    graphView.removeSeries(seriesCH2);
+
+                } else {
+                    item.setChecked(true);
+                    graphView.addSeries(seriesCH2);
+
+                }
+                break;
+            case R.id.menuChannel3:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    graphView.removeSeries(seriesCH3);
+
+                } else {
+                    item.setChecked(true);
+                    graphView.addSeries(seriesCH3);
+
+                }
+                break;
+            case R.id.menuChannel4:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    graphView.removeSeries(seriesCH4);
+
+                } else {
+                    item.setChecked(true);
+                    graphView.addSeries(seriesCH4);
+
+                }
+                break;
+            case R.id.menuChannel5:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    graphView.removeSeries(seriesCH5);
+
+                } else {
+                    item.setChecked(true);
+                    graphView.addSeries(seriesCH5);
+
+                }
+                break;
+            case R.id.menuChannel6:
+                if (item.isChecked()) {
+                    item.setChecked(false);
+                    graphView.removeSeries(seriesCH6);
+
+                } else {
+                    item.setChecked(true);
+                    graphView.addSeries(seriesCH6);
+                }
+                break;
+            default:
+        }
+        graphView.invalidate();
+        return super.onOptionsItemSelected(item);
     }
 
 }

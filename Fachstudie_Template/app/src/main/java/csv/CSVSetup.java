@@ -2,8 +2,6 @@ package csv;
 
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -22,7 +20,7 @@ public class CSVSetup{
     // Damit die CSV Datei nicht überschrieben wird.
     private boolean csvExists = false;
 
-    public CSVSetup() {
+    private CSVSetup() {
 
         // Dateiname wird generiert.
         Calendar calendar = Calendar.getInstance();
@@ -63,7 +61,7 @@ public class CSVSetup{
 
     public String getCSVHeader() {
       return this.csvHeader;
-    };
+    }
 
     public void setCSVBoolean(boolean bool) {
         this.csvExists = bool;
@@ -104,7 +102,7 @@ public class CSVSetup{
 
         try {
             File myFile = new File(path);
-            myFile.createNewFile();
+            boolean success = myFile.createNewFile();
             FileOutputStream fOut = new FileOutputStream(myFile);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
             myOutWriter.append(this.csvHeader);
