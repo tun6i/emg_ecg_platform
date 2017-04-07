@@ -116,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         }
     }
 
-
     /*public void createNewCsvFile(View view) {
         CSVSetup csv = CSVSetup.getInstance();
         csv.createNewCSVFile("CSV");

@@ -127,7 +127,7 @@ public class CustomImageView extends ImageView{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        paint.setTextSize(30);
+        paint.setTextSize(ovalWidth);
         paint.setUnderlineText(true);
         paint.setARGB(255, 255, 255, 255);
 
@@ -135,15 +135,15 @@ public class CustomImageView extends ImageView{
             case 1:
                 canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
                         circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + ovalWidth / 2 , paint);
                 break;
             case 2:
                 canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
                         circle1.getCenterX() + ovalWidth, circle1.getCenterY() + ovalHeight,circle1.paint);
                 canvas.drawOval(circle2.getCenterX() - ovalWidth, circle2.getCenterY() - ovalHeight,
                         circle2.getCenterX() + ovalWidth, circle2.getCenterY() + ovalHeight,circle2.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + ovalWidth / 2 , paint);
                 break;
             case 3:
                 canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
@@ -152,9 +152,9 @@ public class CustomImageView extends ImageView{
                         circle2.getCenterX() + ovalWidth, circle2.getCenterY() + ovalHeight,circle2.paint);
                 canvas.drawOval(circle3.getCenterX() - ovalWidth, circle3.getCenterY() - ovalHeight,
                         circle3.getCenterX() + ovalWidth, circle3.getCenterY() + ovalHeight,circle3.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + ovalWidth / 2, paint);
 
                 break;
             case 4:
@@ -166,10 +166,10 @@ public class CustomImageView extends ImageView{
                         circle3.getCenterX() + ovalWidth, circle3.getCenterY() + ovalHeight,circle3.paint);
                 canvas.drawOval(circle4.getCenterX() - ovalWidth, circle4.getCenterY() - ovalHeight,
                         circle4.getCenterX() + ovalWidth, circle4.getCenterY() + ovalHeight,circle4.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
-                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + 15, paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + ovalWidth / 2, paint);
 
                 break;
             case 5:
@@ -183,11 +183,11 @@ public class CustomImageView extends ImageView{
                         circle4.getCenterX() + ovalWidth, circle4.getCenterY() + ovalHeight,circle4.paint);
                 canvas.drawOval(circle5.getCenterX() - ovalWidth, circle5.getCenterY() - ovalHeight,
                         circle5.getCenterX() + ovalWidth, circle5.getCenterY() + ovalHeight,circle5.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
-                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + 15, paint);
-                canvas.drawText("CH5", circle5.getCenterX() - ovalWidth, circle5.getCenterY() + 15, paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH5", circle5.getCenterX() - ovalWidth, circle5.getCenterY() + ovalWidth / 2, paint);
                 break;
             case 6:
                 canvas.drawOval(circle1.getCenterX() - ovalWidth, circle1.getCenterY() - ovalHeight,
@@ -202,12 +202,12 @@ public class CustomImageView extends ImageView{
                         circle5.getCenterX() + ovalWidth, circle5.getCenterY() + ovalHeight,circle5.paint);
                 canvas.drawOval(circle6.getCenterX() - ovalWidth, circle6.getCenterY() - ovalHeight,
                         circle6.getCenterX() + ovalWidth, circle6.getCenterY() + ovalHeight,circle6.paint);
-                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + 15, paint);
-                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + 15, paint);
-                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + 15, paint);
-                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + 15, paint);
-                canvas.drawText("CH5", circle5.getCenterX() - ovalWidth, circle5.getCenterY() + 15, paint);
-                canvas.drawText("CH6", circle6.getCenterX() - ovalWidth, circle6.getCenterY() + 15, paint);
+                canvas.drawText("CH1", circle1.getCenterX() - ovalWidth, circle1.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH2", circle2.getCenterX() - ovalWidth, circle2.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH3", circle3.getCenterX() - ovalWidth, circle3.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH4", circle4.getCenterX() - ovalWidth, circle4.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH5", circle5.getCenterX() - ovalWidth, circle5.getCenterY() + ovalWidth / 2, paint);
+                canvas.drawText("CH6", circle6.getCenterX() - ovalWidth, circle6.getCenterY() + ovalWidth / 2, paint);
 
                 break;
         }
@@ -309,6 +309,8 @@ public class CustomImageView extends ImageView{
         circle6.setCenterX(100);
         circle6.setCenterY(100);
         channels = 1;
+        ovalWidth = 30;
+        ovalHeight = 80;
 
     }
 }

@@ -2,18 +2,25 @@ package activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -28,6 +35,7 @@ public class PlotFragment extends Fragment {
 
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
     private CSVSetup csvFile = CSVSetup.getInstance();
+    private static SeekBar seekBar;
 
     private ImageButton imgButton;
     private GraphView graphView;
@@ -146,7 +154,6 @@ public class PlotFragment extends Fragment {
 
             }
         });
-
         return rootView;
     }
 
@@ -170,6 +177,12 @@ public class PlotFragment extends Fragment {
         plotRunnableHandler.removeCallbacks(plotRunnable);
         graphView.removeAllSeries();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     public void onResume() {
@@ -196,7 +209,6 @@ public class PlotFragment extends Fragment {
         } else {
             imgButton.setImageResource(R.drawable.ic_bluetooth_connection);
         }
-
     }
 
     private void setupGraphView() {
@@ -285,6 +297,7 @@ public class PlotFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+
     }
 
     @Override

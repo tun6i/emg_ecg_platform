@@ -30,7 +30,8 @@ public class HeatmapFragment extends Fragment {
 
     private CustomImageView imageViewArm1;
     private int imageIndex = 0;
-    private int[] imageIds = {R.drawable.arm_left_posterior, R.drawable.armleft, R.drawable.armright, R.drawable.bein, R.drawable.unterarm1, R.drawable.unterarm2};
+    private int[] imageIds = {R.drawable.arm_left_posterior, R.drawable.armleft, R.drawable.armright, R.drawable.bein};
+    private SeekBar seekBar;
 
     private Handler heatmapHandler = new Handler();
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
@@ -166,7 +167,7 @@ public class HeatmapFragment extends Fragment {
         imageSwitcher.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
         Button buttonNext = (Button) rootView.findViewById(R.id.button_next);
         Button buttonPrev = (Button) rootView.findViewById(R.id.button_prev);
-        SeekBar seekBar = (SeekBar) rootView.findViewById(R.id.seekBar2);
+        seekBar = (SeekBar) rootView.findViewById(R.id.seekBar2);
         imageIndex = 0;
 
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
@@ -196,10 +197,12 @@ public class HeatmapFragment extends Fragment {
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imageIndex < 5) {
+                if (imageIndex < 3) {
                     imageViewArm1.initialize();
                     imageIndex++;
                     imageSwitcher.setImageResource(imageIds[imageIndex]);
+                    seekBar.setProgress(imageViewArm1.ovalHeight);
+
                 }
                 imageSwitcher.invalidate();
 
@@ -213,8 +216,11 @@ public class HeatmapFragment extends Fragment {
                     imageViewArm1.initialize();
                     imageIndex--;
                     imageSwitcher.setImageResource(imageIds[imageIndex]);
+                    seekBar.setProgress(imageViewArm1.ovalHeight);
+
                 }
                 imageSwitcher.invalidate();
+
             }
         });
 
@@ -223,6 +229,7 @@ public class HeatmapFragment extends Fragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                imageViewArm1 = (CustomImageView) imageSwitcher.getCurrentView();
                 imageViewArm1.ovalWidth = progress * 3 / 8;
                 imageViewArm1.ovalHeight = progress;
                 imageViewArm1.invalidate();
