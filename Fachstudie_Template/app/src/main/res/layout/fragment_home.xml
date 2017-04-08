@@ -23,40 +23,43 @@
         android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="30dp"
-        android:text="Plot" />
+        android:text="Der EMG Viewer entstand während einer Fachstudie an der Universität Stuttgart." />
 
     <TextView
         android:layout_below="@id/label"
         android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:layout_marginTop="50dp"
+        android:textSize="20dp"
+        android:layout_marginTop="105dp"
         android:layout_marginLeft="30dp"
-        android:text="Text" />
+        android:text="Ziel dieser App ist es EMG Signale die via Bluetooth an das Smartphone von einem Arduino gesendet werden in Echtzeit zu visualisieren."></TextView>
 
     <TextView
         android:layout_below="@id/label"
         android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:layout_marginTop="250dp"
+        android:textSize="20dp"
+        android:layout_marginTop="220dp"
         android:layout_marginLeft="30dp"
-        android:text="Heatmap" />
+        android:text="Den Sourcecode für das gesamte System (Android-App + Arduino) finden Sie unter folgendem Link:"></TextView>
+
 
     <TextView
         android:layout_below="@id/label"
         android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:layout_marginTop="285dp"
+        android:textSize="17dp"
+        android:layout_marginTop="325dp"
         android:layout_marginLeft="30dp"
-        android:text="Text" />
+        android:textAlignment="center"
+        android:autoLink="web"
+        android:text="https://github.com/tun6i/emg_ecg_platform"></TextView>
 
     <!--<Button
         android:text="@string/btnNewCSVFile"
