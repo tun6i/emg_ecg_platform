@@ -134,6 +134,15 @@ public class PlotFragment extends Fragment {
 
         setupGraphView();
 
+        graphView.addSeries(seriesCH1);
+        graphView.addSeries(seriesCH2);
+        graphView.addSeries(seriesCH3);
+        graphView.addSeries(seriesCH4);
+        graphView.addSeries(seriesCH5);
+        graphView.addSeries(seriesCH6);
+
+
+
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,7 +184,6 @@ public class PlotFragment extends Fragment {
     public void onPause() {
         super.onPause();
         plotRunnableHandler.removeCallbacks(plotRunnable);
-        graphView.removeAllSeries();
     }
 
     @Override
@@ -237,7 +245,7 @@ public class PlotFragment extends Fragment {
         seriesCH5.setColor(Color.BLACK);
         seriesCH6.setColor(Color.MAGENTA);
 
-        graphView.removeAllSeries();
+        //graphView.removeAllSeries();
 
         /*int numChannels = Settings.getInstance().getNumChannels();
 
@@ -284,6 +292,8 @@ public class PlotFragment extends Fragment {
                 graphView.addSeries(seriesCH6);
                 break;
         }*/
+
+
 
         graphView.invalidate();
     }

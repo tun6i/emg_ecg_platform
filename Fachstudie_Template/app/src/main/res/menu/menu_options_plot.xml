@@ -13,31 +13,42 @@
             <item
                 android:id="@+id/menuChannel1"
                 android:checkable="true"
+                android:checked="true"
                 android:title="CH 1"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/menuChannel2"
                 android:checkable="true"
+                android:checked="true"
+
                 android:title="CH 2"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/menuChannel3"
                 android:checkable="true"
+                android:checked="true"
+
                 android:title="CH 3"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/menuChannel4"
                 android:checkable="true"
+                android:checked="true"
+
                 android:title="CH 4"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/menuChannel5"
                 android:checkable="true"
+                android:checked="true"
+
                 android:title="CH 5"
                 app:showAsAction="always" />
             <item
                 android:id="@+id/menuChannel6"
                 android:checkable="true"
+                android:checked="true"
+
                 android:title="CH 6"
                 app:showAsAction="always" />
 
