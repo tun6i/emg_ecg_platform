@@ -135,11 +135,11 @@ public class PlotFragment extends Fragment {
         setupGraphView();
 
         graphView.addSeries(seriesCH1);
-        graphView.addSeries(seriesCH2);
-        graphView.addSeries(seriesCH3);
-        graphView.addSeries(seriesCH4);
-        graphView.addSeries(seriesCH5);
-        graphView.addSeries(seriesCH6);
+        //graphView.addSeries(seriesCH2);
+        //graphView.addSeries(seriesCH3);
+        //graphView.addSeries(seriesCH4);
+        //graphView.addSeries(seriesCH5);
+        //graphView.addSeries(seriesCH6);
 
 
 
