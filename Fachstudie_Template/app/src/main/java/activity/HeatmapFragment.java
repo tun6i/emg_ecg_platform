@@ -26,21 +26,34 @@ import java.nio.ByteBuffer;
 import bluetooth.BluetoothSetup;
 import de.fachstudie.fachstudie_template.R;
 
+/**
+ *  Class for "Heatmap" view
+ */
 public class HeatmapFragment extends Fragment {
-
-    private CustomImageView imageViewArm1;
-    private int imageIndex = 0;
-    private int[] imageIds = {R.drawable.arm_left_posterior, R.drawable.armleft, R.drawable.armright, R.drawable.bein};
-    private SeekBar seekBar;
-
-    private Handler heatmapHandler = new Handler();
+    // Get Bluetooth adapter
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
+
+    // Image viewer
+    private CustomImageView imageViewArm1;
+
+    // Switch between images
     private ImageSwitcher imageSwitcher;
+
+    // Current image
+    private int imageIndex = 0;
+
+    // Set of images
+    private int[] imageIds = {R.drawable.arm_left_posterior, R.drawable.armleft, R.drawable.armright, R.drawable.bein};
+
+    // "volume" bar for electrode size
+    private SeekBar seekBar;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
     private byte[] buffer = new byte[12];
 
+    // Thread runnable & handler
+    private Handler heatmapHandler = new Handler();
     private Runnable heatmapRunnable = new Runnable() {
         ByteBuffer wrapper;
         InputStream inputStream;
@@ -138,7 +151,12 @@ public class HeatmapFragment extends Fragment {
         }
     };
 
+    /**
+     *  Default constructor
+     */
     public HeatmapFragment() {
+        // Required empty public constructor
+
     }
 
     @Override
@@ -160,16 +178,29 @@ public class HeatmapFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
+
+    /**
+     *  Setup view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_heatmap, container, false);
+
+        // Get UI elements
         imageSwitcher = (ImageSwitcher) rootView.findViewById(R.id.image_switcher);
         imageSwitcher.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
         Button buttonNext = (Button) rootView.findViewById(R.id.button_next);
         Button buttonPrev = (Button) rootView.findViewById(R.id.button_prev);
         seekBar = (SeekBar) rootView.findViewById(R.id.seekBar2);
+
+        // Initialize image position
         imageIndex = 0;
 
+        // Setup image switcher
         imageSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
@@ -190,10 +221,12 @@ public class HeatmapFragment extends Fragment {
                 return imageViewArm1;
             }
         });
+
+        // Set image
         imageSwitcher.setImageResource(imageIds[imageIndex]);
 
 
-
+        // Next image
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,11 +237,13 @@ public class HeatmapFragment extends Fragment {
                     seekBar.setProgress(imageViewArm1.ovalHeight);
 
                 }
+                // Redraw
                 imageSwitcher.invalidate();
 
             }
         });
 
+        // Previous image
         buttonPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,11 +254,14 @@ public class HeatmapFragment extends Fragment {
                     seekBar.setProgress(imageViewArm1.ovalHeight);
 
                 }
+
+                // Redraw
                 imageSwitcher.invalidate();
 
             }
         });
 
+        // Setup seek bar
         seekBar.setMax(100);
         seekBar.setProgress(imageViewArm1.ovalHeight);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -250,11 +288,19 @@ public class HeatmapFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Set settings menu (top right corner) for the View
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if(btSetup.isConnected()) {
+            // Menu when connected
             inflater.inflate(R.menu.menu_options_connected, menu);
         } else {
+
+            // Menu when disconnected
             inflater.inflate(R.menu.menu_options, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -265,9 +311,18 @@ public class HeatmapFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * Set actions for menu items
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        // Get menu item
         int id = item.getItemId();
+
+        // Actions for specific items
         if (id == R.id.add_electrode) {
             if (CustomImageView.channels < 6) {
                 CustomImageView.channels += 1;
@@ -278,6 +333,8 @@ public class HeatmapFragment extends Fragment {
             }
         } else if (id == R.id.connect) {
             if (!btSetup.isConnected()) {
+
+                // Open Bluetooth devices
                 Intent intent = new Intent(getActivity(), ShowPairedDevices.class);
                 int CONNECTION_ESTABLISHED = 1;
                 startActivityForResult(intent, CONNECTION_ESTABLISHED);

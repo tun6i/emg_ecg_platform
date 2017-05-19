@@ -22,9 +22,6 @@ import adapter.NavigationDrawerAdapter;
 import model.NavDrawerItem;
 
 public class FragmentDrawer extends Fragment {
-
-    private static String TAG = FragmentDrawer.class.getSimpleName();
-
     private RecyclerView recyclerView;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
@@ -34,7 +31,6 @@ public class FragmentDrawer extends Fragment {
     private FragmentDrawerListener drawerListener;
 
     public FragmentDrawer() {
-
     }
 
     public void setDrawerListener(FragmentDrawerListener listener) {

@@ -2,7 +2,6 @@ package activity;
 
 public class Settings {
     private int activeFragment = 0;
-    private int numChannels = 1;
     private static Settings settings = new Settings();
 
     public static Settings getInstance() {
