@@ -10,12 +10,12 @@
     <TextView
         android:id="@+id/label"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="5dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textSize="45dp"
-        android:text="HOME"
+        android:textSize="40dp"
+        android:text="EMG Viewer"
         android:textStyle="bold"/>
 
     <TextView
@@ -23,10 +23,43 @@
         android:layout_centerInParent="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Edit fragment_home.xml to change the appearance." />
+        android:textSize="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:text="Der EMG Viewer entstand während einer Fachstudie an der Universität Stuttgart." />
+
+    <TextView
+        android:layout_below="@id/label"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="105dp"
+        android:layout_marginLeft="30dp"
+        android:text="Ziel dieser App ist es EMG Signale die via Bluetooth an das Smartphone von einem Arduino gesendet werden in Echtzeit zu visualisieren."></TextView>
+
+    <TextView
+        android:layout_below="@id/label"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginLeft="30dp"
+        android:text="Den Sourcecode für das gesamte System (Android-App + Arduino) finden Sie unter folgendem Link:"></TextView>
+
+
+    <TextView
+        android:layout_below="@id/label"
+        android:layout_centerInParent="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="17dp"
+        android:layout_marginTop="325dp"
+        android:layout_marginLeft="30dp"
+        android:textAlignment="center"
+        android:autoLink="web"
+        android:text="https://github.com/tun6i/emg_ecg_platform"></TextView>
 
     <!--<Button
         android:text="@string/btnNewCSVFile"

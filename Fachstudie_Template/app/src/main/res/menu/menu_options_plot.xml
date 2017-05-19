@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="activity.MainActivity">
+
+    <item android:id="@+id/settings"
+        android:title="Settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_more_options"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menuChannel1"
+                android:checkable="true"
+                android:checked="true"
+                android:title="CH 1"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/menuChannel2"
+                android:checkable="true"
+                android:checked="false"
+
+                android:title="CH 2"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/menuChannel3"
+                android:checkable="true"
+                android:checked="false"
+
+                android:title="CH 3"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/menuChannel4"
+                android:checkable="true"
+                android:checked="false"
+
+                android:title="CH 4"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/menuChannel5"
+                android:checkable="true"
+                android:checked="false"
+
+                android:title="CH 5"
+                app:showAsAction="always" />
+            <item
+                android:id="@+id/menuChannel6"
+                android:checkable="true"
+                android:checked="false"
+
+                android:title="CH 6"
+                app:showAsAction="always" />
+
+        </menu>
+
+
+
+
+    </item>
+
+</menu>

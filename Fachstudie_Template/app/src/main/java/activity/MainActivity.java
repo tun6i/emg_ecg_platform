@@ -12,21 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import bluetooth.BluetoothSetup;
-import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
-
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener  {
 
-    private static String TAG = MainActivity.class.getSimpleName();
-
-    private Toolbar mToolbar;
-    private FragmentDrawer drawerFragment;
     static BluetoothSetup btSetup;
-
-    EditText currentParticipantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +24,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
         setContentView(R.layout.activity_main);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        drawerFragment = (FragmentDrawer)
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        FragmentDrawer drawerFragment = (FragmentDrawer)
                     getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
@@ -64,67 +57,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        // Settings Button
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
-
-        // Search Button
-        /*if(id == R.id.action_search){
-            Toast.makeText(getApplicationContext(), "Search action is selected!", Toast.LENGTH_SHORT).show();
-            return true;
-        }*/
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onDrawerItemSelected(View view, int position) {
         displayView(position);
-    }
-
-    private void displayView(int position) {
-        Fragment fragment = null;
-        String title = getString(R.string.app_name);
-        switch (position) {
-            case 0:
-                fragment = new HomeFragment();
-                title = getString(R.string.title_home);
-                Settings.getInstance().setActiveFragment(0);
-                break;
-            case 1:
-                fragment = new PlotFragment();
-                title = getString(R.string.title_plot);
-                Settings.getInstance().setActiveFragment(1);
-                break;
-            case 2:
-                fragment = new InformationFragment();
-                title = getString(R.string.title_information);
-                Settings.getInstance().setActiveFragment(2);
-                break;
-            case 3:
-                fragment = new ExperimentFragment();
-                title = getString(R.string.title_experiment);
-                Settings.getInstance().setActiveFragment(3);
-            default:
-                break;
-        }
-
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment);
-            fragmentTransaction.commit();
-
-            // set the toolbar title
-            getSupportActionBar().setTitle(title);
-        }
     }
 
     @Override
@@ -137,11 +75,55 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         super.onRestoreInstanceState(savedInstanceState);
     }
 
+    private void displayView(int position) {
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
+        switch (position) {
+            case 0:
+                fragment = new HomeFragment();
+                title = getString(R.string.title_home);
+                Settings.getInstance().setActiveFragment(0);
+                break;
+            case 1:
+                fragment = new InformationFragment();
+                title = getString(R.string.title_information);
+                Settings.getInstance().setActiveFragment(1);
+                break;
+            case 2:
+                fragment = new PlotFragment();
+                title = getString(R.string.title_plot);
+                Settings.getInstance().setActiveFragment(2);
+                break;
+            case 3:
+                fragment = new HeatmapFragment();
+                title = getString(R.string.title_heatmap);
+                Settings.getInstance().setActiveFragment(3);
+                break;
+            case 4:
+                fragment = new ExperimentFragment();
+                title = getString(R.string.title_experiment);
+                Settings.getInstance().setActiveFragment(4);
+                break;
+            default:
+                break;
+        }
 
-    public void createNewCsvFile(View view) {
-        currentParticipantName = (EditText)findViewById(R.id.participantName);
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.commit();
+
+            // set the toolbar title
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(title);
+            }
+        }
+    }
+
+    /*public void createNewCsvFile(View view) {
         CSVSetup csv = CSVSetup.getInstance();
-        csv.createNewCSVFile(currentParticipantName.getText().toString());
+        csv.createNewCSVFile("CSV");
         Toast.makeText(getApplicationContext(), "Created New CSV File", Toast.LENGTH_LONG).show();
     }
 
@@ -196,5 +178,5 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         Toast.makeText(getApplicationContext(), "STOP LIFT UP", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-8", "-8", "-8", "-8", "-8", "-8", "-8");
-    }
+    }*/
 }

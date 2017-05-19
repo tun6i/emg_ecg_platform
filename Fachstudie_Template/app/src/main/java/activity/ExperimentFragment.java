@@ -2,7 +2,6 @@ package activity;
 
 import android.app.Activity;;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -11,12 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,25 +192,20 @@ public class ExperimentFragment extends Fragment {
         graphView.getGridLabelRenderer().setVerticalLabelsVisible(true);
         graphView.getGridLabelRenderer().setVerticalAxisTitle("Amplitude");
         graphView.getGridLabelRenderer().setHorizontalAxisTitle("Time");
-
         seriesCH1.setThickness(2);
         seriesCH2.setThickness(2);
         seriesCH3.setThickness(2);
         seriesCH4.setThickness(2);
         seriesCH5.setThickness(2);
         seriesCH6.setThickness(2);
-
         seriesCH1.setColor(Color.BLUE);
         seriesCH2.setColor(Color.RED);
         seriesCH3.setColor(Color.GREEN);
         seriesCH4.setColor(Color.GRAY);
         seriesCH5.setColor(Color.BLACK);
         seriesCH6.setColor(Color.MAGENTA);
-
         graphView.removeAllSeries();
-
         int numChannels = Settings.getInstance().getNumChannels();
-
         switch(numChannels) {
             case 1:
                 graphView.addSeries(seriesCH1);
@@ -260,7 +249,6 @@ public class ExperimentFragment extends Fragment {
                 graphView.addSeries(seriesCH6);
                 break;
         }
-
         graphView.invalidate();
     }*/
 
