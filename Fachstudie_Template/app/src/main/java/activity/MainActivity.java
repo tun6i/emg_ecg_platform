@@ -11,7 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 import bluetooth.BluetoothSetup;
+import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
 
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener  {
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         }
     }
 
-    /*public void createNewCsvFile(View view) {
+    public void createNewCsvFile(View view) {
         CSVSetup csv = CSVSetup.getInstance();
         csv.createNewCSVFile("CSV");
         Toast.makeText(getApplicationContext(), "Created New CSV File", Toast.LENGTH_LONG).show();
@@ -178,5 +181,5 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         Toast.makeText(getApplicationContext(), "STOP LIFT UP", Toast.LENGTH_LONG).show();
         CSVSetup csv = CSVSetup.getInstance();
         csv.createMarkInCSV("-8", "-8", "-8", "-8", "-8", "-8", "-8");
-    }*/
+    }
 }
