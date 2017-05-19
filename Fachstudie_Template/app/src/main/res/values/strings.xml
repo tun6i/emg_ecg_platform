@@ -9,6 +9,8 @@
     <string name="nav_item_information">Information</string>
     <string name="nav_item_plot">Plot</string>
     <string name="nav_item_heatmap">Heatmap</string>
+    <string name="nav_item_experiment">Experiment</string>
+
 
     <string name="not_connected">Connect to device</string>
     <string name="connected">Disconnect from device</string>
@@ -19,12 +21,16 @@
         <item>@string/nav_item_information</item>
         <item>@string/nav_item_plot</item>
         <item>@string/nav_item_heatmap</item>
+        <item>@string/nav_item_experiment</item>
+
     </string-array>
 
     <string name="title_home">Home</string>
     <string name="title_information">Information</string>
     <string name="title_plot">Plot</string>
     <string name="title_heatmap">Heatmap</string>
+    <string name="title_experiment">Experiment</string>
+
 
 
     <!-- Buttons -->

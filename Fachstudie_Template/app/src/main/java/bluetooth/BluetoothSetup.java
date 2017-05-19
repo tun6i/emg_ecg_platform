@@ -16,6 +16,8 @@ public class BluetoothSetup {
     private BluetoothSocket btSocket;
     private boolean connected;
     private static BluetoothSetup bluetoothSetup = new BluetoothSetup();
+    //private static BluetoothSetup bluetoothSetup = null;
+
 
 
     private BluetoothSetup() {
