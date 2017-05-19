@@ -63,16 +63,29 @@ public class HeatmapFragment extends Fragment {
         public void run() {
             if (btSetup.isConnected()) {
                 try {
+
+                    // Get input stream from Bluetooth
                     inputStream = btSetup.getBtData();
+
+                    // If data (bytes) is available
                     if (inputStream.available() > 14) {
+
+                        /*
+                        * Synchronize input stream
+                        * A Checksum 1337 marks beginning of a valid byte package
+                        */
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
                             wrapper = ByteBuffer.wrap(buffer);
                         } while (wrapper.getShort() != 1337);
 
+                        // Read valid package into the buffer
                         amountBytes = inputStream.read(buffer);
+
+                        // Wrapper for conversion into values
                         wrapper = ByteBuffer.wrap(buffer);
 
+                        // Get values
                         short tmpCh1 = wrapper.getShort();
                         short tmpCh2 = wrapper.getShort();
                         short tmpCh3 = wrapper.getShort();
@@ -80,6 +93,8 @@ public class HeatmapFragment extends Fragment {
                         short tmpCh5 = wrapper.getShort();
                         short tmpCh6 = wrapper.getShort();
 
+
+                        // Color mapping circle 1
                         if (tmpCh1 <= 255) {
                             CustomImageView.setColor(255, tmpCh1, 0, CustomImageView.circle1);
                         } else if (tmpCh1 >= 256 && tmpCh1 <= 511) {
@@ -90,6 +105,7 @@ public class HeatmapFragment extends Fragment {
                             CustomImageView.setColor(255, 1023 - tmpCh1, 0, CustomImageView.circle1);
                         }
 
+                        // Color mapping circle 2
                         if (tmpCh2 <= 255) {
                             CustomImageView.setColor(255, tmpCh2, 0, CustomImageView.circle2);
                         } else if (tmpCh2 >= 256 && tmpCh2 <= 511) {
@@ -100,6 +116,7 @@ public class HeatmapFragment extends Fragment {
                             CustomImageView.setColor(255, 1023 - tmpCh2, 0, CustomImageView.circle2);
                         }
 
+                        // Color mapping circle 3
                         if (tmpCh3 <= 255) {
                             CustomImageView.setColor(255, tmpCh3, 0, CustomImageView.circle3);
                         } else if (tmpCh3 >= 256 && tmpCh3 <= 511) {
@@ -110,6 +127,8 @@ public class HeatmapFragment extends Fragment {
                             CustomImageView.setColor(255, 1023 - tmpCh3, 0, CustomImageView.circle3);
                         }
 
+
+                        // Color mapping circle 4
                         if (tmpCh4 <= 255) {
                             CustomImageView.setColor(255, tmpCh4, 0, CustomImageView.circle4);
                         } else if (tmpCh4 >= 256 && tmpCh4 <= 511) {
@@ -120,6 +139,7 @@ public class HeatmapFragment extends Fragment {
                             CustomImageView.setColor(255, 1023 - tmpCh4, 0, CustomImageView.circle4);
                         }
 
+                        // Color mapping circle 5
                         if (tmpCh5 <= 255) {
                             CustomImageView.setColor(255, tmpCh5, 0, CustomImageView.circle5);
                         } else if (tmpCh5 >= 256 && tmpCh5 <= 511) {
@@ -130,6 +150,8 @@ public class HeatmapFragment extends Fragment {
                             CustomImageView.setColor(255, 1023 - tmpCh5, 0, CustomImageView.circle5);
                         }
 
+
+                        // Color mapping circle 6
                         if (tmpCh6 <= 255) {
                             CustomImageView.setColor(255, tmpCh6, 0, CustomImageView.circle6);
                         } else if (tmpCh6 >= 256 && tmpCh6 <= 511) {

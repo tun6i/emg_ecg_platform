@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,8 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
-
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -28,12 +25,19 @@ import de.fachstudie.fachstudie_template.R;
 
 public class PlotFragment extends Fragment {
 
+    // Get Bluetooth adapter
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
-    private CSVSetup csvFile = CSVSetup.getInstance();
-    private static SeekBar seekBar;
 
+    // Get CSV Adapter
+    private CSVSetup csvFile = CSVSetup.getInstance();
+
+    // Connect button
     private ImageButton imgButton;
+
+    // GraphView. Contains multiple series of Points
     private GraphView graphView;
+
+    // Point series
     private LineGraphSeries<DataPoint> seriesCH1 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH2 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH3 = new LineGraphSeries<>();
@@ -41,12 +45,14 @@ public class PlotFragment extends Fragment {
     private LineGraphSeries<DataPoint> seriesCH5 = new LineGraphSeries<>();
     private LineGraphSeries<DataPoint> seriesCH6 = new LineGraphSeries<>();
 
+
     private final int CONNECTION_ESTABLISHED = 1;
 
     // Buffer for building EMG value
     // contains highByte & lowByte of an Integer
     private byte[] buffer = new byte[12];
 
+    // Graph Runnable & Handler
     private Handler plotRunnableHandler = new Handler();
     private Runnable plotRunnable = new Runnable() {
         ByteBuffer wrapper;
@@ -57,19 +63,29 @@ public class PlotFragment extends Fragment {
         public void run() {
             if (btSetup.isConnected()) {
                 try {
+                    // Get input stream from Bluetooth
                     inputStream = btSetup.getBtData();
                     if (inputStream.available() > 120) {
+
+                        /*
+                        * Synchronize input stream
+                        * A Checksum 1337 marks beginning of a valid byte package
+                        */
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
                             wrapper = ByteBuffer.wrap(buffer);
                         } while (wrapper.getShort() != 1337);
 
+                        // Read valid package into the buffer
                         amountBytes = inputStream.read(buffer);
+
+                        // Wrapper for conversion into values
                         wrapper = ByteBuffer.wrap(buffer);
 
 
                         double tmpX_Axis = x_Axis;
 
+                        // Get values
                         short tmpCh1 = wrapper.getShort();
                         short tmpCh2 = wrapper.getShort();
                         short tmpCh3 = wrapper.getShort();
@@ -77,6 +93,7 @@ public class PlotFragment extends Fragment {
                         short tmpCh5 = wrapper.getShort();
                         short tmpCh6 = wrapper.getShort();
 
+                        // Add points to LineSeries
                         seriesCH1.appendData(new DataPoint(tmpX_Axis, tmpCh1), true, 500);
                         seriesCH2.appendData(new DataPoint(tmpX_Axis, tmpCh2), true, 500);
                         seriesCH3.appendData(new DataPoint(tmpX_Axis, tmpCh3), true, 500);
@@ -98,6 +115,9 @@ public class PlotFragment extends Fragment {
         }
     };
 
+    /**
+     * Default constructor
+     */
     public PlotFragment() {
         // Required empty public constructor
     }
@@ -110,19 +130,30 @@ public class PlotFragment extends Fragment {
 
     }
 
+
+    /**
+     * Setup view
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_plot, container, false);
-
         // Inflate the layout for this fragment
+
+        // Get UI elements
         imgButton = (ImageButton) rootView.findViewById(R.id.imgbutton);
         graphView = (GraphView) rootView.findViewById(R.id.graph1);
 
         setupGraphView();
 
+        // Add series to GraphView. Channel 1 is always available.
         graphView.addSeries(seriesCH1);
 
+        // Bluetooth button
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,6 +207,7 @@ public class PlotFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (btSetup.isConnected()) {
+            // Start runnable
             plotRunnable.run();
             plotRunnable.run();
         }
@@ -197,6 +229,9 @@ public class PlotFragment extends Fragment {
         }
     }
 
+    /**
+     * Setup graph properties
+     */
     private void setupGraphView() {
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(0);
