@@ -16,7 +16,6 @@ public class InformationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -25,8 +24,6 @@ public class InformationFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_information, container, false);
     }
-
-
 
     @Override
     public void onDetach() {

@@ -9,14 +9,6 @@ public class Settings {
         return settings;
     }
 
-    public void setNumChannels(int number) {
-        numChannels = number;
-    }
-
-    public int getNumChannels() {
-        return numChannels;
-    }
-
     public int getActiveFragment() {
         return activeFragment;
     }
