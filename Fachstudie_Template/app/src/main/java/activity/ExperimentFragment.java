@@ -5,14 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+
 import bluetooth.BluetoothSetup;
 import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
@@ -21,7 +24,7 @@ public class ExperimentFragment extends Fragment {
     private BluetoothSetup btSetup = BluetoothSetup.getInstance();
     private CSVSetup csvFile = CSVSetup.getInstance();
 
-    protected Button connect;
+    private Button connect;
     TextView textView;
     private final int CONNECTION_ESTABLISHED = 1;
 
@@ -40,10 +43,11 @@ public class ExperimentFragment extends Fragment {
         @Override
         public void run() {
             if (btSetup.isConnected()) {
+                Log.w("Run", "Graph view running" + x_Axis);
                 try {
                     inputStream = btSetup.getBtData();
                     if (inputStream.available() > 0) {
-                        textView.setText(inputStream.available()+ R.string.placeholder);
+                        textView.setText(inputStream.available()+"");
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
                             wrapper = ByteBuffer.wrap(buffer);
@@ -60,6 +64,7 @@ public class ExperimentFragment extends Fragment {
                         short tmpCh4 = wrapper.getShort();
                         short tmpCh5 = wrapper.getShort();
                         short tmpCh6 = wrapper.getShort();
+
 
                         //Schreibe alle Daten in die CSV
                         csvFile.appendRowToCSV(tmpX_Axis + ";" + tmpCh1 + ";" + tmpCh2 + ";"
@@ -119,6 +124,7 @@ public class ExperimentFragment extends Fragment {
             plotRunnable.run();
         }
     }
+
 
     @Override
     public void onAttach(Activity activity) {
