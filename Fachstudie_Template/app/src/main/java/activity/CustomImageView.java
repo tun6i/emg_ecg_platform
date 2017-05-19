@@ -2,20 +2,13 @@ package activity;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.os.Vibrator;
-
-import java.util.List;
 
 public class CustomImageView extends ImageView{
 
@@ -32,26 +25,7 @@ public class CustomImageView extends ImageView{
         super(context, attributeSet, defStyle);
     }
 
-    /*final GestureDetector gestureDetector = new GestureDetector(new GestureDetector.SimpleOnGestureListener() {
-        public void onLongPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            Log.e("LongTouch", "Longpress detected");
-            if (!isChannelActive) {
-                // Wenn Channel deaktiviert ist, dann aktiviere ihn.
-                activateChannel(e);
-                Log.d("long", "Active Channel");
-            }
-            return true;
-        }
-    });*/
-
-
-
-    private void activateChannel(MotionEvent event) {
+    private void activateChannel() {
         // X und Y - Werte aus dem Event.
         float tmpX = x;
         float tmpY = y;
@@ -223,7 +197,7 @@ public class CustomImageView extends ImageView{
             case MotionEvent.ACTION_DOWN:
                 if (!isChannelActive) {
                     // Wenn Channel deaktiviert ist, dann aktiviere ihn.
-                    activateChannel(event);
+                    activateChannel();
                     Log.d("long", "Active Channel");
                 }
                 break;
