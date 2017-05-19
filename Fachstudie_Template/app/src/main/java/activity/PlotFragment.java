@@ -2,20 +2,15 @@ package activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -52,10 +47,6 @@ public class PlotFragment extends Fragment {
     // contains highByte & lowByte of an Integer
     private byte[] buffer = new byte[12];
 
-    //Debug
-    long starttime = System.currentTimeMillis();
-    long stoptime = System.currentTimeMillis();
-
     private Handler plotRunnableHandler = new Handler();
     private Runnable plotRunnable = new Runnable() {
         ByteBuffer wrapper;
@@ -65,12 +56,8 @@ public class PlotFragment extends Fragment {
         @Override
         public void run() {
             if (btSetup.isConnected()) {
-                Log.w("Run", "Graph view running" + x_Axis);
                 try {
                     inputStream = btSetup.getBtData();
-                    stoptime = System.currentTimeMillis();
-                    Log.w("Time", stoptime - starttime + "");
-                    starttime = System.currentTimeMillis();
                     if (inputStream.available() > 120) {
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
@@ -135,13 +122,6 @@ public class PlotFragment extends Fragment {
         setupGraphView();
 
         graphView.addSeries(seriesCH1);
-        //graphView.addSeries(seriesCH2);
-        //graphView.addSeries(seriesCH3);
-        //graphView.addSeries(seriesCH4);
-        //graphView.addSeries(seriesCH5);
-        //graphView.addSeries(seriesCH6);
-
-
 
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,8 +178,6 @@ public class PlotFragment extends Fragment {
         if (btSetup.isConnected()) {
             plotRunnable.run();
             plotRunnable.run();
-            //plotRunnable.run();
-            //plotRunnable.run();
         }
     }
 
@@ -244,56 +222,6 @@ public class PlotFragment extends Fragment {
         seriesCH4.setColor(Color.GRAY);
         seriesCH5.setColor(Color.BLACK);
         seriesCH6.setColor(Color.MAGENTA);
-
-        //graphView.removeAllSeries();
-
-        /*int numChannels = Settings.getInstance().getNumChannels();
-
-        switch(numChannels) {
-            case 1:
-                graphView.addSeries(seriesCH1);
-                break;
-            case 2:
-                graphView.addSeries(seriesCH1);
-                graphView.addSeries(seriesCH2);
-                break;
-            case 3:
-                graphView.addSeries(seriesCH1);
-                graphView.addSeries(seriesCH2);
-                graphView.addSeries(seriesCH3);
-                break;
-            case 4:
-                graphView.addSeries(seriesCH1);
-                graphView.addSeries(seriesCH2);
-                graphView.addSeries(seriesCH3);
-                graphView.addSeries(seriesCH4);
-                break;
-            case 5:
-                graphView.addSeries(seriesCH1);
-                graphView.addSeries(seriesCH2);
-                graphView.addSeries(seriesCH3);
-                graphView.addSeries(seriesCH4);
-                graphView.addSeries(seriesCH5);
-                break;
-            case 6:
-                graphView.addSeries(seriesCH1);
-                graphView.addSeries(seriesCH2);
-                graphView.addSeries(seriesCH3);
-                graphView.addSeries(seriesCH4);
-                graphView.addSeries(seriesCH5);
-                graphView.addSeries(seriesCH6);
-                break;
-            default:
-                graphView.addSeries(seriesCH1);
-                graphView.addSeries(seriesCH2);
-                graphView.addSeries(seriesCH3);
-                graphView.addSeries(seriesCH4);
-                graphView.addSeries(seriesCH5);
-                graphView.addSeries(seriesCH6);
-                break;
-        }*/
-
-
 
         graphView.invalidate();
     }

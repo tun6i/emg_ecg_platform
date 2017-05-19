@@ -79,7 +79,6 @@ public class CSVSetup{
 
         try {
             File myFile = new File(path);
-            //myFile.createNewFile();
             FileOutputStream fOut = new FileOutputStream(myFile, true);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
             myOutWriter.append(row);
@@ -87,7 +86,6 @@ public class CSVSetup{
             myOutWriter.close();
             fOut.close();
 
-            //Toast.makeText(this.activity, fileName + " saved", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,8 +107,6 @@ public class CSVSetup{
             myOutWriter.append("\n\r");
             myOutWriter.close();
             fOut.close();
-
-            //Toast.makeText(getActivity(), "CSV-Datei " + csvFile.getFileName() + " wurde erstellt", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
