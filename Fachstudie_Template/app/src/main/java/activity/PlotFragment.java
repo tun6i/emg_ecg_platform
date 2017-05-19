@@ -47,10 +47,6 @@ public class PlotFragment extends Fragment {
     // contains highByte & lowByte of an Integer
     private byte[] buffer = new byte[12];
 
-    //Debug
-    long starttime = System.currentTimeMillis();
-    long stoptime = System.currentTimeMillis();
-
     private Handler plotRunnableHandler = new Handler();
     private Runnable plotRunnable = new Runnable() {
         ByteBuffer wrapper;
@@ -60,12 +56,8 @@ public class PlotFragment extends Fragment {
         @Override
         public void run() {
             if (btSetup.isConnected()) {
-                Log.w("Run", "Graph view running" + x_Axis);
                 try {
                     inputStream = btSetup.getBtData();
-                    stoptime = System.currentTimeMillis();
-                    Log.w("Time", stoptime - starttime + "");
-                    starttime = System.currentTimeMillis();
                     if (inputStream.available() > 120) {
                         do {
                             amountBytes = inputStream.read(buffer, 0, 2);
