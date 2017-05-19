@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import bluetooth.BluetoothSetup;
@@ -20,6 +21,7 @@ import de.fachstudie.fachstudie_template.R;
 public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener  {
 
     static BluetoothSetup btSetup;
+    EditText currentParticipantName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +127,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     }
 
     public void createNewCsvFile(View view) {
+        currentParticipantName = (EditText)findViewById(R.id.participantName);
         CSVSetup csv = CSVSetup.getInstance();
-        csv.createNewCSVFile("CSV");
+        csv.createNewCSVFile(currentParticipantName.getText().toString());
         Toast.makeText(getApplicationContext(), "Created New CSV File", Toast.LENGTH_LONG).show();
     }
 
