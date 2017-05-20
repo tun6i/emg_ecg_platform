@@ -26,7 +26,7 @@
         android:textSize="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="30dp"
-        android:text="Der EMG Viewer entstand während einer Fachstudie an der Universität Stuttgart." />
+        android:text="The EMG Viewer was developed during a study at the University of Stuttgart." />
 
     <TextView
         android:layout_below="@id/label"
@@ -36,7 +36,7 @@
         android:textSize="20dp"
         android:layout_marginTop="105dp"
         android:layout_marginLeft="30dp"
-        android:text="Ziel dieser App ist es EMG Signale die via Bluetooth an das Smartphone von einem Arduino gesendet werden in Echtzeit zu visualisieren."></TextView>
+        android:text="The aim of this app is to visualize EMG signals sent via Bluetooth to the smartphone in real time and to record the data."></TextView>
 
 
     <!--<Button
