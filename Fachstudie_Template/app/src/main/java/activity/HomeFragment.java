@@ -25,33 +25,50 @@ import java.io.OutputStreamWriter;
 import csv.CSVSetup;
 import de.fachstudie.fachstudie_template.R;
 
+/**
+ * Class for "Home" view
+ */
 public class HomeFragment extends Fragment {
 
-    //CSV
+    // Get CSV adapter
     private CSVSetup csvFile = CSVSetup.getInstance();
+
+    // ID for write permission
     private static final int REQUEST_ID_WRITE_PERMISSION = 200;
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Layout for the home view
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         /*
-         * Abfrage ob man auf die Dateien des Handys Zugriff erhält
-         * (Muss ab API 23 abgefragt werden).
+         * Query to access the files of the mobile phone.
+         * (Must be queried from API 23).
           */
         boolean canWrite = this.askPermission(REQUEST_ID_WRITE_PERMISSION,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        // Datei wird mit dem Header erstellt.
+        // File is created with the header.
         if (canWrite && !csvFile.getCSVBoolean()) {
             this.writeFile();
         }
@@ -73,16 +90,12 @@ public class HomeFragment extends Fragment {
     // With Android Level >= 23, you have to ask the user
     // for permission with device (For example read/write data on the device).
     private boolean askPermission(int requestId, String permissionName) {
-        Log.w("CSV", (Build.VERSION.SDK_INT >= 23) + "_Build.VersionMin23");
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             // Check if we have permission
             int permission = ActivityCompat.checkSelfPermission(getActivity(), permissionName);
 
-            Log.w("CSV", permission + " checkIfPermission");
-
             if (permission != PackageManager.PERMISSION_GRANTED) {
                 // If don't have permission so prompt the user.
-                Log.w("CSV", "Dont have permission " + requestId);
                 this.requestPermissions(
                         new String[]{permissionName},
                         requestId
@@ -93,26 +106,37 @@ public class HomeFragment extends Fragment {
         return true;
     }
 
+    /**
+     *  Creates a new file in external storage with a specific header.
+     */
     private void writeFile() {
 
+        // External Storage
         File extStore = Environment.getExternalStorageDirectory();
-        // ==> /storage/emulated/0/note.txt
+
+        // File-Path
         String path = extStore.getAbsolutePath() + "/" + csvFile.getFileName();
-        Log.i("CSV", "Save to: " + path);
 
         try {
+            // File with specific path
             File myFile = new File(path);
+
+            // Creates new File
             myFile.createNewFile();
+
             FileOutputStream fOut = new FileOutputStream(myFile);
             OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+
+            //Adds the CSV header
             myOutWriter.append(csvFile.getCSVHeader());
             myOutWriter.append("\n\r");
             myOutWriter.close();
             fOut.close();
 
+            // Says that there is a csv file.
             csvFile.setCSVBoolean(true);
 
-            // Meldung, dass eine CSV-Datei erstelt wurde.
+            // Message that a CSV file was created.
             //Toast.makeText(getActivity(), "CSV-Datei " + csvFile.getFileName() + " wurde erstellt", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
