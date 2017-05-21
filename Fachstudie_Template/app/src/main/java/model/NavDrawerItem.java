@@ -1,16 +1,14 @@
 package model;
 
-/**
- * Created by Schir on 31.10.2016.
- */
-
 public class NavDrawerItem {
+    // Show Notify
     private boolean showNotify;
+
+    // Title
     private String title;
 
 
     public NavDrawerItem() {
-
     }
 
     public NavDrawerItem(boolean showNotify, String title) {
@@ -26,10 +24,18 @@ public class NavDrawerItem {
         this.showNotify = showNotify;
     }
 
+    /**
+     * Title is returned.
+     * @return
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Set title.
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
