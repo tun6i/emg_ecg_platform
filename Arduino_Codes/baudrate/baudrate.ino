@@ -4,6 +4,9 @@ const byte TX_PIN = 11;
 SoftwareSerial mySerial(RX_PIN, TX_PIN);
 const int signalEKG = A0;
 
+/**
+ * Change baudrate for Keyes Bluetooth module to 57600
+ */
 void setup() {
   mySerial.begin(9600);
   mySerial.print("AT");
@@ -17,18 +20,5 @@ void setup() {
 }
 
 void loop() {
-  /*int data = analogRead(signalEKG);
-  mySerial.println(data);*/
-  
-  /*mySerial.print("$$$");
-  delay(1000);
-  mySerial.println("SF,1");
-  //mySerial.println("SN,SparkfunBtModule");
-  //delay(200);
-  //mySerial.println("SM,0");
-  delay(200);
-  mySerial.println("SU,57");
-  delay(200);
-  mySerial.println("R,1");*/
 }
 
