@@ -19,7 +19,7 @@ SoftwareSerial btSerial(RX_PIN, TX_PIN);
 /*
  * Byte buffer package
  * buffer[0] For synchronization
- * buffer[1] in the stream ---> 1337 value
+ * buffer[1] in the stream ---> 1337 value (checksum)
  * buffer[2] CH1 hightByte
  * buffer[3] CH1 lowByte
  * buffer[4] CH2 highByte
@@ -35,26 +35,33 @@ SoftwareSerial btSerial(RX_PIN, TX_PIN);
  */
 byte buffer[14];
 
+/**
+ * Get EMG values for 6 channels
+ * Send the package via Bluetooth
+ */
 void readEMG () {
+  
+  // Get EMG values from analog input channels
   int valueCH1 = analogRead(INPUT_CH1);
   int valueCH2 = analogRead(INPUT_CH2);
   int valueCH3 = analogRead(INPUT_CH3);
   int valueCH4 = analogRead(INPUT_CH4);
   int valueCH5 = analogRead(INPUT_CH5);
   int valueCH6 = analogRead(INPUT_CH6);
-  
+
+  // Write values into buffer
   buffer[2] = highByte(valueCH1);
   buffer[3] = lowByte(valueCH1);
   buffer[4] = highByte(valueCH2);
   buffer[5] = lowByte(valueCH2);
-  //buffer[6] = highByte(valueCH3);
-  //buffer[7] = lowByte(valueCH3);
-  //buffer[8] = highByte(valueCH4);
-  //buffer[9] = lowByte(valueCH4);
-  //buffer[10] = highByte(valueCH5);
-  //buffer[11] = lowByte(valueCH5);
-  //buffer[12] = highByte(valueCH6);
-  //buffer[13] = lowByte(valueCH6);
+  buffer[6] = highByte(valueCH3);
+  buffer[7] = lowByte(valueCH3);
+  buffer[8] = highByte(valueCH4);
+  buffer[9] = lowByte(valueCH4);
+  buffer[10] = highByte(valueCH5);
+  buffer[11] = lowByte(valueCH5);
+  buffer[12] = highByte(valueCH6);
+  buffer[13] = lowByte(valueCH6);
   
   //btSerial.write(highByte(valueCH1));
   //btSerial.write(lowByte(valueCH1));
@@ -84,13 +91,18 @@ void setup() {
   buffer[11] = 0x00;
   buffer[12] = 0x02;
   buffer[13] = 0x00;
+
+  // Run readEMG every 10 Milliseconds
   FlexiTimer2::set(10, readEMG);
   FlexiTimer2::start();
 
+  // Open USB serial connection for Arduino-Plotter
   Serial.begin(57600);
   while (!Serial) {
     ;
   }
+
+  // Open Bluetooth connection
   btSerial.begin(57600);
 
   interrupts();
