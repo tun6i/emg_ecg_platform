@@ -273,6 +273,12 @@ public class PlotFragment extends Fragment {
 
     }
 
+    /**
+     * The individual channels can be added or removed via the Options menu.
+     * This is done here.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
