@@ -8,9 +8,15 @@ public class NavDrawerItem {
     private String title;
 
 
+    // First Constructor
     public NavDrawerItem() {
     }
 
+    /**
+     * Second Constructor with parameters: showNotify and title.
+     * @param showNotify
+     * @param title
+     */
     public NavDrawerItem(boolean showNotify, String title) {
         this.showNotify = showNotify;
         this.title = title;

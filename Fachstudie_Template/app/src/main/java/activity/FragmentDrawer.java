@@ -76,6 +76,7 @@ public class FragmentDrawer extends Fragment {
                              Bundle savedInstanceState) {
         // Inflating view layout.
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        // Drawer List (View)
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
 
         adapter = new NavigationDrawerAdapter(getActivity(), getData());
@@ -99,12 +100,13 @@ public class FragmentDrawer extends Fragment {
     }
 
     /**
-     *
+     * Set up for the fragment and drawerlayout and toolbar.
      * @param fragmentId
      * @param drawerLayout
      * @param toolbar
      */
     public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar) {
+        // Get View by ID.
         containerView = getActivity().findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
         mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -143,6 +145,9 @@ public class FragmentDrawer extends Fragment {
         public void onLongClick(View view, int position);
     }
 
+    /**
+     * Class for the  Recycler-Touch-Listener.
+     */
     static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
@@ -182,15 +187,11 @@ public class FragmentDrawer extends Fragment {
 
         @Override
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
         }
 
 
     }
 
-    /**
-     *
-     */
     public interface FragmentDrawerListener {
         public void onDrawerItemSelected(View view, int position);
     }
