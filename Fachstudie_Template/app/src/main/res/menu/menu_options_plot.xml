@@ -4,12 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="activity.MainActivity">
 
+    <!-- XML file for the points menu on the top right.
+     View: Plot
+     -->
     <item android:id="@+id/settings"
         android:title="Settings"
         android:enabled="true"
         android:icon="@drawable/ic_more_options"
         app:showAsAction="always">
         <menu>
+            <!-- The respective channels from 1 to 6    -->
             <item
                 android:id="@+id/menuChannel1"
                 android:checkable="true"

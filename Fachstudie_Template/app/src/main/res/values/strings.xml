@@ -16,7 +16,8 @@
     <string name="not_connected">Connect to device</string>
     <string name="connected">Disconnect from device</string>
 
-    <!-- navigation drawer item labels  -->
+    <!-- Navigation drawer item labels  -->
+    <!-- Order of navigation  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
         <item>@string/nav_item_information</item>
@@ -26,6 +27,7 @@
 
     </string-array>
 
+    <!-- Title of the views  -->
     <string name="title_home">Home</string>
     <string name="title_information">Information</string>
     <string name="title_plot">Plot</string>

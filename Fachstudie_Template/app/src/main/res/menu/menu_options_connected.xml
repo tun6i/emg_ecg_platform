@@ -4,11 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="activity.MainActivity">
 
+    <!-- XML file for the points menu on the top right.
+        View: Heatmap
+     -->
     <item android:id="@+id/overflow"
         android:title="Settings"
         android:icon="@drawable/ic_more_options"
         app:showAsAction="always">
         <menu>
+            <!-- Bluetooth-Connection -->
             <item
             android:id="@+id/connect"
             android:title="Disconnect"
@@ -16,12 +20,14 @@
             android:icon="@drawable/ic_bluetooth_connection"
             app:showAsAction="always" />
 
+            <!-- Add electrode (Channel) -->
             <item
             android:id="@+id/add_electrode"
             android:title="Add electrode"
             android:orderInCategory="100"
             app:showAsAction="always"/>
 
+            <!-- Remove electrode (Channel) -->
             <item
                 android:id="@+id/del_electrode"
                 android:title="Remove electrode"
